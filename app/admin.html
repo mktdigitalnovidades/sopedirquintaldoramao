@@ -165,9 +165,9 @@
     <span class="text-on-surface font-bold text-xl tracking-tight italic">Quintal do Ramão</span>
   </div>
   <div class="flex items-center gap-2">
-    <a href="index.html" target="_blank" class="p-2 text-on-surface-variant hover:text-primary transition-all rounded-lg hover:bg-surface-container-highest" title="Ver Site">
+    <button onclick="window.open('index.html', '_blank')" class="p-2 text-on-surface-variant hover:text-primary transition-all rounded-lg hover:bg-surface-container-highest" title="Ver Site">
       <span class="material-symbols-outlined text-sm">open_in_new</span>
-    </a>
+    </button>
     <button class="lg:hidden text-on-surface-variant" onclick="toggleSidebar()">
       <span class="material-symbols-outlined">close</span>
     </button>
@@ -507,6 +507,18 @@
         <span class="material-symbols-outlined">add</span>
         Novo Produto
       </button>
+    <div class="flex flex-col md:flex-row gap-4 mb-8">
+      <div class="flex-1 relative group">
+        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">search</span>
+        <input type="text" id="product-search" placeholder="Buscar produto pelo nome..." oninput="searchProducts()" class="w-full bg-surface-container-low border border-outline-variant/10 rounded-2xl py-4 pl-12 pr-4 focus:ring-2 focus:ring-primary outline-none transition-all shadow-lg font-medium text-sm">
+      </div>
+      <div class="relative min-w-[200px]">
+        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">filter_list</span>
+        <select id="product-filter-category" onchange="searchProducts()" class="w-full bg-surface-container-low border border-outline-variant/10 rounded-2xl py-4 pl-12 pr-8 focus:ring-2 focus:ring-primary outline-none transition-all shadow-lg appearance-none font-medium text-sm cursor-pointer">
+          <option value="">Todas Categorias</option>
+        </select>
+        <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+      </div>
     </div>
     <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-20">
         <!-- Produtos Injectados via JS -->
@@ -1228,6 +1240,14 @@ async function fetchCategories() {
    categories = data || [];
    renderCategories();
    populateCategoryDropdown();
+   populateCategoryFilter();
+}
+
+function populateCategoryFilter() {
+   const filter = document.getElementById('product-filter-category');
+   if(!filter) return;
+   filter.innerHTML = '<option value="">Todas Categorias</option>' + 
+      categories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
 }
 
 function renderCategories() {
@@ -1324,13 +1344,32 @@ async function deleteCategory(id) {
 }
 
 // ===== PRODUTOS =====
+let allProducts = [];
 async function fetchProducts() {
    const { data } = await supabaseClient.from('quintal_produtos').select('*').order('name');
+   allProducts = data || [];
+   renderProducts(allProducts);
+}
+
+function searchProducts() {
+   const searchTerm = document.getElementById('product-search').value.toLowerCase();
+   const categoryFilter = document.getElementById('product-filter-category').value;
+   
+   const filtered = allProducts.filter(p => {
+      const matchSearch = p.name.toLowerCase().includes(searchTerm);
+      const matchCategory = !categoryFilter || p.category === categoryFilter;
+      return matchSearch && matchCategory;
+   });
+   
+   renderProducts(filtered);
+}
+
+function renderProducts(productsList) {
    const grid = document.getElementById('products-grid');
    if (!grid) return;
    
    grid.className = "space-y-3";
-   grid.innerHTML = (data || []).map(p => `
+   grid.innerHTML = (productsList || []).map(p => `
       <div class="flex items-center justify-between p-3 bg-surface-container-low rounded-xl border border-outline-variant/10 group hover:border-primary/30 transition-all">
          <div class="flex items-center gap-4 flex-1 min-w-0">
             <div class="w-14 h-14 rounded-lg overflow-hidden bg-surface-container flex-shrink-0">
