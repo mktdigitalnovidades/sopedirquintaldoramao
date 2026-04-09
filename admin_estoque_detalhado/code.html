@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400;500;600;700;800;900&amp;family=Be+Vietnam+Pro:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#f4bb88",
+                    "primary-fixed": "#ffdcbf",
+                    "surface-bright": "#393939",
+                    "surface-container-highest": "#353535",
+                    "secondary-container": "#674018",
+                    "on-surface": "#e5e2e1",
+                    "on-secondary-fixed": "#2d1600",
+                    "tertiary-container": "#00b5f5",
+                    "on-tertiary-fixed-variant": "#004c6a",
+                    "inverse-surface": "#e5e2e1",
+                    "on-surface-variant": "#dac2af",
+                    "on-tertiary-container": "#00435d",
+                    "on-primary-fixed": "#2d1600",
+                    "on-error": "#690005",
+                    "inverse-on-surface": "#313030",
+                    "surface-tint": "#ffb874",
+                    "outline": "#a28d7b",
+                    "on-tertiary-fixed": "#001e2d",
+                    "surface-variant": "#353535",
+                    "primary-container": "#f29221",
+                    "primary": "#ffb874",
+                    "surface-dim": "#131313",
+                    "on-secondary": "#4a2802",
+                    "on-primary": "#4b2800",
+                    "inverse-primary": "#8c4f00",
+                    "error-container": "#93000a",
+                    "surface-container": "#20201f",
+                    "surface-container-high": "#2a2a2a",
+                    "surface-container-lowest": "#0e0e0e",
+                    "error": "#ffb4ab",
+                    "primary-fixed-dim": "#ffb874",
+                    "on-background": "#e5e2e1",
+                    "on-secondary-fixed-variant": "#643e16",
+                    "surface-container-low": "#1b1b1b",
+                    "secondary-fixed": "#ffdcbf",
+                    "outline-variant": "#544435",
+                    "tertiary-fixed-dim": "#7ed0ff",
+                    "secondary-fixed-dim": "#f4bb88",
+                    "on-error-container": "#ffdad6",
+                    "on-primary-container": "#5e3300",
+                    "tertiary-fixed": "#c5e7ff",
+                    "tertiary": "#7ed0ff",
+                    "on-secondary-container": "#e4ae7b",
+                    "on-tertiary": "#00344a",
+                    "on-primary-fixed-variant": "#6a3b00",
+                    "surface": "#131313",
+                    "background": "#131313"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Epilogue"],
+                    "body": ["Be Vietnam Pro"],
+                    "label": ["Be Vietnam Pro"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .no-line-rule { border: none !important; }
+        .tonal-layering-no-borders { border: none !important; }
+        .chalk-text { text-shadow: 0 0 2px rgba(242, 146, 33, 0.2); }
+        .asymmetric-crop { border-radius: 4px 12px 4px 20px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body antialiased">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 w-full z-50 bg-[#131313]/70 backdrop-blur-md no-line-rule shadow-[0_10px_30px_rgba(0,0,0,0.5)] flex justify-between items-center px-6 py-3">
+<div class="flex items-center gap-8">
+<h1 class="text-2xl font-bold text-[#F29221] italic font-headline tracking-tight">Quintal do Ramão</h1>
+<div class="hidden md:flex gap-6 items-center">
+<span class="text-[#F29221] font-bold cursor-pointer transition-colors duration-300">Inventory</span>
+<span class="text-[#e5e2e1]/60 hover:text-[#F29221] cursor-pointer transition-colors duration-300">Orders</span>
+<span class="text-[#e5e2e1]/60 hover:text-[#F29221] cursor-pointer transition-colors duration-300">Reports</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#e5e2e1]/60 cursor-pointer hover:text-[#F29221]">notifications</span>
+<span class="material-symbols-outlined text-[#e5e2e1]/60 cursor-pointer hover:text-[#F29221]">settings</span>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-highest">
+<img alt="Admin Profile" data-alt="close-up of a professional male kitchen manager with a warm smile in a rustic kitchen setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBP1vcYuS3BBxcYavOpQCYYtOSnd70BYNOOzxzgWcaGg2Jrzz4Xrnc7Y2zaL7x2FGr_kZH5IYQq8STVKfZzAFrJ54OT5gL7Y_dyCLGu-SPvNVQjg4O3D7apZ-UUaAdgvv_EQF5OTOqauZZwy8Qan0XjgxIhDLaoDPlzzF8vQYya1RpbqPY14YQJ4Zi0w3isR7TtJkbA2_aOzb1PEoLEfWlFMLq8_g40KfAi1GnU2FQ0zF6aW1KoKHz5D9hE4k779dLZjAvVvPTE_0jd"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-screen w-64 bg-[#1b1b1b] tonal-layering-no-borders shadow-2xl hidden md:flex flex-col py-8 z-40">
+<div class="px-6 mb-10">
+<p class="text-lg font-black text-[#F29221] font-headline">Quintal do Ramão</p>
+<p class="font-epilogue uppercase tracking-widest text-[10px] text-[#e5e2e1]/50">Admin Portal</p>
+</div>
+<nav class="flex-grow flex flex-col">
+<div class="px-6 py-3 flex items-center gap-4 text-[#e5e2e1]/70 hover:bg-[#353535] hover:text-[#F29221] transition-all cursor-pointer group active:translate-x-1 duration-200">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-epilogue uppercase tracking-widest text-xs">Dashboard</span>
+</div>
+<div class="px-6 py-3 flex items-center gap-4 text-[#e5e2e1]/70 hover:bg-[#353535] hover:text-[#F29221] transition-all cursor-pointer group active:translate-x-1 duration-200">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-epilogue uppercase tracking-widest text-xs">Orders</span>
+</div>
+<div class="px-6 py-3 flex items-center gap-4 text-[#e5e2e1]/70 hover:bg-[#353535] hover:text-[#F29221] transition-all cursor-pointer group active:translate-x-1 duration-200">
+<span class="material-symbols-outlined">restaurant_menu</span>
+<span class="font-epilogue uppercase tracking-widest text-xs">Menu</span>
+</div>
+<div class="px-6 py-3 flex items-center gap-4 text-[#F29221] border-r-4 border-[#F29221] bg-[#353535]/50 transition-all cursor-pointer group active:translate-x-1 duration-200">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-epilogue uppercase tracking-widest text-xs font-bold">Inventory</span>
+</div>
+<div class="px-6 py-3 flex items-center gap-4 text-[#e5e2e1]/70 hover:bg-[#353535] hover:text-[#F29221] transition-all cursor-pointer group active:translate-x-1 duration-200">
+<span class="material-symbols-outlined">assessment</span>
+<span class="font-epilogue uppercase tracking-widest text-xs">Reports</span>
+</div>
+<div class="px-6 py-3 flex items-center gap-4 text-[#e5e2e1]/70 hover:bg-[#353535] hover:text-[#F29221] transition-all cursor-pointer group active:translate-x-1 duration-200">
+<span class="material-symbols-outlined">group</span>
+<span class="font-epilogue uppercase tracking-widest text-xs">Team</span>
+</div>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full bg-[#353535] text-[#F29221] py-3 rounded-lg font-epilogue uppercase tracking-widest text-xs font-bold hover:bg-[#F29221] hover:text-on-primary-container transition-colors">
+                View Live Menu
+            </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="md:ml-64 pt-20 px-6 pb-12">
+<header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h2 class="text-4xl font-headline font-extrabold text-on-surface tracking-tight chalk-text">Estoque Detalhado</h2>
+<p class="text-on-surface-variant font-body mt-2">Gestão centralizada de insumos, fornecedores e movimentação.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-5 py-2 bg-surface-container-high hover:bg-surface-container-highest text-on-surface transition-colors rounded-md flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">download</span>
+<span class="font-label text-sm uppercase tracking-wider">Relatório</span>
+</button>
+<button class="px-5 py-2 bg-primary-container text-on-primary-container font-bold hover:brightness-110 transition-all rounded-md flex items-center gap-2 shadow-lg">
+<span class="material-symbols-outlined text-lg">add</span>
+<span class="font-label text-sm uppercase tracking-wider">Novo Item</span>
+</button>
+</div>
+</header>
+<!-- Tabbed Navigation -->
+<div class="flex gap-8 mb-8 border-b border-outline-variant/15">
+<button class="pb-4 border-b-2 border-primary text-primary font-bold transition-all">Insumos</button>
+<button class="pb-4 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface transition-all">Fornecedores</button>
+<button class="pb-4 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface transition-all">Movimentação</button>
+</div>
+<!-- Bento Grid Stats -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+<div class="bg-surface-container-low p-6 rounded-xl relative overflow-hidden group">
+<div class="relative z-10">
+<p class="text-xs uppercase tracking-widest text-on-surface-variant font-label mb-2">Total Insumos</p>
+<p class="text-3xl font-headline font-bold text-on-surface">142</p>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-8xl" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl border-l-4 border-error/50">
+<p class="text-xs uppercase tracking-widest text-on-surface-variant font-label mb-2">Alertas de Estoque</p>
+<p class="text-3xl font-headline font-bold text-error">08</p>
+<p class="text-[10px] text-error mt-2">Necessitam reposição imediata</p>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl">
+<p class="text-xs uppercase tracking-widest text-on-surface-variant font-label mb-2">Valor Total</p>
+<p class="text-3xl font-headline font-bold text-on-surface">R$ 14.280</p>
+<p class="text-[10px] text-secondary mt-2">+12% vs mês anterior</p>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl group cursor-pointer hover:bg-surface-container-high transition-colors">
+<p class="text-xs uppercase tracking-widest text-on-surface-variant font-label mb-2">Próxima Entrega</p>
+<div class="flex items-center gap-3">
+<p class="text-xl font-headline font-bold text-[#F29221]">Amanhã</p>
+<span class="text-xs text-on-surface-variant">Frigorífico Central</span>
+</div>
+<span class="material-symbols-outlined absolute top-4 right-4 text-on-surface-variant group-hover:text-[#F29221] transition-colors">local_shipping</span>
+</div>
+</section>
+<!-- Inventory Table Section -->
+<section class="bg-surface-container-low rounded-xl overflow-hidden shadow-xl">
+<div class="p-6 flex justify-between items-center bg-surface-container-high/50">
+<h3 class="font-headline font-bold text-xl">Lista de Insumos</h3>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="bg-surface-container-highest border-none rounded-md pl-10 pr-4 py-2 text-sm focus:ring-1 focus:ring-primary w-64 text-on-surface" placeholder="Buscar insumo..." type="text"/>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-highest/30">
+<th class="px-6 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant">Item</th>
+<th class="px-6 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant">Categoria</th>
+<th class="px-6 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant">Estoque Atual</th>
+<th class="px-6 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant">Unidade</th>
+<th class="px-6 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant">Custo Unit.</th>
+<th class="px-6 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant">Fornecedor</th>
+<th class="px-6 py-4 font-label text-xs uppercase tracking-widest text-on-surface-variant">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="px-6 py-5 font-bold">Picanha Maturada</td>
+<td class="px-6 py-5"><span class="bg-secondary-container/30 text-secondary px-2 py-1 rounded text-[10px] uppercase font-bold tracking-tighter">Proteínas</span></td>
+<td class="px-6 py-5 font-headline font-medium">12.5</td>
+<td class="px-6 py-5 text-on-surface-variant">kg</td>
+<td class="px-6 py-5">R$ 89,00</td>
+<td class="px-6 py-5 text-sm">Frigorífico Central</td>
+<td class="px-6 py-5">
+<span class="flex items-center gap-2 text-error text-xs font-bold uppercase tracking-tighter">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+                                    Baixo Estoque
+                                </span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="px-6 py-5 font-bold">Cerveja Artesanal IPA</td>
+<td class="px-6 py-5"><span class="bg-tertiary-container/20 text-tertiary px-2 py-1 rounded text-[10px] uppercase font-bold tracking-tighter">Bebidas</span></td>
+<td class="px-6 py-5 font-headline font-medium">48</td>
+<td class="px-6 py-5 text-on-surface-variant">Un</td>
+<td class="px-6 py-5">R$ 14,50</td>
+<td class="px-6 py-5 text-sm">Brewery Local</td>
+<td class="px-6 py-5">
+<span class="flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-tighter">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+                                    Normal
+                                </span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="px-6 py-5 font-bold">Carvão Vegetal</td>
+<td class="px-6 py-5"><span class="bg-surface-container-highest text-on-surface-variant px-2 py-1 rounded text-[10px] uppercase font-bold tracking-tighter">Operacional</span></td>
+<td class="px-6 py-5 font-headline font-medium">120</td>
+<td class="px-6 py-5 text-on-surface-variant">kg</td>
+<td class="px-6 py-5">R$ 4,20</td>
+<td class="px-6 py-5 text-sm">Lenha &amp; Cia</td>
+<td class="px-6 py-5">
+<span class="flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-tighter">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+                                    Normal
+                                </span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="px-6 py-5 font-bold">Mandioca Premium</td>
+<td class="px-6 py-5"><span class="bg-secondary-container/30 text-secondary px-2 py-1 rounded text-[10px] uppercase font-bold tracking-tighter">Hortifruti</span></td>
+<td class="px-6 py-5 font-headline font-medium">5.0</td>
+<td class="px-6 py-5 text-on-surface-variant">kg</td>
+<td class="px-6 py-5">R$ 6,80</td>
+<td class="px-6 py-5 text-sm">Horta do Zé</td>
+<td class="px-6 py-5">
+<span class="flex items-center gap-2 text-error text-xs font-bold uppercase tracking-tighter">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+                                    Baixo Estoque
+                                </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 bg-surface-container-high/20 flex justify-between items-center text-xs text-on-surface-variant font-label">
+<span>Exibindo 4 de 142 itens</span>
+<div class="flex gap-2">
+<button class="p-1 hover:text-primary transition-colors"><span class="material-symbols-outlined">chevron_left</span></button>
+<button class="p-1 hover:text-primary transition-colors"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+</section>
+<!-- Suppliers Preview Section (Asymmetric Editorial Style) -->
+<section class="mt-12">
+<h3 class="font-headline font-bold text-2xl mb-8 chalk-text">Fornecedores Destaque</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Supplier Card 1 -->
+<div class="relative bg-surface-container-low p-6 rounded-xl group transition-transform hover:-translate-y-1">
+<div class="flex items-start justify-between mb-4">
+<div class="w-12 h-12 bg-surface-container-highest rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">local_shipping</span>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-widest text-primary">Premium</span>
+</div>
+<h4 class="font-headline font-bold text-lg mb-1">Frigorífico Central</h4>
+<p class="text-xs text-on-surface-variant mb-4">Especialista em cortes nobres e maturação.</p>
+<div class="space-y-2 border-t border-outline-variant/10 pt-4">
+<div class="flex items-center gap-3 text-sm text-on-surface/80">
+<span class="material-symbols-outlined text-sm">phone</span>
+<span>(11) 98765-4321</span>
+</div>
+<div class="flex items-center gap-3 text-sm text-on-surface/80">
+<span class="material-symbols-outlined text-sm">mail</span>
+<span>pedidos@frigorificocentral.com</span>
+</div>
+</div>
+</div>
+<!-- Supplier Card 2 (With Image Overlay) -->
+<div class="relative bg-surface-container-low rounded-xl overflow-hidden group">
+<img alt="Fresh Produce" class="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-30 transition-opacity" data-alt="vibrant close-up of organic vegetables in a rustic wooden crate with warm natural lighting and earthy tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH5g5G_WlzG-F44eg1TlOMmjloM-HS-Pqeyxn8KINXmcs967I4JwhcnM2BvCJzWUrCgfLrzPfQUA6Tvs7Rk8swIqJuTqR5nQks_urJFRKg8Tq9jcgJXNwva5cOehlPOEuij5_Mrbw4_6AieKhrh7ctISweRVuJ1P3Ua4T1ETTaocTjjVh-bcuLY8EwpIgHFSI9IWllp3mgcurYPr7ssOfZUisGrmUotRZacPkPrNEf5nS-wMKaE1_wkB_IsD8iuT4fGdDrCn0zKqR9"/>
+<div class="relative p-6 h-full flex flex-col">
+<h4 class="font-headline font-bold text-lg mb-1 mt-auto">Horta do Zé</h4>
+<p class="text-xs text-on-surface-variant mb-4">Entregas diárias de vegetais orgânicos.</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs">location_on</span>
+<span class="text-xs">Atibaia, SP</span>
+</div>
+</div>
+</div>
+<!-- Supplier Card 3 -->
+<div class="relative bg-surface-container-low p-6 rounded-xl border border-outline-variant/10 border-dashed">
+<div class="flex flex-col items-center justify-center h-full text-center py-4">
+<div class="w-10 h-10 rounded-full border-2 border-outline-variant/30 flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-on-surface-variant">add</span>
+</div>
+<p class="font-headline font-bold text-sm">Novo Fornecedor</p>
+<p class="text-[10px] text-on-surface-variant mt-1">Cadastre novos parceiros</p>
+<button class="mt-4 text-xs font-bold text-primary uppercase tracking-widest hover:underline">Iniciar Cadastro</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Signature Chalk Divider -->
+<div class="my-16 flex justify-center opacity-30">
+<svg fill="none" height="20" viewbox="0 0 200 20" width="200" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10C20 8 35 12 50 10C65 8 80 12 100 10C120 8 135 12 150 10C165 8 180 12 200 10" stroke="#F29221" stroke-dasharray="5 5" stroke-width="2"></path>
+</svg>
+</div>
+</main>
+<!-- BottomNavBar for Mobile -->
+<nav class="md:hidden fixed bottom-0 w-full bg-surface-container shadow-2xl z-50 flex justify-around items-center py-3 px-4 rounded-t-xl">
+<div class="flex flex-col items-center text-on-surface-variant transition-colors active:scale-95">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-label uppercase">Dash</span>
+</div>
+<div class="flex flex-col items-center text-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="text-[10px] font-label uppercase font-bold">Estoque</span>
+</div>
+<div class="flex flex-col items-center text-on-surface-variant transition-colors active:scale-95">
+<span class="material-symbols-outlined">restaurant_menu</span>
+<span class="text-[10px] font-label uppercase">Menu</span>
+</div>
+<div class="flex flex-col items-center text-on-surface-variant transition-colors active:scale-95">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-label uppercase">Team</span>
+</div>
+</nav>
+<!-- Contextual FAB (Only on main Inventory screen) -->
+<button class="fixed bottom-24 md:bottom-8 right-6 md:right-8 bg-primary-container text-on-primary-container w-14 h-14 rounded-full flex items-center justify-center shadow-[0_20px_40px_rgba(0,0,0,0.4)] active:scale-95 transition-transform z-50 group">
+<span class="material-symbols-outlined text-2xl group-hover:rotate-90 transition-transform">add</span>
+</button>
+</body></html>

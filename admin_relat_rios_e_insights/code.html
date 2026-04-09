@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Buteco Noir Admin - Relatórios</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800;900&amp;family=Be+Vietnam+Pro:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-on-surface": "#313030",
+                    "on-tertiary-fixed-variant": "#004c6a",
+                    "primary": "#ffb874",
+                    "on-secondary-container": "#e4ae7b",
+                    "surface": "#131313",
+                    "secondary": "#f4bb88",
+                    "error-container": "#93000a",
+                    "secondary-fixed": "#ffdcbf",
+                    "on-background": "#e5e2e1",
+                    "on-error": "#690005",
+                    "inverse-primary": "#8c4f00",
+                    "tertiary-container": "#00b5f5",
+                    "surface-dim": "#131313",
+                    "on-error-container": "#ffdad6",
+                    "surface-container-low": "#1b1b1b",
+                    "on-tertiary": "#00344a",
+                    "secondary-container": "#674018",
+                    "on-tertiary-container": "#00435d",
+                    "on-primary": "#4b2800",
+                    "background": "#131313",
+                    "error": "#ffb4ab",
+                    "on-primary-fixed": "#2d1600",
+                    "surface-container-lowest": "#0e0e0e",
+                    "primary-fixed-dim": "#ffb874",
+                    "outline": "#a28d7b",
+                    "on-secondary-fixed-variant": "#643e16",
+                    "on-primary-fixed-variant": "#6a3b00",
+                    "on-secondary-fixed": "#2d1600",
+                    "inverse-surface": "#e5e2e1",
+                    "surface-variant": "#353535",
+                    "on-tertiary-fixed": "#001e2d",
+                    "on-surface": "#e5e2e1",
+                    "secondary-fixed-dim": "#f4bb88",
+                    "primary-fixed": "#ffdcbf",
+                    "on-primary-container": "#5e3300",
+                    "surface-container-highest": "#353535",
+                    "on-secondary": "#4a2802",
+                    "surface-container-high": "#2a2a2a",
+                    "surface-tint": "#ffb874",
+                    "on-surface-variant": "#dac2af",
+                    "tertiary-fixed-dim": "#7ed0ff",
+                    "tertiary": "#7ed0ff",
+                    "outline-variant": "#544435",
+                    "primary-container": "#f29221",
+                    "surface-container": "#20201f",
+                    "tertiary-fixed": "#c5e7ff",
+                    "surface-bright": "#393939"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Epilogue"],
+                    "body": ["Be Vietnam Pro"],
+                    "label": ["Be Vietnam Pro"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .chalk-texture {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+        }
+        .asymmetric-border {
+            clip-path: polygon(2% 0%, 98% 1%, 100% 98%, 1% 100%);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar Shell -->
+<aside class="hidden lg:flex flex-col fixed left-0 top-0 h-full h-screen w-64 border-r border-white/10 bg-[#131313] shadow-2xl shadow-black/50 font-epilogue font-bold tracking-tight z-50">
+<div class="p-6">
+<h1 class="text-2xl font-black text-[#F29221] tracking-widest uppercase">Buteco Noir</h1>
+<p class="text-[10px] text-on-surface-variant tracking-[0.2em] mt-1 uppercase">Gestão de Quintal</p>
+</div>
+<nav class="mt-4 flex-1 space-y-1 px-3">
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/60 hover:text-[#e5e2e1] hover:bg-[#353535] transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:scale-95 duration-150">dashboard</span>
+<span>Painel</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/60 hover:text-[#e5e2e1] hover:bg-[#353535] transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:scale-95 duration-150">restaurant_menu</span>
+<span>Pedidos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/60 hover:text-[#e5e2e1] hover:bg-[#353535] transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:scale-95 duration-150">menu_book</span>
+<span>Cardápio</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/60 hover:text-[#e5e2e1] hover:bg-[#353535] transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:scale-95 duration-150">inventory_2</span>
+<span>Estoque</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/60 hover:text-[#e5e2e1] hover:bg-[#353535] transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:scale-95 duration-150">payments</span>
+<span>Financeiro</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/60 hover:text-[#e5e2e1] hover:bg-[#353535] transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:scale-95 duration-150">settings</span>
+<span>Configurações</span>
+</a>
+</nav>
+<div class="p-4 border-t border-white/5 space-y-4">
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/60 hover:text-[#e5e2e1] group" href="#">
+<span class="material-symbols-outlined group-hover:scale-95 duration-150">help_center</span>
+<span>Suporte</span>
+</a>
+<button class="w-full bg-primary-container text-on-primary-container py-3 rounded-md font-bold text-sm tracking-tight hover:brightness-110 transition-all shadow-lg shadow-primary-container/20">
+                Novo Pedido
+            </button>
+</div>
+</aside>
+<!-- TopAppBar Shell -->
+<header class="flex justify-between items-center w-full h-16 px-8 lg:pl-[18rem] bg-[#131313]/70 backdrop-blur-xl fixed top-0 z-40 font-epilogue font-medium">
+<div class="flex items-center gap-8">
+<h2 class="text-xl font-bold text-[#F29221]">Relatórios</h2>
+<nav class="hidden md:flex gap-6">
+<a class="text-[#F29221] border-b-2 border-[#F29221] pb-1" href="#">Relatórios</a>
+<a class="text-[#e5e2e1]/80 hover:text-[#F29221] transition-all" href="#">Equipe</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group hidden sm:block">
+<input class="bg-surface-container-low border-none rounded-full py-1.5 pl-10 pr-4 text-sm focus:ring-1 focus:ring-[#F29221]/50 w-64 transition-all" placeholder="Buscar relatório..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+</div>
+<button class="p-2 text-on-surface-variant hover:bg-white/5 rounded-full transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="flex items-center gap-3 ml-2 border-l border-white/10 pl-4">
+<div class="text-right hidden sm:block">
+<p class="text-xs font-bold">Gerente Noir</p>
+<p class="text-[10px] text-on-surface-variant">Admin</p>
+</div>
+<img alt="Avatar do Gerente" class="w-8 h-8 rounded-full border border-primary/30 object-cover" data-alt="portrait of a professional restaurant manager with a friendly expression in a dimly lit bar setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgPvlyKVuHpGlI-W3sSArw6oFKBlXUr5m_8RL6SOiUswK5L7nCGpgaYPCV__GkWVdTzIQ5c5BofmLBX9aT-Ok0Gxf1hCAJR8XKp1xmGTnHL0Zf3_wWiFlbSknusl7DvmjNiiQoH4byglb-pKwDKya2KkCwDSnoamgO-IfsW69wLToAwwZmvdQ_RIW7K7tsTuoZ8UAMa9qltHRYXiasTI736Y0MzCofROvXG3rHNtO7eHnxv3jhkkjPn0H6hh79YfvgFuP-MuYr_p05"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-12 px-6 lg:pl-[18rem] lg:pr-8 max-w-screen-2xl mx-auto">
+<!-- Period Filters: Custom Design -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
+<div>
+<h3 class="text-3xl font-headline font-extrabold text-on-surface tracking-tight">Performance do Quintal</h3>
+<p class="text-on-surface-variant mt-1">Visão geral da operação em tempo real.</p>
+</div>
+<div class="bg-surface-container-low p-1 rounded-lg flex gap-1 border border-white/5">
+<button class="px-4 py-1.5 rounded-md text-xs font-bold transition-all bg-primary-container text-on-primary-container">DIA</button>
+<button class="px-4 py-1.5 rounded-md text-xs font-bold transition-all text-on-surface-variant hover:text-on-surface">SEMANA</button>
+<button class="px-4 py-1.5 rounded-md text-xs font-bold transition-all text-on-surface-variant hover:text-on-surface">MÊS</button>
+<button class="px-4 py-1.5 rounded-md text-xs font-bold transition-all text-on-surface-variant hover:text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+</button>
+</div>
+</div>
+<!-- Metrics Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+<!-- Revenue Card -->
+<div class="bg-surface-container-low p-6 rounded-xl border-l-4 border-primary-container relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-9xl">payments</span>
+</div>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-2">Faturamento Total</p>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-black font-headline text-on-surface">R$ 12.840</span>
+<span class="text-xs font-bold text-primary">+12%</span>
+</div>
+<div class="mt-4 h-1 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-3/4"></div>
+</div>
+</div>
+<!-- Average Ticket -->
+<div class="bg-surface-container-low p-6 rounded-xl border-l-4 border-tertiary-container relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-9xl">receipt_long</span>
+</div>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-2">Ticket Médio</p>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-black font-headline text-on-surface">R$ 84,50</span>
+<span class="text-xs font-bold text-tertiary">-3%</span>
+</div>
+<p class="text-[10px] text-on-surface-variant mt-4 font-medium">Meta: R$ 90,00</p>
+</div>
+<!-- Total Orders -->
+<div class="bg-surface-container-low p-6 rounded-xl border-l-4 border-secondary-fixed-dim relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-9xl">restaurant</span>
+</div>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-2">Total de Pedidos</p>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-black font-headline text-on-surface">152</span>
+<span class="text-xs font-bold text-primary">+8.5%</span>
+</div>
+<p class="text-[10px] text-on-surface-variant mt-4 font-medium">Pico às 21h30</p>
+</div>
+<!-- Occupancy/Efficiency -->
+<div class="bg-surface-container-low p-6 rounded-xl border-l-4 border-outline relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-9xl">timer</span>
+</div>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-2">Tempo Médio</p>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-black font-headline text-on-surface">24 min</span>
+<span class="text-xs font-bold text-primary-container">Ideal</span>
+</div>
+<p class="text-[10px] text-on-surface-variant mt-4 font-medium">Cozinha operando 92%</p>
+</div>
+</div>
+<!-- Charts Row -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+<!-- Line Chart: Sales Over Time -->
+<div class="lg:col-span-2 bg-surface-container-low p-8 rounded-2xl chalk-texture relative border border-white/5">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h4 class="text-xl font-black font-headline">Fluxo de Vendas</h4>
+<p class="text-xs text-on-surface-variant">Movimentação horária do dia atual</p>
+</div>
+<div class="flex gap-2">
+<span class="w-3 h-3 rounded-full bg-primary-container"></span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Hoje</span>
+</div>
+</div>
+<!-- Mock Line Chart Visualization -->
+<div class="relative h-64 w-full flex items-end justify-between gap-2 border-b border-white/10 pb-2">
+<div class="h-[20%] w-full bg-primary/10 rounded-t-sm group relative">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-primary text-on-primary text-[10px] px-1 rounded font-bold">18h</div>
+</div>
+<div class="h-[45%] w-full bg-primary/10 rounded-t-sm group relative"></div>
+<div class="h-[30%] w-full bg-primary/10 rounded-t-sm group relative"></div>
+<div class="h-[60%] w-full bg-primary/20 rounded-t-sm group relative border-t-2 border-primary-container"></div>
+<div class="h-[85%] w-full bg-primary/30 rounded-t-sm group relative border-t-2 border-primary-container">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-primary-container text-on-primary-container text-[10px] px-2 py-0.5 rounded-full font-black shadow-lg">PICO</div>
+</div>
+<div class="h-[100%] w-full bg-primary/40 rounded-t-sm group relative border-t-2 border-primary-container"></div>
+<div class="h-[75%] w-full bg-primary/30 rounded-t-sm group relative border-t-2 border-primary-container"></div>
+<div class="h-[50%] w-full bg-primary/10 rounded-t-sm group relative"></div>
+</div>
+<div class="flex justify-between mt-4 px-2 text-[10px] font-bold text-on-surface-variant uppercase">
+<span>18h</span><span>19h</span><span>20h</span><span>21h</span><span>22h</span><span>23h</span><span>00h</span><span>01h</span>
+</div>
+</div>
+<!-- Bar Chart: Sales by Category -->
+<div class="bg-surface-container-high p-8 rounded-2xl relative border border-white/5 flex flex-col">
+<h4 class="text-xl font-black font-headline mb-6">Categorias</h4>
+<div class="space-y-6 flex-1">
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold uppercase tracking-widest">
+<span>Bebidas</span>
+<span class="text-primary">42%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-lowest rounded-full">
+<div class="h-full bg-primary-container w-[42%] rounded-full shadow-[0_0_8px_rgba(242,146,33,0.4)]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold uppercase tracking-widest">
+<span>Petiscos</span>
+<span class="text-primary">35%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-lowest rounded-full">
+<div class="h-full bg-primary-container w-[35%] rounded-full opacity-80"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold uppercase tracking-widest">
+<span>Pratos Principais</span>
+<span class="text-primary">18%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-lowest rounded-full">
+<div class="h-full bg-primary-container w-[18%] rounded-full opacity-60"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold uppercase tracking-widest">
+<span>Sobremesas</span>
+<span class="text-primary">5%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-lowest rounded-full">
+<div class="h-full bg-primary-container w-[5%] rounded-full opacity-40"></div>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-white/5">
+<p class="text-[10px] leading-relaxed text-on-surface-variant font-medium">Bebidas destiladas tiveram um aumento de 15% comparado ao último sábado.</p>
+</div>
+</div>
+</div>
+<!-- Best Selling Items Section -->
+<div>
+<div class="flex items-center gap-4 mb-8">
+<h4 class="text-2xl font-black font-headline uppercase tracking-tighter">Os Queridinhos do Quintal</h4>
+<div class="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Item 1 -->
+<div class="bg-surface-container-low group hover:bg-surface-container-high transition-all rounded-xl p-4 flex gap-4 items-center">
+<div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 asymmetric-border">
+<img alt="Petisco" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="traditional brazilian fried meat nuggets with lemon wedges on a rustic dark plate" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBneReRgHnLBopDnw1i_fVdwVPscfWTTjBuVHcx3ThYxutfhWL_89N3dMC--WS7D2o46MyP92r0nhX-uA-bTwxjT1ee5OYaaRdA_OdKfme5t_qkjlakRrZxLgv3A1aQOQ82hBGhDN8DEzHSOI7fGsH5by3tZsLBTIKpoDAZeQnedyCfiWVKenknJgWmcqzLkgpCk6G9vdXi_UX4FVy0FjXRilxmuVUXqNcJgUiwPzcXDEsvQB04HvgbhZf_sIzjM8MFZh94scMah2lw"/>
+</div>
+<div class="flex-1 min-w-0">
+<h5 class="text-sm font-bold truncate">Coxinha de Rabada</h5>
+<p class="text-[10px] text-on-surface-variant font-medium mb-1">84 pedidos hoje</p>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+<span class="text-[10px] font-black tracking-widest">TOP #1</span>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="bg-surface-container-low group hover:bg-surface-container-high transition-all rounded-xl p-4 flex gap-4 items-center">
+<div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 asymmetric-border">
+<img alt="Bebida" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="a cold bottle of brazilian beer with condensation dripping down in a dark bar light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9AllBKbz9TcnEwYiFpIHXm3wrRFAqF5nsgMloosq7sLwAdER7Ug9r0pp5Pc9J3VF5m5VEIhV_JZjveqnTZKPMN6l6qXpkC6fcYW9zKuwPoWtxImXrUZ6xK70l6hoZBbWan7m4W-KAQ_h-LFYPc7B6mOleEBmm5MQTQdt8lxftz994X0JbS_2LCm4BmTKVtgFFav_mBRXPCz6WBnRxe2rKa9oFyCiwvlmA0sxyULnnVJPtC8HiMzNZX_eR6nU1uemgG252h8lypjio"/>
+</div>
+<div class="flex-1 min-w-0">
+<h5 class="text-sm font-bold truncate">Chopp Noir Gelo</h5>
+<p class="text-[10px] text-on-surface-variant font-medium mb-1">76 pedidos hoje</p>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-xs">horizontal_rule</span>
+<span class="text-[10px] font-black tracking-widest">TOP #2</span>
+</div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="bg-surface-container-low group hover:bg-surface-container-high transition-all rounded-xl p-4 flex gap-4 items-center">
+<div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 asymmetric-border">
+<img alt="Drink" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="classic brazilian caipirinha cocktail with fresh lime and ice on a dark wooden table" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvAEAatakAzSL1M-aGBi1RA3w01Tn0aJeCc7uzmEwX17s6BE6-ZUXk3oyx4MZMPH-vGrDi2UbrQBs-BrA7EvyncamNpiuHYKwbF1Krlm9LWZ4oTRLW0DnJVDfLe61ZkgMPbb_Pk57_Um1XkSmsxiNNIOYsWWHsDvCy9BlKoDDaa15IRT84XzeaMZ5agfypvSBnRHmlXYNA0zgoNpsOJ6Rsqniqw6O0hy_1o-vSOISgAsYIfMqc79nw-a7UAaIaG2dpLNOPmV010XbD"/>
+</div>
+<div class="flex-1 min-w-0">
+<h5 class="text-sm font-bold truncate">Caipirinha de Limão</h5>
+<p class="text-[10px] text-on-surface-variant font-medium mb-1">52 pedidos hoje</p>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+<span class="text-[10px] font-black tracking-widest">TOP #3</span>
+</div>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="bg-surface-container-low group hover:bg-surface-container-high transition-all rounded-xl p-4 flex gap-4 items-center border border-dashed border-white/10">
+<div class="flex-1 text-center">
+<button class="text-[10px] font-black uppercase tracking-widest text-[#F29221] hover:underline transition-all">Ver Lista Completa</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button (FAB) - Suppressed on Reports as per context rules, but included if needed for "Novo Relatório" in other contexts. Here we follow suppression. -->
+</body></html>

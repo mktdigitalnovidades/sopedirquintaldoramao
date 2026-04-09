@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800;900&amp;family=Be+Vietnam+Pro:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#dac2af",
+                        "inverse-surface": "#e5e2e1",
+                        "outline-variant": "#544435",
+                        "surface-tint": "#ffb874",
+                        "surface-bright": "#393939",
+                        "tertiary": "#7ed0ff",
+                        "surface-container": "#20201f",
+                        "secondary-fixed-dim": "#f4bb88",
+                        "tertiary-fixed": "#c5e7ff",
+                        "surface": "#131313",
+                        "secondary-fixed": "#ffdcbf",
+                        "primary": "#ffb874",
+                        "on-primary": "#4b2800",
+                        "secondary-container": "#674018",
+                        "on-tertiary-fixed": "#001e2d",
+                        "on-tertiary-container": "#00435d",
+                        "on-surface": "#e5e2e1",
+                        "error": "#ffb4ab",
+                        "surface-container-high": "#2a2a2a",
+                        "primary-fixed": "#ffdcbf",
+                        "primary-fixed-dim": "#ffb874",
+                        "surface-container-highest": "#353535",
+                        "on-primary-fixed-variant": "#6a3b00",
+                        "on-tertiary-fixed-variant": "#004c6a",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#a28d7b",
+                        "on-background": "#e5e2e1",
+                        "on-primary-fixed": "#2d1600",
+                        "background": "#131313",
+                        "on-secondary-fixed-variant": "#643e16",
+                        "on-secondary-fixed": "#2d1600",
+                        "on-error": "#690005",
+                        "surface-dim": "#131313",
+                        "on-secondary-container": "#e4ae7b",
+                        "tertiary-container": "#00b5f5",
+                        "secondary": "#f4bb88",
+                        "on-secondary": "#4a2802",
+                        "error-container": "#93000a",
+                        "surface-variant": "#353535",
+                        "on-tertiary": "#00344a",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary-container": "#5e3300",
+                        "tertiary-fixed-dim": "#7ed0ff",
+                        "inverse-primary": "#8c4f00",
+                        "inverse-on-surface": "#313030",
+                        "primary-container": "#f29221",
+                        "surface-container-low": "#1b1b1b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Epilogue"],
+                        "body": ["Be Vietnam Pro"],
+                        "label": ["Be Vietnam Pro"]
+                    }
+                },
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .chalk-divider {
+            height: 2px;
+            background-image: linear-gradient(90deg, transparent 0%, #544435 50%, transparent 100%);
+            mask-image: radial-gradient(circle, black 50%, transparent 100%);
+            opacity: 0.3;
+        }
+        @media (max-width: 1024px) {
+            .mobile-sidebar-hidden {
+                display: none;
+            }
+            .mobile-main-full {
+                margin-left: 0 !important;
+            }
+            .mobile-header-full {
+                left: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body antialiased">
+<!-- SideNavBar (Hidden on mobile for now, can be toggled via JS in a real app) -->
+<aside class="fixed inset-y-0 left-0 w-64 flex flex-col py-6 bg-[#1b1b1b] shadow-[10px_0_30px_rgba(0,0,0,0.5)] border-r border-[#353535]/15 z-50 mobile-sidebar-hidden">
+<div class="px-6 mb-10">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+</div>
+<div>
+<h2 class="text-orange-500 font-black uppercase tracking-widest text-xs leading-none">Gestão Artisanal</h2>
+<p class="text-[10px] text-on-surface-variant/60 font-medium">Console Administrativo</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/70 hover:text-[#F29221] mx-2 hover:bg-[#353535]/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-['Epilogue'] font-medium">Painel</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/70 hover:text-[#F29221] mx-2 hover:bg-[#353535]/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span class="font-['Epilogue'] font-medium">Pedidos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/70 hover:text-[#F29221] mx-2 hover:bg-[#353535]/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="restaurant_menu">restaurant_menu</span>
+<span class="font-['Epilogue'] font-medium">Cardápio</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/70 hover:text-[#F29221] mx-2 hover:bg-[#353535]/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-['Epilogue'] font-medium">Estoque</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/70 hover:text-[#F29221] mx-2 hover:bg-[#353535]/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-['Epilogue'] font-medium">Relatórios</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-outline-variant/10">
+<a class="flex items-center gap-3 px-4 py-3 bg-[#F29221] text-[#131313] rounded-md mx-2 font-bold shadow-lg shadow-primary-container/20" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-['Epilogue'] font-medium">Configurações</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/70 hover:text-[#F29221] mx-2 hover:bg-[#353535]/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-['Epilogue'] font-medium">Sair</span>
+</a>
+</div>
+</aside>
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 left-64 h-16 flex items-center justify-between px-4 lg:px-8 bg-[#131313]/70 backdrop-blur-md border-b border-[#353535]/30 shadow-2xl shadow-black/40 z-40 mobile-header-full">
+<div class="flex items-center gap-2 lg:gap-4 overflow-hidden">
+<span class="font-['Epilogue'] tracking-tight text-xl lg:text-2xl font-bold text-[#F29221] italic whitespace-nowrap">Quintal do Ramão</span>
+<div class="hidden sm:block h-6 w-px bg-outline-variant/30"></div>
+<span class="hidden sm:block text-on-surface-variant font-medium text-xs lg:text-sm truncate">Informações da Loja</span>
+</div>
+<div class="flex items-center gap-2 lg:gap-4">
+<button class="p-2 text-on-surface-variant hover:text-[#F29221] hover:bg-[#353535] transition-colors rounded-full">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="flex items-center gap-2 lg:gap-3 bg-surface-container-highest/50 px-2 lg:px-3 py-1.5 rounded-full border border-outline-variant/20">
+<img alt="Avatar do Administrador" class="w-6 h-6 lg:w-7 lg:h-7 rounded-full border border-primary-container/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBD3Qc6PRkdyhKlnv1OUht9XEc8d3GQREs5nRJayOh2hlLhSmMbCCy6WRYe0yWZgXrxYNWufpf64R2s1g1vPFNhqsCkoeDtduoBO4hsnZJrGEPy1UIzG8l4Rr82an--jxZ6t-PcGTGlxLfhcWsqc2CKTGHb4uB1X_XLh35IhEwlRfj6h89rBlLh0jMIR-QIQACoa4WI_ivTt9Fku7nZtS8KkrbUol4xrexHbZMmh_2FaRNdDI3iSjWzEqYZTJI3QbuLID6IVQsFI2Ve"/>
+<span class="text-[10px] lg:text-xs font-bold text-on-surface pr-1 hidden xs:block">Admin</span>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-64 pt-20 lg:pt-24 pb-32 lg:pb-12 px-4 lg:px-8 max-w-7xl mobile-main-full">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+<!-- Left Column: Primary Configs -->
+<div class="lg:col-span-7 space-y-8 lg:space-y-10">
+<!-- Section 1: Aparência -->
+<section>
+<div class="flex items-center gap-3 mb-4 lg:mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="palette">palette</span>
+<h3 class="font-headline text-lg lg:text-xl font-bold tracking-tight">1. Aparência</h3>
+</div>
+<div class="bg-surface-container-low p-4 lg:p-6 rounded-xl border border-outline-variant/10 shadow-lg">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+<div>
+<label class="block text-[10px] lg:text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-3 lg:mb-4">Modo de Exibição</label>
+<div class="flex gap-3 lg:gap-4">
+<button class="flex-1 border-2 border-primary bg-surface-container-highest px-3 lg:px-4 py-2 lg:py-3 rounded-lg flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">dark_mode</span>
+<span class="text-xs lg:text-sm font-bold">Escuro</span>
+</button>
+<button class="flex-1 border border-outline-variant/20 bg-transparent px-3 lg:px-4 py-2 lg:py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-surface-container-highest/30 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">light_mode</span>
+<span class="text-xs lg:text-sm font-medium text-on-surface-variant">Claro</span>
+</button>
+</div>
+</div>
+<div class="space-y-4">
+<div>
+<label class="block text-[10px] lg:text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Cor Principal</label>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 lg:w-10 lg:h-10 rounded-md bg-[#F29221] shadow-inner border border-white/10 shrink-0"></div>
+<input class="flex-1 bg-surface-container-highest border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 outline-none px-0 py-2 text-xs lg:text-sm font-mono" type="text" value="#F29221"/>
+</div>
+</div>
+<div>
+<label class="block text-[10px] lg:text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Cor de Fundo</label>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 lg:w-10 lg:h-10 rounded-md bg-[#131313] shadow-inner border border-white/10 shrink-0"></div>
+<input class="flex-1 bg-surface-container-highest border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 outline-none px-0 py-2 text-xs lg:text-sm font-mono" type="text" value="#131313"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="chalk-divider"></div>
+<!-- Section 2: Dados da Empresa -->
+<section>
+<div class="flex items-center gap-3 mb-4 lg:mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="store">store</span>
+<h3 class="font-headline text-lg lg:text-xl font-bold tracking-tight">2. Dados da Empresa</h3>
+</div>
+<div class="bg-surface-container-low p-4 lg:p-6 rounded-xl border border-outline-variant/10 shadow-lg space-y-6">
+<div class="group">
+<label class="block text-[10px] lg:text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 group-focus-within:text-primary transition-colors">Nome da Loja</label>
+<input class="w-full bg-transparent border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 outline-none px-0 py-2 lg:py-3 text-base lg:text-lg font-headline font-bold" type="text" value="Quintal do Ramão - Gastronomia de Boteco"/>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block text-[10px] lg:text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1">WhatsApp</label>
+<div class="flex items-center gap-2 border-b border-outline-variant/30 focus-within:border-primary">
+<span class="text-on-surface-variant text-xs lg:text-sm font-medium">+55</span>
+<input class="flex-1 bg-transparent border-none outline-none py-2 lg:py-3 text-xs lg:text-sm" type="text" value="(11) 98765-4321"/>
+</div>
+</div>
+<div>
+<label class="block text-[10px] lg:text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1">Avaliação Google (Link)</label>
+<input class="w-full bg-transparent border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 outline-none py-2 lg:py-3 text-xs lg:text-sm italic" placeholder="https://g.page/r/..." type="text"/>
+</div>
+</div>
+</div>
+</section>
+<div class="chalk-divider"></div>
+<!-- New Section 3: Idiomas do Cardápio -->
+<section>
+<div class="flex items-center gap-3 mb-4 lg:mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="translate">translate</span>
+<h3 class="font-headline text-lg lg:text-xl font-bold tracking-tight">3. Idiomas do Cardápio</h3>
+</div>
+<div class="bg-surface-container-low p-4 lg:p-6 rounded-xl border border-outline-variant/10 shadow-lg">
+<p class="text-[10px] lg:text-xs text-on-surface-variant mb-4 font-medium uppercase tracking-wider">Selecione os idiomas disponíveis para seus clientes</p>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-2 lg:gap-3">
+<label class="flex items-center gap-2 lg:gap-3 p-2 lg:p-3 rounded-lg border-2 border-primary bg-primary/5 cursor-pointer group">
+<input checked="" class="w-4 h-4 rounded border-outline-variant/30 bg-surface-container-highest text-primary focus:ring-primary focus:ring-offset-background" type="checkbox"/>
+<span class="text-xs lg:text-sm font-bold group-hover:text-primary transition-colors">Português</span>
+</label>
+<label class="flex items-center gap-2 lg:gap-3 p-2 lg:p-3 rounded-lg border border-outline-variant/20 bg-transparent hover:border-outline-variant/50 cursor-pointer group">
+<input class="w-4 h-4 rounded border-outline-variant/30 bg-surface-container-highest text-primary focus:ring-primary focus:ring-offset-background" type="checkbox"/>
+<span class="text-xs lg:text-sm font-medium text-on-surface-variant group-hover:text-on-surface transition-colors">Inglês</span>
+</label>
+<label class="flex items-center gap-2 lg:gap-3 p-2 lg:p-3 rounded-lg border border-outline-variant/20 bg-transparent hover:border-outline-variant/50 cursor-pointer group">
+<input class="w-4 h-4 rounded border-outline-variant/30 bg-surface-container-highest text-primary focus:ring-primary focus:ring-offset-background" type="checkbox"/>
+<span class="text-xs lg:text-sm font-medium text-on-surface-variant group-hover:text-on-surface transition-colors">Espanhol</span>
+</label>
+<label class="flex items-center gap-2 lg:gap-3 p-2 lg:p-3 rounded-lg border border-outline-variant/20 bg-transparent hover:border-outline-variant/50 cursor-pointer group">
+<input class="w-4 h-4 rounded border-outline-variant/30 bg-surface-container-highest text-primary focus:ring-primary focus:ring-offset-background" type="checkbox"/>
+<span class="text-xs lg:text-sm font-medium text-on-surface-variant group-hover:text-on-surface transition-colors">Francês</span>
+</label>
+<label class="flex items-center gap-2 lg:gap-3 p-2 lg:p-3 rounded-lg border border-outline-variant/20 bg-transparent hover:border-outline-variant/50 cursor-pointer group">
+<input class="w-4 h-4 rounded border-outline-variant/30 bg-surface-container-highest text-primary focus:ring-primary focus:ring-offset-background" type="checkbox"/>
+<span class="text-xs lg:text-sm font-medium text-on-surface-variant group-hover:text-on-surface transition-colors">Alemão</span>
+</label>
+<label class="flex items-center gap-2 lg:gap-3 p-2 lg:p-3 rounded-lg border border-outline-variant/20 bg-transparent hover:border-outline-variant/50 cursor-pointer group">
+<input class="w-4 h-4 rounded border-outline-variant/30 bg-surface-container-highest text-primary focus:ring-primary focus:ring-offset-background" type="checkbox"/>
+<span class="text-xs lg:text-sm font-medium text-on-surface-variant group-hover:text-on-surface transition-colors">Italiano</span>
+</label>
+</div>
+</div>
+</section>
+<div class="chalk-divider"></div>
+<!-- Section 4: Banner URL -->
+<section>
+<div class="flex items-center gap-3 mb-4 lg:mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="image">image</span>
+<h3 class="font-headline text-lg lg:text-xl font-bold tracking-tight">4. Banner Digital</h3>
+</div>
+<div class="bg-surface-container-low p-4 lg:p-6 rounded-xl border border-outline-variant/10 shadow-lg">
+<div class="relative w-full h-24 lg:h-32 mb-4 rounded-lg overflow-hidden group">
+<img class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" data-alt="atmospheric wide shot of a dark moody brazilian boteco bar with wooden tables and warm amber lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwY3cazRV6WzuFbPf6QbRrWkSC-4rtSR1I-vrx-LpHEBGYQce9dWKAuNp5uMaVu8XO9MdwGFUYJH_0kASVmLOev4PZtFB_fuYAua85ntDfZ1fAAK5VTP0HuPTRi4hBD98f9K2BmjwXDfyggAtuD0mU-SdvrV0e0zjFNAEEPSqgl-1-nVIJOwXOwDOfA8YcLQd7giQ-_NnAj6e49A0UbhJ0u7Nx2mIxws1FmDnNEB9U4a9tl_ctQEROXFJhAihssEu9imm9v65G3FRU"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-3 lg:p-4">
+<span class="text-[8px] lg:text-[10px] text-white/50 font-bold uppercase tracking-widest">Pré-visualização do Banner</span>
+</div>
+<button class="absolute top-2 right-2 p-1.5 lg:p-2 bg-black/50 backdrop-blur rounded-full text-white/70 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-xs lg:text-sm" data-icon="edit">edit</span>
+</button>
+</div>
+<label class="block text-[10px] lg:text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1">URL da Imagem</label>
+<input class="w-full bg-transparent border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 outline-none px-0 py-2 lg:py-3 text-[10px] lg:text-sm font-mono truncate" type="text" value="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b"/>
+</div>
+</section>
+</div>
+<!-- Right Column: Operational Configs -->
+<div class="lg:col-span-5 space-y-8 lg:space-y-10">
+<!-- Section 5: Horários -->
+<section>
+<div class="flex items-center gap-3 mb-4 lg:mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="schedule">schedule</span>
+<h3 class="font-headline text-lg lg:text-xl font-bold tracking-tight">5. Horários de Funcionamento</h3>
+</div>
+<div class="bg-surface-container-low rounded-xl border border-outline-variant/10 shadow-lg overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse min-w-[300px]">
+<thead>
+<tr class="bg-surface-container-highest/30">
+<th class="px-3 lg:px-4 py-3 text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Dia</th>
+<th class="px-3 lg:px-4 py-3 text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Abertura</th>
+<th class="px-3 lg:px-4 py-3 text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Fechamento</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="hover:bg-surface-container-highest/20 transition-colors">
+<td class="px-3 lg:px-4 py-3 font-headline text-xs lg:text-sm font-bold">Segunda</td>
+<td class="px-3 lg:px-4 py-3"><input class="bg-transparent border-none p-0 text-xs lg:text-sm focus:ring-0 text-on-surface/80" type="time" value="18:00"/></td>
+<td class="px-3 lg:px-4 py-3"><input class="bg-transparent border-none p-0 text-xs lg:text-sm focus:ring-0 text-on-surface/80" type="time" value="23:30"/></td>
+</tr>
+<tr class="hover:bg-surface-container-highest/20 transition-colors">
+<td class="px-3 lg:px-4 py-3 font-headline text-xs lg:text-sm font-bold">Terça</td>
+<td class="px-3 lg:px-4 py-3"><input class="bg-transparent border-none p-0 text-xs lg:text-sm focus:ring-0 text-on-surface/80" type="time" value="18:00"/></td>
+<td class="px-3 lg:px-4 py-3"><input class="bg-transparent border-none p-0 text-xs lg:text-sm focus:ring-0 text-on-surface/80" type="time" value="23:30"/></td>
+</tr>
+<tr class="hover:bg-surface-container-highest/20 transition-colors bg-surface-container-highest/10">
+<td class="px-3 lg:px-4 py-3 font-headline text-xs lg:text-sm font-bold text-on-surface-variant/40 italic">Quarta</td>
+<td class="px-3 lg:px-4 py-3 text-[9px] lg:text-[10px] font-bold text-error/60 uppercase tracking-tighter" colspan="2">Fechado para Manutenção</td>
+</tr>
+<tr class="hover:bg-surface-container-highest/20 transition-colors">
+<td class="px-3 lg:px-4 py-3 font-headline text-xs lg:text-sm font-bold">Quinta</td>
+<td class="px-3 lg:px-4 py-3"><input class="bg-transparent border-none p-0 text-xs lg:text-sm focus:ring-0 text-on-surface/80" type="time" value="18:00"/></td>
+<td class="px-3 lg:px-4 py-3"><input class="bg-transparent border-none p-0 text-xs lg:text-sm focus:ring-0 text-on-surface/80" type="time" value="00:00"/></td>
+</tr>
+<tr class="hover:bg-surface-container-highest/20 transition-colors">
+<td class="px-3 lg:px-4 py-3 font-headline text-xs lg:text-sm font-bold">Sexta</td>
+<td class="px-3 lg:px-4 py-3"><input class="bg-transparent border-none p-0 text-xs lg:text-sm focus:ring-0 text-on-surface/80" type="time" value="12:00"/></td>
+<td class="px-3 lg:px-4 py-3"><input class="bg-transparent border-none p-0 text-xs lg:text-sm focus:ring-0 text-on-surface/80" type="time" value="02:00"/></td>
+</tr>
+<tr class="hover:bg-surface-container-highest/20 transition-colors">
+<td class="px-3 lg:px-4 py-3 font-headline text-xs lg:text-sm font-bold">Sábado</td>
+<td class="px-3 lg:px-4 py-3"><input class="bg-transparent border-none p-0 text-xs lg:text-sm focus:ring-0 text-on-surface/80" type="time" value="12:00"/></td>
+<td class="px-3 lg:px-4 py-3"><input class="bg-transparent border-none p-0 text-xs lg:text-sm focus:ring-0 text-on-surface/80" type="time" value="02:00"/></td>
+</tr>
+<tr class="hover:bg-surface-container-highest/20 transition-colors">
+<td class="px-3 lg:px-4 py-3 font-headline text-xs lg:text-sm font-bold">Domingo</td>
+<td class="px-3 lg:px-4 py-3"><input class="bg-transparent border-none p-0 text-xs lg:text-sm focus:ring-0 text-on-surface/80" type="time" value="12:00"/></td>
+<td class="px-3 lg:px-4 py-3"><input class="bg-transparent border-none p-0 text-xs lg:text-sm focus:ring-0 text-on-surface/80" type="time" value="20:00"/></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- Section 6: Localização & Entrega -->
+<section>
+<div class="flex items-center gap-3 mb-4 lg:mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="local_shipping">local_shipping</span>
+<h3 class="font-headline text-lg lg:text-xl font-bold tracking-tight">6. Entrega &amp; Local</h3>
+</div>
+<div class="bg-surface-container-low p-4 lg:p-6 rounded-xl border border-outline-variant/10 shadow-lg space-y-6">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h4 class="text-xs lg:text-sm font-bold font-headline">Taxa de Entrega Fixa</h4>
+<p class="text-[10px] text-on-surface-variant">Valor padrão para todo o raio de entrega</p>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-highest px-3 lg:px-4 py-2 rounded border border-outline-variant/30 self-start sm:self-auto">
+<span class="text-primary font-bold text-xs lg:text-sm">R$</span>
+<input class="w-16 bg-transparent border-none p-0 text-xs lg:text-sm font-bold focus:ring-0" type="text" value="12,00"/>
+</div>
+</div>
+<div class="space-y-3">
+<label class="block text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Modalidades Ativas</label>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-3">
+<label class="flex items-center justify-between p-2 lg:p-3 rounded-lg border-2 border-primary bg-primary/5 cursor-pointer">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="delivery_dining">delivery_dining</span>
+<span class="text-[10px] lg:text-xs font-bold">Entrega</span>
+</div>
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+</label>
+<label class="flex items-center justify-between p-2 lg:p-3 rounded-lg border border-outline-variant/20 bg-transparent hover:border-outline-variant/50 transition-colors cursor-pointer">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="restaurant">restaurant</span>
+<span class="text-[10px] lg:text-xs font-bold text-on-surface-variant">Local</span>
+</div>
+<div class="w-2 h-2 rounded-full bg-outline-variant/30"></div>
+</label>
+<label class="flex items-center justify-between p-2 lg:p-3 rounded-lg border-2 border-primary bg-primary/5 cursor-pointer">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="shopping_bag">shopping_bag</span>
+<span class="text-[10px] lg:text-xs font-bold">Para Levar</span>
+</div>
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</label>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant/10 flex items-center justify-between">
+<span class="text-[10px] lg:text-xs font-bold text-on-surface-variant uppercase tracking-wider">Mostrar informações no topo</span>
+<button class="relative w-9 h-4.5 lg:w-10 lg:h-5 bg-primary rounded-full flex items-center justify-end px-0.5">
+<div class="w-3.5 h-3.5 lg:w-4 lg:h-4 bg-white rounded-full"></div>
+</button>
+</div>
+</div>
+</section>
+<!-- Section 7: Meios de Pagamento -->
+<section>
+<div class="flex items-center gap-3 mb-4 lg:mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="payments">payments</span>
+<h3 class="font-headline text-lg lg:text-xl font-bold tracking-tight">7. Pagamentos</h3>
+</div>
+<div class="bg-surface-container-low p-4 lg:p-6 rounded-xl border border-outline-variant/10 shadow-lg">
+<div class="flex flex-wrap gap-2 lg:gap-3">
+<div class="bg-surface-container-highest px-3 py-2 rounded-lg flex items-center gap-2 lg:gap-3 border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="qr_code_2">qr_code_2</span>
+<span class="text-[10px] lg:text-xs font-bold">PIX Direto</span>
+<span class="material-symbols-outlined text-[14px] lg:text-[16px] text-error cursor-pointer" data-icon="close">close</span>
+</div>
+<div class="bg-surface-container-highest px-3 py-2 rounded-lg flex items-center gap-2 lg:gap-3 border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="credit_card">credit_card</span>
+<span class="text-[10px] lg:text-xs font-bold">Crédito/Débito</span>
+<span class="material-symbols-outlined text-[14px] lg:text-[16px] text-error cursor-pointer" data-icon="close">close</span>
+</div>
+<div class="bg-surface-container-highest px-3 py-2 rounded-lg flex items-center gap-2 lg:gap-3 border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="payments">payments</span>
+<span class="text-[10px] lg:text-xs font-bold">Dinheiro</span>
+<span class="material-symbols-outlined text-[14px] lg:text-[16px] text-error cursor-pointer" data-icon="close">close</span>
+</div>
+<button class="px-3 py-2 rounded-lg border border-dashed border-outline-variant/40 text-on-surface-variant hover:text-primary hover:border-primary transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+<span class="text-[9px] lg:text-[10px] font-black uppercase tracking-widest">Adicionar Meio</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- Floating Action Section - Sticky Bottom on Mobile, Fixed on Desktop -->
+<div class="fixed bottom-0 left-0 right-0 lg:left-64 p-4 lg:p-0 lg:static lg:mt-10 lg:flex lg:justify-end lg:gap-4 bg-background/80 lg:bg-transparent backdrop-blur-lg lg:backdrop-blur-none border-t border-outline-variant/10 lg:border-none z-50">
+<div class="flex gap-3 lg:gap-4 max-w-7xl mx-auto w-full lg:w-auto lg:mr-0">
+<button class="flex-1 lg:flex-none bg-surface-container-highest text-on-surface-variant px-4 lg:px-6 py-3 rounded-md font-bold text-xs lg:text-sm shadow-xl hover:bg-surface-variant transition-colors">
+                    Descartar
+                </button>
+<button class="flex-2 lg:flex-none bg-primary-container text-on-primary-container px-6 lg:px-10 py-3 rounded-md font-bold text-xs lg:text-sm shadow-[0_10px_25px_rgba(242,146,33,0.3)] hover:scale-105 active:scale-95 transition-all duration-200">
+                    Salvar Alterações
+                </button>
+</div>
+</div>
+</main>
+</body></html>

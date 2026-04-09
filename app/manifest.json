@@ -1,0 +1,17 @@
+{
+  "name": "Quintal do Ramão",
+  "short_name": "Quintal",
+  "description": "Quintal do Ramão - Gastronomia de Boteco",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#131313",
+  "theme_color": "#F29221",
+  "icons": [
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

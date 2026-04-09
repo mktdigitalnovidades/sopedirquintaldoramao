@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800;900&amp;family=Be+Vietnam+Pro:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#dac2af",
+                    "inverse-surface": "#e5e2e1",
+                    "outline-variant": "#544435",
+                    "surface-tint": "#ffb874",
+                    "surface-bright": "#393939",
+                    "tertiary": "#7ed0ff",
+                    "surface-container": "#20201f",
+                    "secondary-fixed-dim": "#f4bb88",
+                    "tertiary-fixed": "#c5e7ff",
+                    "surface": "#131313",
+                    "secondary-fixed": "#ffdcbf",
+                    "primary": "#ffb874",
+                    "on-primary": "#4b2800",
+                    "secondary-container": "#674018",
+                    "on-tertiary-fixed": "#001e2d",
+                    "on-tertiary-container": "#00435d",
+                    "on-surface": "#e5e2e1",
+                    "error": "#ffb4ab",
+                    "surface-container-high": "#2a2a2a",
+                    "primary-fixed": "#ffdcbf",
+                    "primary-fixed-dim": "#ffb874",
+                    "surface-container-highest": "#353535",
+                    "on-primary-fixed-variant": "#6a3b00",
+                    "on-tertiary-fixed-variant": "#004c6a",
+                    "on-error-container": "#ffdad6",
+                    "outline": "#a28d7b",
+                    "on-background": "#e5e2e1",
+                    "on-primary-fixed": "#2d1600",
+                    "background": "#131313",
+                    "on-secondary-fixed-variant": "#643e16",
+                    "on-secondary-fixed": "#2d1600",
+                    "on-error": "#690005",
+                    "surface-dim": "#131313",
+                    "on-secondary-container": "#e4ae7b",
+                    "tertiary-container": "#00b5f5",
+                    "secondary": "#f4bb88",
+                    "on-secondary": "#4a2802",
+                    "error-container": "#93000a",
+                    "surface-variant": "#353535",
+                    "on-tertiary": "#00344a",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-primary-container": "#5e3300",
+                    "tertiary-fixed-dim": "#7ed0ff",
+                    "inverse-primary": "#8c4f00",
+                    "inverse-on-surface": "#313030",
+                    "primary-container": "#f29221",
+                    "surface-container-low": "#1b1b1b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Epilogue"],
+                    "body": ["Be Vietnam Pro"],
+                    "label": ["Be Vietnam Pro"]
+            }
+          },
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .chalk-divider {
+            height: 2px;
+            background-image: linear-gradient(90deg, transparent, rgba(229, 226, 225, 0.1) 50%, transparent);
+            position: relative;
+        }
+        .chalk-divider::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='2' viewBox='0 0 100 2' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 1C20 0.5 40 1.5 60 1C80 0.5 100 1' stroke='%23e5e2e1' stroke-width='0.5' stroke-dasharray='1 2' opacity='0.3'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container/30">
+<!-- SideNavBar -->
+<aside class="fixed inset-y-0 left-0 w-64 flex flex-col py-6 bg-[#1b1b1b] border-r border-[#353535]/15 font-['Epilogue'] font-medium shadow-[10px_0_30px_rgba(0,0,0,0.5)] z-50">
+<div class="px-6 mb-10">
+<div class="flex flex-col gap-1">
+<span class="text-orange-500 font-black uppercase tracking-widest text-lg">Quintal do Ramão</span>
+<span class="text-[10px] text-on-surface/40 uppercase tracking-[0.2em]">Gestão Artisanal</span>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/70 hover:text-[#F29221] mx-2 hover:bg-[#353535]/50 transition-all duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Painel</span>
+</a>
+<!-- Active State: Pedidos -->
+<a class="flex items-center gap-3 px-4 py-3 bg-[#F29221] text-[#131313] rounded-md mx-2 font-bold shadow-lg shadow-primary-container/20" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span>Pedidos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/70 hover:text-[#F29221] mx-2 hover:bg-[#353535]/50 transition-all duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">restaurant_menu</span>
+<span>Cardápio</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/70 hover:text-[#F29221] mx-2 hover:bg-[#353535]/50 transition-all duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span>Estoque</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/70 hover:text-[#F29221] mx-2 hover:bg-[#353535]/50 transition-all duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Relatórios</span>
+</a>
+</nav>
+<div class="mt-auto px-2 flex flex-col gap-1 border-t border-[#353535]/30 pt-6">
+<button class="flex items-center gap-3 px-4 py-4 bg-primary-container text-on-primary-container rounded-md mx-2 mb-4 font-bold active:scale-95 transition-transform">
+<span class="material-symbols-outlined">add_circle</span>
+<span>Novo Pedido</span>
+</button>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/70 hover:text-[#F29221] mx-2 hover:bg-[#353535]/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Configurações</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-error/70 hover:text-error mx-2 hover:bg-error/10 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Sair</span>
+</a>
+</div>
+</aside>
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 left-64 h-16 flex items-center justify-between px-8 bg-[#131313]/70 backdrop-blur-md border-b border-[#353535]/30 shadow-2xl shadow-black/40 z-40">
+<div class="flex items-center gap-6">
+<h1 class="font-['Epilogue'] tracking-tight text-2xl font-bold text-[#F29221] italic">Gestão Artisanal</h1>
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface/40 group-focus-within:text-primary">search</span>
+<input class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-1.5 text-sm w-80 focus:ring-1 focus:ring-primary-container transition-all" placeholder="Buscar pedidos ou clientes..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-[#353535] text-on-surface/60 hover:text-[#F29221] transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-surface"></span>
+</button>
+<button class="p-2 rounded-full hover:bg-[#353535] text-on-surface/60 hover:text-[#F29221] transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-8 w-[1px] bg-[#353535]/50 mx-2"></div>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="text-xs font-bold text-on-surface">Admin</p>
+<p class="text-[10px] text-on-surface/40">Gerente de Turno</p>
+</div>
+<img alt="Avatar do Administrador" class="w-10 h-10 rounded-full border-2 border-primary-container/20 p-0.5" data-alt="professional male avatar with clean aesthetic and smiling expression on a minimalist neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPjE0tZuPqVhj-_2P1BF4ivtoajdA5x6NGjhdKQgxROI7PTx-FyP5LNymu6lKeOGkDRDQcZRnaP1_cP14ZXkG8DXb1dwnRuT6Iju01QsKhc6SRS6ncGmE_RMg_QXj7l7Cd9VZaSOjyMMmkShQ5O2w1vn3K7Ql-18YOCZak_Pkc-3UGD0u2bb8MIzA9k6i8pMi1lAgWo7yewsty4ue1YrkcDZBvzrSDV8FhCrSr674MG38e8oaamsTju2tncz-MnhSU7ezuJLQTWQTJ"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-64 pt-24 px-8 pb-12 min-h-screen">
+<!-- Dashboard Header -->
+<div class="flex justify-between items-end mb-10">
+<div>
+<h2 class="font-headline text-4xl font-extrabold tracking-tight text-on-surface mb-2">Painel de Pedidos</h2>
+<p class="text-on-surface-variant font-light max-w-md">Gerencie as ordens da cozinha em tempo real. Priorize o atendimento artesanal.</p>
+</div>
+<div class="flex gap-3">
+<div class="bg-surface-container-highest px-4 py-2 rounded-xl flex items-center gap-3 border border-outline-variant/15">
+<div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#F29221]"></div>
+<span class="text-xs font-bold uppercase tracking-widest text-primary-container">12 Ativos</span>
+</div>
+<div class="bg-surface-container px-4 py-2 rounded-xl flex items-center gap-3 border border-outline-variant/10">
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface/40">4 Finalizados Hoje</span>
+</div>
+</div>
+</div>
+<!-- Orders Grid (Bento Style) -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+<!-- Active Orders List (Main Section) -->
+<div class="xl:col-span-2 flex flex-col gap-6">
+<!-- Filters Row -->
+<div class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+<button class="px-6 py-2 rounded-full bg-primary-container text-on-primary-container font-bold text-sm transition-all whitespace-nowrap">Todos Pedidos</button>
+<button class="px-6 py-2 rounded-full bg-surface-container-high text-on-surface/60 font-medium text-sm hover:text-primary transition-all whitespace-nowrap">Pendente</button>
+<button class="px-6 py-2 rounded-full bg-surface-container-high text-on-surface/60 font-medium text-sm hover:text-primary transition-all whitespace-nowrap">Em Preparo</button>
+<button class="px-6 py-2 rounded-full bg-surface-container-high text-on-surface/60 font-medium text-sm hover:text-primary transition-all whitespace-nowrap">Finalizados</button>
+</div>
+<!-- Order Item Card -->
+<div class="bg-surface-container-low rounded-2xl p-6 relative overflow-hidden group border border-outline-variant/5 hover:border-primary-container/20 transition-all duration-300">
+<div class="absolute top-0 right-0 w-32 h-32 opacity-5 pointer-events-none -rotate-12 translate-x-10 -translate-y-10">
+<img class="w-full h-full object-contain" data-alt="subtle hand-drawn chalk flourish of a chef hat and crossed spoons in white pencil style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARs_DyFh4J2XNmvkFJUBrKQHl03M91ekL9z_A5h8JtYG25XUTFchFaqOfIX3RhVfPOqesDqUAyCin14Inw__3Yygg0tI-Nx3Y_R0_P0jjSLgl0aoAmZ0_icUpZTzwZd1ZId9WPnFRsSIVdeKFAdqm7JIn59Yky9vmCyB-beiMxLASbjKDpbBUQQ37ZoI8JOj-LSldJhhYUR0XcU7OXer9dLVGLt7SS8oGfGqyNcabkxRctBh7dSnCaWFnWlrmivwWta5QmALaX3ttl"/>
+</div>
+<div class="flex flex-wrap md:flex-nowrap justify-between gap-6">
+<div class="flex-1">
+<div class="flex items-center gap-4 mb-4">
+<span class="text-xs font-bold bg-surface-container-highest px-3 py-1 rounded-md text-on-surface-variant">#4029</span>
+<h3 class="font-headline text-xl font-bold text-on-surface">Ricardo Mendonça</h3>
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-tighter">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                    Em Preparo
+                                </div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-sm font-bold text-on-surface-variant mb-1">Coxinha de Rabada <span class="text-xs text-on-surface/40 ml-2">x2</span></p>
+<p class="text-[11px] text-on-surface/40 leading-tight">Massa de batata asterix, recheio cozido por 12h.</p>
+</div>
+<span class="text-sm font-medium text-on-surface">R$ 36,00</span>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<p class="text-sm font-bold text-on-surface-variant mb-1">Cerveja Artesanal IPA <span class="text-xs text-on-surface/40 ml-2">x1</span></p>
+<p class="text-[11px] text-on-surface/40 leading-tight">600ml - Produção Local Ramão.</p>
+</div>
+<span class="text-sm font-medium text-on-surface">R$ 28,00</span>
+</div>
+</div>
+</div>
+<div class="w-full md:w-48 flex flex-col justify-between border-l border-outline-variant/10 pl-6">
+<div class="mb-4">
+<p class="text-[10px] uppercase tracking-widest text-on-surface/40 mb-1">Pagamento</p>
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-sm">photos</span>
+<span class="text-sm font-bold">PIX</span>
+</div>
+</div>
+<div>
+<p class="text-[10px] uppercase tracking-widest text-on-surface/40 mb-1">Total</p>
+<p class="text-2xl font-black text-on-surface tracking-tighter">R$ 64,00</p>
+</div>
+<button class="mt-4 w-full py-2 bg-surface-container-highest text-on-surface text-xs font-bold rounded-lg hover:bg-primary-container hover:text-on-primary-container transition-colors">
+                                Atualizar Status
+                            </button>
+</div>
+</div>
+</div>
+<!-- Order Item Card 2 -->
+<div class="bg-surface-container-low rounded-2xl p-6 relative overflow-hidden group border border-outline-variant/5 hover:border-primary-container/20 transition-all duration-300">
+<div class="flex flex-wrap md:flex-nowrap justify-between gap-6">
+<div class="flex-1">
+<div class="flex items-center gap-4 mb-4">
+<span class="text-xs font-bold bg-surface-container-highest px-3 py-1 rounded-md text-on-surface-variant">#4030</span>
+<h3 class="font-headline text-xl font-bold text-on-surface">Ana Paula Silva</h3>
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-error/10 text-error text-[10px] font-black uppercase tracking-tighter">
+<span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span>
+                                    Pendente
+                                </div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-sm font-bold text-on-surface-variant mb-1">Hambúrguer Defumado <span class="text-xs text-on-surface/40 ml-2">x1</span></p>
+<p class="text-[11px] text-on-surface/40 leading-tight">Blend bovino, queijo meia cura, cebola caramelizada.</p>
+</div>
+<span class="text-sm font-medium text-on-surface">R$ 42,00</span>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<p class="text-sm font-bold text-on-surface-variant mb-1">Batata Rústica <span class="text-xs text-on-surface/40 ml-2">x1</span></p>
+<p class="text-[11px] text-on-surface/40 leading-tight">Alecrim e sal de parrilla.</p>
+</div>
+<span class="text-sm font-medium text-on-surface">R$ 18,00</span>
+</div>
+</div>
+</div>
+<div class="w-full md:w-48 flex flex-col justify-between border-l border-outline-variant/10 pl-6">
+<div class="mb-4">
+<p class="text-[10px] uppercase tracking-widest text-on-surface/40 mb-1">Pagamento</p>
+<div class="flex items-center gap-2 text-on-surface/60">
+<span class="material-symbols-outlined text-sm">payments</span>
+<span class="text-sm font-bold">Dinheiro</span>
+</div>
+</div>
+<div>
+<p class="text-[10px] uppercase tracking-widest text-on-surface/40 mb-1">Total</p>
+<p class="text-2xl font-black text-on-surface tracking-tighter">R$ 60,00</p>
+</div>
+<button class="mt-4 w-full py-2 bg-primary-container text-on-primary-container text-xs font-bold rounded-lg hover:brightness-110 active:scale-95 transition-all">
+                                Iniciar Preparo
+                            </button>
+</div>
+</div>
+</div>
+<!-- Order Item Card 3 (Finalizado) -->
+<div class="bg-surface-container-low/50 rounded-2xl p-6 relative overflow-hidden group border border-outline-variant/5 opacity-80">
+<div class="flex flex-wrap md:flex-nowrap justify-between gap-6">
+<div class="flex-1">
+<div class="flex items-center gap-4 mb-4">
+<span class="text-xs font-bold bg-surface-container-highest px-3 py-1 rounded-md text-on-surface-variant/40">#4028</span>
+<h3 class="font-headline text-xl font-bold text-on-surface/40">Carlos Eduardo</h3>
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-on-surface/5 text-on-surface/40 text-[10px] font-black uppercase tracking-tighter">
+<span class="material-symbols-outlined text-[12px]">check_circle</span>
+                                    Finalizado
+                                </div>
+</div>
+</div>
+<div class="w-full md:w-48 flex flex-col justify-between border-l border-outline-variant/10 pl-6">
+<div>
+<p class="text-[10px] uppercase tracking-widest text-on-surface/40 mb-1">Total</p>
+<p class="text-xl font-black text-on-surface/40 tracking-tighter">R$ 112,50</p>
+</div>
+<button class="mt-4 w-full py-2 text-on-surface/40 text-xs font-bold rounded-lg border border-outline-variant/20">
+                                Ver Detalhes
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Stats & Insights Sidebar -->
+<div class="space-y-6">
+<!-- Kitchen Load Card -->
+<div class="bg-surface-container-highest rounded-2xl p-6 border border-outline-variant/10">
+<h4 class="font-headline font-bold text-lg mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">outdoor_grill</span>
+                        Carga da Cozinha
+                    </h4>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-[10px] font-bold uppercase tracking-widest text-on-surface/40 mb-2">
+<span>Grelha</span>
+<span class="text-primary">85%</span>
+</div>
+<div class="h-1.5 bg-surface rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[85%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-[10px] font-bold uppercase tracking-widest text-on-surface/40 mb-2">
+<span>Fritura</span>
+<span class="text-tertiary">40%</span>
+</div>
+<div class="h-1.5 bg-surface rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[40%]"></div>
+</div>
+</div>
+</div>
+<div class="chalk-divider my-6"></div>
+<div class="flex items-center justify-between">
+<span class="text-xs text-on-surface-variant">Tempo Médio Espera</span>
+<span class="text-lg font-black text-primary">24 min</span>
+</div>
+</div>
+<!-- Best Sellers Snapshot -->
+<div class="bg-[#1b1b1b] rounded-2xl p-6 border border-outline-variant/5 shadow-xl">
+<h4 class="font-headline font-bold text-lg mb-6">Destaques do Dia</h4>
+<div class="space-y-5">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="close-up of a golden fried coxinha with a bite taken out, steam rising, on a dark rustic slate background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAe9LffNKLEFe86CunN0C9YlESKGbpO3K33OAMW0uUJey4XhJT4zCe7C9d4f2TJHdy4j94Ssih8Mcix4vStMpKfRWZFfuLAXS8UM5O4afzgbq46uT97cDZIdwfDJRX-KIeoJ72Xi0HWPnMBz9m0DIh-G1Q6VBj1_tLCvmMhqk5EGL_8JbowDd_IKfYlOkR17UVA2VxF96x-eG4ZOWLAIzID9w4ZuDzzdkd5PRvi0TvOU2uxbpf8S1fSHPhyPfe4wzxrYsNmiCpArgks"/>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold">Coxinha de Rabada</p>
+<p class="text-[10px] text-on-surface/40">14 pedidos hoje</p>
+</div>
+<span class="text-xs font-black text-primary">+12%</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="glistening artisanal hamburger with melted cheese and caramelized onions on a brioche bun, studio lighting on dark surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoaTpzmmuelYkjWwiaM5N_Uk9Cdzo32cAstoGHiGgLFuiY56O7ulI4goINZM2LqQ1asGNlJKotrdOgBI7e2-uq5NN2HIqtHnfxDg9H0qsKnKDBPtnniYfF0aTdJKSo1wVnnLbGyKLN_O5Ek7nAepax2tFnO7UxJh_V_Ymwv9phXEKINGqej2elaklkqTg_Gsc4q49T6dx_AsWXBFFpqraHXHyQfeUWWjFaA94dSPofUG9PmlBszsk8AIaopnptpYHWLzhSkgEYS3AD"/>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold">Burger Quintal</p>
+<p class="text-[10px] text-on-surface/40">9 pedidos hoje</p>
+</div>
+<span class="text-xs font-black text-tertiary">+5%</span>
+</div>
+</div>
+</div>
+<!-- Delivery Alert Card -->
+<div class="bg-primary-container rounded-2xl p-6 text-on-primary-container relative overflow-hidden shadow-2xl shadow-primary-container/30">
+<div class="relative z-10">
+<span class="material-symbols-outlined text-4xl mb-2" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+<h4 class="font-headline font-black text-xl leading-tight mb-2 uppercase italic">Atenção no Delivery</h4>
+<p class="text-sm font-medium opacity-90 leading-relaxed">3 entregadores em espera externa. Priorize embalagem dos pedidos prontos.</p>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-20 rotate-12 scale-150 pointer-events-none">
+<span class="material-symbols-outlined text-[120px]">moped</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB for Global Action (Contextual Suppression applies if not top-level, but here it fits Dashboard) -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-primary-container text-on-primary-container rounded-full shadow-[0_20px_40px_rgba(0,0,0,0.4)] flex items-center justify-center active:scale-95 transition-transform z-50 group">
+<span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform duration-300">add</span>
+</button>
+</body></html>

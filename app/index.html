@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Quintal do Ramão – Gastronomia de Boteco</title>
+<meta name="description" content="Peça online no Quintal do Ramão. Lanches artesanais, marmitex, porções e bebidas. Vila Mariana, São Paulo."/>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#F29221">
+<link rel="apple-touch-icon" href="icons/icon-512.png">
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
+</script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=Be+Vietnam+Pro:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "surface-variant": "#353535",
+          "on-primary": "#4b2800",
+          "secondary-fixed": "#ffdcbf",
+          "on-secondary-container": "#e4ae7b",
+          "tertiary": "#7ed0ff",
+          "primary": "#ffb874",
+          "on-primary-container": "#5e3300",
+          "surface-container-high": "#2a2a2a",
+          "surface-container-highest": "#353535",
+          "inverse-on-surface": "#313030",
+          "on-secondary": "#4a2802",
+          "secondary-container": "#674018",
+          "inverse-primary": "#8c4f00",
+          "background": "#131313",
+          "inverse-surface": "#e5e2e1",
+          "surface": "#131313",
+          "surface-container-low": "#1b1b1b",
+          "surface-container-lowest": "#0e0e0e",
+          "outline": "#a28d7b",
+          "on-error": "#690005",
+          "error-container": "#93000a",
+          "on-error-container": "#ffdad6",
+          "secondary": "#f4bb88",
+          "surface-bright": "#393939",
+          "error": "#ffb4ab",
+          "outline-variant": "#544435",
+          "surface-container": "#20201f",
+          "on-surface": "#e5e2e1",
+          "surface-tint": "#ffb874",
+          "primary-fixed-dim": "#ffb874",
+          "primary-fixed": "#ffdcbf",
+          "surface-dim": "#131313",
+          "on-background": "#e5e2e1",
+          "primary-container": "#f29221",
+          "on-surface-variant": "#dac2af",
+          "on-tertiary-container": "#00435d",
+          "on-tertiary": "#00344a",
+          "tertiary-container": "#00b5f5",
+        },
+        borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem" },
+        fontFamily: { headline: ["Epilogue"], body: ["Be Vietnam Pro"], label: ["Be Vietnam Pro"] }
+      }
+    }
+  }
+</script>
+<style>
+  .chalk-texture { background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0); background-size: 40px 40px; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .asymmetric-crop { clip-path: polygon(2% 0%, 100% 5%, 98% 95%, 0% 100%); }
+  body { min-height: max(884px, 100dvh); }
+  /* Page transitions */
+  .page { display: none; }
+  .page.active { display: block; }
+  /* Cart badge */
+  #cart-badge { display: none; }
+  #cart-badge.visible { display: flex; }
+  
+  /* Animations */
+  @keyframes cart-pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+  }
+  .cart-animate { animation: cart-pop 0.4s ease-out; }
+  
+  @keyframes glow-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(242, 146, 33, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(242, 146, 33, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(242, 146, 33, 0); }
+  }
+  .glow-active { animation: glow-pulse 1.5s infinite; }
+</style>
+</head>
+<body class="bg-background text-on-surface font-body chalk-texture min-h-screen pb-32">
+
+<!-- ===== HEADER STICKY ===== -->
+<header class="bg-[#131313]/70 backdrop-blur-md text-[#F29221] sticky top-0 z-50 flex items-center justify-between px-6 py-4 w-full">
+  <div class="flex items-center gap-3">
+    <span class="material-symbols-outlined text-2xl">restaurant</span>
+    <h1 class="text-xl font-bold text-[#F29221] uppercase tracking-wider font-headline">Quintal do Ramão</h1>
+  </div>
+  <div class="hidden md:flex gap-8">
+    <button onclick="showPage('menu')" class="text-[#F29221] font-bold font-label hover:text-[#F29221] transition-colors duration-300">Menu</button>
+    <button onclick="showPage('cart')" class="text-[#e5e2e1] font-label hover:text-[#F29221] transition-colors duration-300 relative">
+      Carrinho
+      <span id="cart-badge" class="absolute -top-2 -right-4 bg-[#F29221] text-[#131313] text-xs font-black w-5 h-5 rounded-full items-center justify-center">0</span>
+    </button>
+    <button onclick="showPage('orders')" class="text-[#e5e2e1] font-label hover:text-[#F29221] transition-colors duration-300">Pedidos</button>
+  </div>
+  <button class="material-symbols-outlined md:hidden" onclick="showPage('cart')">shopping_cart</button>
+</header>
+
+<!-- ===== PAGE: MENU ===== -->
+<div id="page-menu" class="page active">
+  <!-- Hero Banner -->
+  <section class="relative h-[280px] md:h-[380px] w-full overflow-hidden">
+    <img alt="Quintal do Ramão Ambiente" class="absolute inset-0 w-full h-full object-cover brightness-50"
+      src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-5iLwfDwjU4VC6bjyohtSTDE2PCnAXfm4aBd5UnwtK8_WDTqfDZoYWoFYCdgEupoN1r0HPyJP0qLUzgHMKoYjEUjHYrbwK_FyB2YKa1vkBn1Qs49Dnlrn69g1qwf1YEKek7HxAoOcIegnHTGEGOvThAxFeAcBbwMADl4wvjeNd5ZjbgzLkkXFilkUUMAdEI3WeV7olQMlA__L5Di3vnhkodBVETtaCDpuig4jDVaPoPx8_diI-FhSxpPnIT8jdUuTWE24MGiGxyjC"/>
+    <div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+    <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6 pt-10">
+      <span class="material-symbols-outlined text-[#F29221] text-4xl mb-2">restaurant</span>
+      <h2 class="text-3xl md:text-5xl font-headline font-extrabold text-[#F29221] uppercase tracking-tighter mb-4">Quintal do Ramão</h2>
+      <div class="space-y-2 max-w-lg">
+        <a id="site-address-link" class="flex items-center justify-center gap-2 text-sm text-on-surface hover:text-[#F29221] transition-colors group"
+          href="#" target="_blank">
+          <span class="material-symbols-outlined text-[#F29221] text-lg">location_on</span>
+          <span id="site-address-text" class="underline underline-offset-4 decoration-outline-variant group-hover:decoration-[#F29221]">Carregando endereço...</span>
+        </a>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6">
+          <a id="site-phone-link" class="flex items-center justify-center gap-2 text-sm text-on-surface hover:text-[#F29221] transition-colors font-medium" href="#">
+            <span class="material-symbols-outlined text-[#F29221] text-lg">call</span>
+            <span id="site-phone-text">Carregando...</span>
+          </a>
+          <a id="site-instagram-link" class="flex items-center justify-center gap-2 text-sm text-on-surface hover:text-[#F29221] transition-colors font-medium hidden" href="#" target="_blank">
+            <span class="material-symbols-outlined text-[#F29221] text-lg">brand_awareness</span>
+            <span id="site-instagram-text">@quintaldoramao</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="max-w-5xl mx-auto px-4 mt-6">
+    <!-- Hero Highlight -->
+    <section class="relative mb-12 overflow-hidden rounded-xl bg-surface-container-low p-6 md:p-10 flex flex-col md:flex-row items-center gap-8">
+      <div class="flex-1 space-y-4 z-10">
+        <span class="text-[#F29221] font-label uppercase tracking-widest text-xs">Destaque do Quintal</span>
+        <h2 class="text-3xl md:text-5xl font-black font-headline uppercase leading-none tracking-tighter mb-4 italic">Cheddar & Bacon</h2>
+        <p class="text-sm md:text-base text-on-surface-variant font-light mb-8 max-w-sm">Hambúrguer artesanal, queijo cheddar cremoso, bacon crocante, cebola caramelizada e mel no pão brioche.</p>
+        <div class="flex items-center gap-6">
+          <span class="text-3xl md:text-4xl font-headline font-black text-primary italic">R$ 35,00</span>
+          <button onclick="addToCart('Cheddar & Bacon', 35)" class="bg-primary text-[#131313] px-8 py-3 rounded-md font-headline font-black uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-xl shadow-primary/20">Quero Este</button>
+        </div>
+      </div>
+      <div class="flex-1 relative">
+        <img alt="Cheddar &amp; Bacon Burger" class="asymmetric-crop w-full h-[300px] md:h-[380px] object-cover shadow-2xl"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyeWN_T_CQcVbpda3zOqecO2AGEKmdlNHHB3q2cUoc0a7WAnVadUNe5aZoKZSXqJ-a-HGFqduXTqn4FY_hXWrb4gURMuGXm8MHb4Cbv3lg-zr5OHZ2jkd0nIkjzrDJf358vrW8r9IwG4xQOY9TUzFrbxqFuEnPuUZILaoNm3Dx5AxjuvOBFhwi79uEARSyKXNvHXapmVXzBhRkQHGIcxEOtc7GPr86z0sPQ_Ph5SfK0JA8-43OlWBjNi7DAsUSrx40jpKhyL099q4d"/>
+        <div class="absolute -bottom-4 -right-4 bg-surface-container-highest p-4 rounded-lg transform rotate-3 border border-outline-variant/15">
+          <span class="text-[#F29221] font-headline font-bold text-xl uppercase italic">Artesanal</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Category Tabs -->
+    <nav class="sticky top-[72px] z-40 bg-background/95 backdrop-blur-sm py-4 mb-8 overflow-x-auto no-scrollbar flex gap-4 border-b border-outline-variant/10">
+      <button onclick="filterCategory('lanches')" id="tab-lanches" class="tab-btn whitespace-nowrap px-6 py-2 rounded-full bg-[#F29221] text-[#131313] font-bold font-label uppercase text-sm">Lanches</button>
+      <button onclick="filterCategory('prensados')" id="tab-prensados" class="tab-btn whitespace-nowrap px-6 py-2 rounded-full bg-surface-container-highest text-on-surface font-medium font-label uppercase text-sm hover:bg-surface-variant transition-colors">Prensados</button>
+      <button onclick="filterCategory('porcoes')" id="tab-porcoes" class="tab-btn whitespace-nowrap px-6 py-2 rounded-full bg-surface-container-highest text-on-surface font-medium font-label uppercase text-sm hover:bg-surface-variant transition-colors">Porções</button>
+      <button onclick="filterCategory('marmitex')" id="tab-marmitex" class="tab-btn whitespace-nowrap px-6 py-2 rounded-full bg-surface-container-highest text-on-surface font-medium font-label uppercase text-sm hover:bg-surface-variant transition-colors">Marmitex</button>
+      <button onclick="filterCategory('bebidas')" id="tab-bebidas" class="tab-btn whitespace-nowrap px-6 py-2 rounded-full bg-surface-container-highest text-on-surface font-medium font-label uppercase text-sm hover:bg-surface-variant transition-colors">Bebidas</button>
+    </nav>
+
+    <!-- Product Grid -->
+    <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8"></div>
+
+    <!-- Review Section -->
+    <section class="mt-20 mb-10 text-center border-t border-outline-variant/10 pt-10">
+      <p class="text-on-surface-variant text-sm font-label mb-2">Gostou da experiência?</p>
+      <a class="inline-flex items-center gap-2 text-[#F29221] font-headline font-bold hover:underline" href="https://g.page/r/CVZHLU1BRp6HEBM/review" target="_blank">
+        Avalie nossa empresa no Google
+        <span class="material-symbols-outlined text-lg">star</span>
+      </a>
+    </section>
+
+    <!-- Chalk Divider -->
+    <div class="flex justify-center my-16 opacity-30">
+      <svg fill="none" height="20" viewBox="0 0 200 20" width="200">
+        <path d="M5 10C30 15 50 5 80 12C110 19 140 2 170 10C185 14 195 10 195 10" stroke="#F29221" stroke-dasharray="5 5" stroke-linecap="round" stroke-width="2"></path>
+      </svg>
+    </div>
+  </main>
+
+  <!-- Floating View Cart Bar -->
+  <div id="floating-cart" class="fixed bottom-24 left-1/2 -translate-x-1/2 w-[90%] max-w-lg z-40" style="display:none">
+    <button onclick="showPage('cart')" class="w-full bg-[#F29221] text-[#131313] py-4 px-6 rounded-xl flex justify-between items-center shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:scale-[1.02] transition-transform active:scale-95">
+      <div class="flex items-center gap-3">
+        <div id="cart-count-float" class="bg-[#131313] text-[#F29221] w-6 h-6 flex items-center justify-center rounded-md font-bold text-xs">0</div>
+        <span class="font-headline font-bold uppercase tracking-wide">Ver Carrinho</span>
+      </div>
+      <span id="cart-total-float" class="font-headline font-bold">R$ 0,00</span>
+    </button>
+  </div>
+</div>
+
+<!-- ===== PAGE: CART ===== -->
+<div id="page-cart" class="page">
+  <main class="max-w-4xl mx-auto px-6 pt-8 pb-12">
+    <div class="mb-10">
+      <h2 class="font-headline text-4xl md:text-5xl font-extrabold text-on-surface mb-2 leading-tight">Seu Carrinho</h2>
+      <p class="text-on-surface-variant font-body">Confira os itens selecionados para o seu banquete.</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <!-- Cart Items -->
+      <div class="lg:col-span-2 space-y-8">
+        <section>
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic">Itens no Carrinho</h3>
+            <span id="cart-item-count" class="text-sm text-on-surface-variant">0 Itens</span>
+          </div>
+          <div id="cart-items" class="space-y-4">
+            <p id="empty-cart-msg" class="text-on-surface-variant italic text-center py-12">Seu carrinho está vazio. <button onclick="showPage('menu')" class="text-[#F29221] font-bold underline">Ver cardápio</button></p>
+          </div>
+          <div class="py-8 flex justify-center opacity-30">
+            <svg fill="none" height="10" viewBox="0 0 200 10" width="200">
+              <path d="M0 5C20 2 40 8 60 5C80 2 100 8 120 5C140 2 160 8 180 5C190 3.5 200 5 200 5" stroke="currentColor" stroke-dasharray="2 6" stroke-linecap="round" stroke-width="2"></path>
+            </svg>
+          </div>
+        </section>
+
+        <!-- Delivery Options -->
+        <section class="space-y-6">
+          <div>
+            <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic mb-4">Como deseja receber?</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="checkout-modalities">
+              <label id="mod-retirada" class="flex items-center p-4 rounded-md bg-surface-container-low cursor-pointer hover:bg-surface-container-highest transition-all border-2 border-transparent has-[:checked]:border-primary/50 has-[:checked]:bg-primary/5 group">
+                <input checked class="sr-only peer" name="delivery" type="radio" value="retirada" onchange="updateCartUI()"/>
+                <div class="w-6 h-6 border-2 border-outline rounded-full mr-4 flex items-center justify-center transition-all peer-checked:border-primary peer-checked:bg-primary/10">
+                  <div class="w-3 h-3 bg-primary rounded-full transform scale-0 peer-checked:scale-100 transition-transform"></div>
+                </div>
+                <div class="flex flex-col"><span class="font-bold text-on-surface">Retirada</span><span class="text-xs text-on-surface-variant italic">Grátis</span></div>
+              </label>
+              <label id="mod-consumo" class="flex items-center p-4 rounded-md bg-surface-container-low cursor-pointer hover:bg-surface-container-highest transition-all border-2 border-transparent has-[:checked]:border-primary/50 has-[:checked]:bg-primary/5 group">
+                <input class="sr-only peer" name="delivery" type="radio" value="consumo" onchange="updateCartUI()"/>
+                <div class="w-6 h-6 border-2 border-outline rounded-full mr-4 flex items-center justify-center transition-all peer-checked:border-primary peer-checked:bg-primary/10">
+                  <div class="w-3 h-3 bg-primary rounded-full transform scale-0 peer-checked:scale-100 transition-transform"></div>
+                </div>
+                <div class="flex flex-col"><span class="font-bold text-on-surface">No Quintal</span><span class="text-xs text-on-surface-variant italic">Grátis</span></div>
+              </label>
+              <label id="mod-entrega" class="flex items-center p-4 rounded-md bg-surface-container-low cursor-pointer hover:bg-surface-container-highest transition-all border-2 border-transparent has-[:checked]:border-primary/50 has-[:checked]:bg-primary/5 group">
+                <input class="sr-only peer" name="delivery" type="radio" value="entrega" onchange="updateCartUI()"/>
+                <div class="w-6 h-6 border-2 border-outline rounded-full mr-4 flex items-center justify-center transition-all peer-checked:border-primary peer-checked:bg-primary/10">
+                  <div class="w-3 h-3 bg-primary rounded-full transform scale-0 peer-checked:scale-100 transition-transform"></div>
+                </div>
+                <div class="flex flex-col"><span class="font-bold text-on-surface">Entrega</span><span class="text-xs text-on-surface-variant italic">+ Taxa fixada</span></div>
+              </label>
+            </div>
+          </div>
+          <!-- Address Fields (Conditional) -->
+          <div id="address-fields" class="space-y-4 pt-4 hidden">
+            <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic mb-2">Endereço de Entrega</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input type="text" id="end_rua" placeholder="Rua e Número" class="bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm">
+              <input type="text" id="end_bairro" placeholder="Bairro" class="bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm">
+              <input type="text" id="end_ref" placeholder="Ponto de referência" class="bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm md:col-span-2">
+            </div>
+          </div>
+          </div>
+          <!-- Payment -->
+          <div>
+            <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic mb-4">Forma de Pagamento</h3>
+            <div class="relative">
+              <select onchange="updateCartUI()" class="w-full bg-transparent border-b border-outline-variant/30 py-3 font-body focus:outline-none focus:border-primary transition-all appearance-none cursor-pointer" id="payment_method">
+                <option class="bg-surface text-on-surface" value="pix">PIX</option>
+                <option class="bg-surface text-on-surface" value="cartao">Cartão</option>
+                <option class="bg-surface text-on-surface" value="dinheiro">Dinheiro</option>
+              </select>
+              <span class="material-symbols-outlined absolute right-0 top-3 text-on-surface-variant pointer-events-none">expand_more</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Order Summary Sidebar -->
+      <div class="lg:col-span-1">
+        <div class="bg-surface-container-highest p-8 rounded-md sticky top-28 shadow-[0_20px_40px_rgba(0,0,0,0.4)] border border-outline-variant/10">
+          <h3 class="font-headline font-bold text-2xl text-on-surface mb-8 border-b border-outline-variant/20 pb-4">Resumo</h3>
+          <div class="space-y-4 mb-8">
+            <div class="flex justify-between font-label">
+              <span class="text-on-surface-variant">Itens (<span id="summary-count">0</span>)</span>
+              <span id="summary-subtotal" class="text-on-surface">R$ 0,00</span>
+            </div>
+            <div class="flex justify-between font-label border-t border-outline-variant/5 pt-2">
+              <span class="text-on-surface-variant">Método</span>
+              <span id="summary-delivery" class="text-[#F29221] font-bold">Retirada</span>
+            </div>
+            <div class="flex justify-between font-label border-t border-outline-variant/5 pt-2">
+              <span class="text-on-surface-variant">Pagamento</span>
+              <span id="summary-payment" class="text-on-surface font-medium uppercase">PIX</span>
+            </div>
+            <div class="flex justify-between font-label border-t border-outline-variant/5 pt-2">
+              <span class="text-on-surface-variant">Taxa de Entrega</span>
+              <span class="text-on-surface">R$ 0,00</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-end border-t border-outline-variant/20 pt-6 mb-10">
+            <span class="font-headline font-bold text-lg text-primary uppercase italic">Total</span>
+            <span id="summary-total" class="font-headline font-extrabold text-3xl text-on-surface">R$ 0,00</span>
+          </div>
+          <button onclick="finalizarPedido()" class="w-full bg-[#F29221] text-[#131313] font-headline font-bold py-5 rounded-md flex items-center justify-center gap-3 transition-all hover:brightness-110 active:scale-95 group shadow-lg">
+            Finalizar Pedido via WhatsApp
+            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">send</span>
+          </button>
+          <p class="text-[10px] text-center mt-4 text-on-surface-variant font-label uppercase tracking-widest leading-relaxed">
+            Ao clicar, seu pedido será enviado para<br/>
+            <span class="text-primary font-bold">55 19 99228-8312</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ===== PAGE: ORDERS ===== -->
+<div id="page-orders" class="page">
+  <main class="max-w-2xl mx-auto px-6 pt-8 pb-12">
+    <h2 class="font-headline text-4xl font-extrabold mb-2">Meus Pedidos</h2>
+    <p class="text-on-surface-variant mb-10">Histórico de pedidos realizados nesta sessão.</p>
+    <div id="orders-list">
+      <div class="text-center text-on-surface-variant italic py-20">
+        <span class="material-symbols-outlined text-5xl block mb-4 opacity-30">receipt_long</span>
+        Nenhum pedido finalizado ainda.
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ===== PAGE: MARMITEX ===== -->
+<div id="page-marmitex" class="page">
+  <main class="w-full max-w-4xl mx-auto px-4 py-8 md:py-12 mb-24">
+    <div class="bg-surface-container-low rounded-xl overflow-hidden shadow-2xl relative border border-outline-variant/10">
+      <button onclick="showPage('menu')" class="absolute top-4 right-4 z-10 bg-surface/50 backdrop-blur-md p-2 rounded-full text-on-surface hover:bg-[#F29221] hover:text-[#131313] transition-all">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+      <div class="grid grid-cols-1 md:grid-cols-2">
+        <div class="relative h-[300px] md:h-full">
+          <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUxcbuPzmR2m7CS5Nii4sBC7qtYkcxnUChL_TIJfFHiWdSmGREL6FBXiXE1aogr8aRFilDzdpvc_q03GUPT7PMhOQUtDol9KtrkXcwVd-Dsw45oVAmrv0AkuXNh1kabQBzeEzgqvHzrtYTEPGMnxXI7stqGykDroa14BNJUezxqFevogKTT_0vEpFGoHf7OPQkRBSQ6gOICvNTuDT9LrKBGUj6wWnd2_AwZCxA6HC-xGclTIG4V-8KzOHd3zFQ7EKmLwU5O6QgsIlD" alt="Frango Empanado"/>
+          <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-surface-container-low to-transparent"></div>
+        </div>
+        <div class="p-6 md:p-10 flex flex-col gap-6">
+          <header>
+            <h2 class="text-4xl md:text-5xl font-headline font-extrabold text-on-surface leading-tight mb-2">Frango Empanado <span class="text-[#F29221]">(R$ 27)</span></h2>
+            <p class="text-lg text-on-surface-variant font-body italic opacity-80">Acompanha Ovo Frito e Salada</p>
+          </header>
+          <div class="py-2">
+            <svg class="opacity-30" fill="none" height="12" viewBox="0 0 400 12" width="100%">
+              <path d="M2 10C50 2 120 12 200 6C280 0 350 8 398 2" stroke="#F29221" stroke-dasharray="4 8" stroke-linecap="round" stroke-width="2"></path>
+            </svg>
+          </div>
+          <section class="space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-xl font-headline font-bold text-on-surface uppercase tracking-wide">Escolha suas Guarnições</h3>
+              <span class="text-xs font-label text-[#F29221] bg-[#F29221]/10 px-2 py-1 rounded">OPCIONAL</span>
+            </div>
+            <div class="grid grid-cols-2 gap-3" id="guarnicoes-grid">
+              <!-- Built by JS -->
+            </div>
+          </section>
+          <footer class="mt-4 pt-6 border-t border-outline-variant/10 flex flex-col gap-6">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-label uppercase tracking-widest text-on-surface-variant">Quantidade</span>
+              <div class="flex items-center bg-surface-container-highest rounded-full p-1 border border-outline-variant/20">
+                <button onclick="changeQty(-1)" class="w-10 h-10 flex items-center justify-center rounded-full text-[#F29221] hover:bg-surface-variant active:scale-95 transition-all">
+                  <span class="material-symbols-outlined">remove</span>
+                </button>
+                <span id="marmitex-qty" class="px-6 text-xl font-headline font-bold">1</span>
+                <button onclick="changeQty(1)" class="w-10 h-10 flex items-center justify-center rounded-full text-[#F29221] hover:bg-surface-variant active:scale-95 transition-all">
+                  <span class="material-symbols-outlined">add</span>
+                </button>
+              </div>
+            </div>
+            <button onclick="addMarmitex()" class="w-full py-5 bg-[#F29221] text-[#131313] font-headline font-extrabold text-xl rounded-lg shadow-xl active:scale-[0.98] transition-transform flex items-center justify-center gap-3 hover:brightness-110">
+              <span class="material-symbols-outlined">shopping_basket</span>
+              Adicionar ao Carrinho
+            </button>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ===== BOTTOM NAV (MOBILE) ===== -->
+<nav class="md:hidden bg-[#131313]/70 backdrop-blur-md fixed bottom-0 w-full z-50 flex justify-around items-center px-4 py-2 shadow-[0_-10px_30px_rgba(0,0,0,0.4)]">
+  <button id="nav-menu" onclick="showPage('menu')" class="flex flex-col items-center justify-center bg-[#F29221] text-[#131313] rounded-md p-2 active:scale-95 transition-transform">
+    <span class="material-symbols-outlined">menu_book</span>
+    <span class="text-[10px] uppercase font-label">Menu</span>
+  </button>
+  <button id="nav-cart" onclick="showPage('cart')" class="flex flex-col items-center justify-center text-[#e5e2e1] p-2 hover:bg-[#353535] rounded-md transition-all relative">
+    <span class="material-symbols-outlined">shopping_cart</span>
+    <span class="text-[10px] uppercase font-label">Carrinho</span>
+    <span id="mobile-cart-badge" class="absolute top-0 right-0 bg-[#F29221] text-[#131313] text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center" style="display:none">0</span>
+  </button>
+  <button id="nav-orders" onclick="showPage('orders')" class="flex flex-col items-center justify-center text-[#e5e2e1] p-2 hover:bg-[#353535] rounded-md transition-all">
+    <span class="material-symbols-outlined">history</span>
+    <span class="text-[10px] uppercase font-label">Pedidos</span>
+  </button>
+</nav>
+
+<script>
+// ===== SUPABASE CONFIG =====
+const SUPABASE_URL = 'https://ilquidozuasfgsxmntqh.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlscXVpZG96dWFzZmdzeG1udHFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3NDM0NDYsImV4cCI6MjA5MTMxOTQ0Nn0.mvzQPkHVhbMAtkkx-TYmD7tCaGX_IqQA1EyrMFR3KwA';
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ===== STATE =====
+let cart = [];
+let orders = [];
+let currentCategory = 'lanches';
+let marmitexQty = 1;
+
+let CATEGORIES = [];
+let PRODUCTS = {};
+let STORE_CONFIG = {
+  name: "Quintal do Ramão",
+  whatsapp: "19992288312",
+  address: "Rua Dr. José de Queirós Aranha, 458 – Vila Mariana, SP",
+  delivery_fee: 0
+};
+
+// ===== INITIALIZATION =====
+async function initApp() {
+  await loadStoreConfig();
+  await fetchCategoriesFromSupabase();
+  await fetchProductsFromSupabase();
+  showPage('menu');
+}
+
+async function fetchCategoriesFromSupabase() {
+  const { data, error } = await supabaseClient.from('quintal_categorias').select('*').order('name');
+  if (data) {
+    CATEGORIES = data;
+    renderCategoryTabs();
+    if (CATEGORIES.length > 0) currentCategory = CATEGORIES[0].slug;
+  }
+}
+
+function renderCategoryTabs() {
+  const nav = document.querySelector('nav.sticky');
+  if (!nav) return;
+  nav.innerHTML = CATEGORIES.map(c => `
+    <button onclick="filterCategory('${c.slug}')" id="tab-${c.slug}" 
+      class="tab-btn whitespace-nowrap px-6 py-2 rounded-full bg-surface-container-highest text-on-surface font-medium font-label uppercase text-sm hover:bg-surface-variant transition-colors flex items-center gap-2">
+      <span class="material-symbols-outlined text-lg">${c.icon || 'restaurant'}</span>
+      ${c.name}
+    </button>
+  `).join('');
+  
+  // Set first as active visually
+  if (CATEGORIES.length > 0) {
+    const first = document.getElementById('tab-' + CATEGORIES[0].slug);
+    if (first) first.className = 'tab-btn whitespace-nowrap px-6 py-2 rounded-full bg-[#F29221] text-[#131313] font-bold font-label uppercase text-sm flex items-center gap-2';
+  }
+}
+
+async function loadStoreConfig() {
+  const { data } = await supabaseClient.from('quintal_configs').select('*').eq('key', 'store_info').single();
+  if (data && data.value) {
+    STORE_CONFIG = data.value;
+    // Update Headers
+    document.querySelectorAll('h1.font-headline, h2.font-headline').forEach(el => el.textContent = STORE_CONFIG.name);
+    
+    // Update Address
+    const addrText = document.getElementById('site-address-text');
+    const addrLink = document.getElementById('site-address-link');
+    if (addrText) addrText.textContent = STORE_CONFIG.address || 'Endereço não definido';
+    if (addrLink) addrLink.href = STORE_CONFIG.google_link || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(STORE_CONFIG.address)}`;
+
+    // Update Phone
+    const phoneText = document.getElementById('site-phone-text');
+    const phoneLink = document.getElementById('site-phone-link');
+    if (phoneText) phoneText.textContent = STORE_CONFIG.whatsapp || '';
+    if (phoneLink) phoneLink.href = `tel:${STORE_CONFIG.whatsapp?.replace(/\D/g, '')}`;
+
+    // Update Instagram
+    const instaLink = document.getElementById('site-instagram-link');
+    const instaText = document.getElementById('site-instagram-text');
+    if (instaLink && STORE_CONFIG.instagram) {
+       instaLink.classList.remove('hidden');
+       instaLink.href = STORE_CONFIG.instagram;
+       instaText.textContent = '@' + STORE_CONFIG.instagram.split('/').filter(Boolean).pop();
+    }
+
+    // Update Checkout Modalities
+    if (STORE_CONFIG.modalities && STORE_CONFIG.modalities.length > 0) {
+       const mods = STORE_CONFIG.modalities;
+       const elEntrega = document.getElementById('mod-entrega');
+       const elConsumo = document.getElementById('mod-consumo');
+       const elRetirada = document.getElementById('mod-retirada');
+
+       if (elEntrega) elEntrega.style.display = mods.includes('entrega') ? 'flex' : 'none';
+       if (elConsumo) elConsumo.style.display = mods.includes('local') ? 'flex' : 'none';
+       if (elRetirada) elRetirada.style.display = mods.includes('paralevar') ? 'flex' : 'none';
+
+       // Ensure at least one is selected if current hidden
+       const activeInput = document.querySelector('input[name="delivery"]:checked');
+       if (activeInput && activeInput.closest('label').style.display === 'none') {
+          const firstVisible = ['mod-retirada', 'mod-consumo', 'mod-entrega'].find(id => document.getElementById(id).style.display !== 'none');
+          if (firstVisible) document.getElementById(firstVisible).querySelector('input').checked = true;
+       }
+    }
+  }
+}
+
+async function fetchProductsFromSupabase() {
+  const { data, error } = await supabaseClient.from('quintal_produtos').select('*');
+  if (error) {
+    console.error("Erro ao carregar produtos:", error);
+    return;
+  }
+  
+  // Agrupar por categoria
+  const grouped = {};
+  data.forEach(p => {
+    const cat = p.category.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // slugify simples
+    if (!grouped[cat]) grouped[cat] = [];
+    grouped[cat].push({
+      name: p.name,
+      price: parseFloat(p.price),
+      desc: p.description,
+      image: p.image_url || 'https://via.placeholder.com/800x600?text=Quintal+do+Ramão'
+    });
+  });
+  PRODUCTS = grouped;
+  renderProducts();
+}
+
+const GUARNICOES = ['Arroz', 'Feijão', 'Farofa', 'Fritas', 'Nuggets', 'Polenta Frita', 'Mandioca Frita', 'Legumes'];
+
+// ===== PAGE NAVIGATION =====
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  // update bottom nav
+  document.querySelectorAll('nav button[id^="nav-"]').forEach(b => {
+    b.className = 'flex flex-col items-center justify-center text-[#e5e2e1] p-2 hover:bg-[#353535] rounded-md transition-all relative';
+  });
+  const nav = document.getElementById('nav-' + name);
+  if (nav) nav.className = 'flex flex-col items-center justify-center bg-[#F29221] text-[#131313] rounded-md p-2 active:scale-95 transition-transform relative';
+  
+  // floating cart only on menu
+  if (document.getElementById('floating-cart')) {
+    document.getElementById('floating-cart').style.display = (name === 'menu' && cart.length > 0) ? 'block' : 'none';
+  }
+  
+  // Auto-render specific pages
+  if (name === 'cart') renderCartItems();
+  if (name === 'orders') renderOrderHistory();
+  if (name === 'marmitex') renderMarmitexGuarnicoes();
+  
+  window.scrollTo(0,0);
+}
+
+// ===== PRODUCTS =====
+function filterCategory(cat) {
+  currentCategory = cat;
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.className = 'tab-btn whitespace-nowrap px-6 py-2 rounded-full bg-surface-container-highest text-on-surface font-medium font-label uppercase text-sm hover:bg-surface-variant transition-colors';
+  });
+  const tab = document.getElementById('tab-' + cat);
+  if (tab) tab.className = 'tab-btn whitespace-nowrap px-6 py-2 rounded-full bg-[#F29221] text-[#131313] font-bold font-label uppercase text-sm';
+  renderProducts();
+}
+
+function renderProducts() {
+  const grid = document.getElementById('product-grid');
+  // Normalize match
+  const items = PRODUCTS[currentCategory] || [];
+  if (items.length === 0) {
+    grid.innerHTML = `<div class="col-span-full py-10 text-center opacity-40 italic">Nenhum item nesta categoria hoje.</div>`;
+    return;
+  }
+  grid.innerHTML = items.map(p => `
+    <div class="bg-surface-container-low rounded-2xl overflow-hidden border border-outline-variant/10 group hover:border-primary/30 transition-all duration-300 flex flex-col">
+      <div class="aspect-video w-full overflow-hidden relative border-b border-outline-variant/5">
+        <img alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="${p.image}"/>
+      </div>
+      <div class="flex flex-col justify-between flex-grow p-5">
+        <div>
+          <h3 class="text-xl font-headline font-bold group-hover:text-[#F29221] transition-colors uppercase italic tracking-tighter">${p.name}</h3>
+          <p class="text-xs text-on-surface-variant mt-1 leading-relaxed line-clamp-2">${p.desc || ''}</p>
+        </div>
+        <div class="flex items-center justify-between mt-4">
+          <span class="text-lg font-headline font-bold text-[#F29221]">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
+          <button onclick="${currentCategory === 'marmitex' ? "showPage('marmitex')" : "addToCart('" + p.name + "'," + p.price + ")"}"
+            class="w-10 h-10 rounded-md bg-[#F29221] text-[#131313] flex items-center justify-center active:scale-95 transition-transform">
+            <span class="material-symbols-outlined">add</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+
+// ===== CART =====
+function addToCart(name, price) {
+  const existing = cart.find(i => i.name === name);
+  if (existing) { existing.qty++; }
+  else { cart.push({ name, price, qty: 1 }); }
+  updateCartUI();
+  
+  // Animation feedback
+  const badge = document.getElementById('cart-badge');
+  const mBadge = document.getElementById('mobile-cart-badge');
+  const floatCart = document.getElementById('floating-cart');
+  
+  [badge, mBadge, floatCart].forEach(el => {
+    if (el) {
+      el.classList.remove('cart-animate');
+      void el.offsetWidth; // trigger reflow
+      el.classList.add('cart-animate');
+    }
+  });
+
+  showToast(name + ' adicionado!');
+}
+
+function removeFromCart(name) {
+  cart = cart.filter(i => i.name !== name);
+  updateCartUI();
+  renderCartItems();
+}
+
+function changeItemQty(name, delta) {
+  const item = cart.find(i => i.name === name);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) removeFromCart(name);
+  else { updateCartUI(); renderCartItems(); }
+}
+
+function updateCartUI() {
+  const total = cart.reduce((s, i) => s + (Number(i.price) || 0) * (Number(i.qty) || 0), 0);
+  const count = cart.reduce((s, i) => s + (Number(i.qty) || 0), 0);
+  const fmt = 'R$ ' + total.toFixed(2).replace('.', ',');
+  // Update Real-time summary details
+  try {
+    const delivery = document.querySelector('input[name="delivery"]:checked')?.value || 'retirada';
+    const payment = document.getElementById('payment_method')?.value || 'pix';
+    const deliveryEl = document.getElementById('summary-delivery');
+    const paymentEl = document.getElementById('summary-payment');
+    
+    if (deliveryEl) {
+      if (delivery === 'retirada') deliveryEl.textContent = 'Retirada';
+      else if (delivery === 'consumo') deliveryEl.textContent = 'No Quintal';
+      else deliveryEl.textContent = 'Entrega';
+    }
+    if (paymentEl) paymentEl.textContent = payment.toUpperCase();
+
+    // Sync Summary Counts and Totals
+    const summaryCount = document.getElementById('summary-count');
+    const summarySubtotal = document.getElementById('summary-subtotal');
+    const summaryTotal = document.getElementById('summary-total');
+    
+    if (summaryCount) summaryCount.textContent = count;
+    if (document.getElementById('cart-item-count')) document.getElementById('cart-item-count').textContent = count + ' Itens';
+    if (summarySubtotal) summarySubtotal.textContent = fmt;
+    if (summaryTotal) summaryTotal.textContent = fmt;
+
+    // Toggle address fields
+    const addrFields = document.getElementById('address-fields');
+    if (addrFields) {
+      addrFields.classList.toggle('hidden', delivery !== 'entrega');
+    }
+  } catch(e) { console.warn("Summary sync error", e); }
+
+  // Sempre renderizar a lista do carrinho se estiver na página dele
+  if (document.getElementById('page-cart').classList.contains('active')) {
+    renderCartItems();
+  }
+
+  // floating
+  const floatCart = document.getElementById('floating-cart');
+  if (floatCart) {
+    document.getElementById('cart-count-float').textContent = count;
+    document.getElementById('cart-total-float').textContent = fmt;
+    floatCart.style.display = (count > 0 && document.getElementById('page-menu').classList.contains('active')) ? 'block' : 'none';
+  }
+
+  // badges
+  const badge = document.getElementById('cart-badge');
+  if (badge) {
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'flex' : 'none';
+  }
+  const mb = document.getElementById('mobile-cart-badge');
+  if (mb) {
+    mb.textContent = count;
+    mb.style.display = count > 0 ? 'flex' : 'none';
+  }
+
+  renderCartItems();
+}
+
+function renderCartItems() {
+  const container = document.getElementById('cart-items');
+  const empty = document.getElementById('empty-cart-msg');
+  if (!container || !empty) return;
+  
+  if (cart.length === 0) {
+    container.innerHTML = ''; 
+    empty.style.display = 'block'; 
+    return;
+  }
+  
+  empty.style.display = 'none';
+  container.innerHTML = cart.map(item => `
+    <div class="bg-surface-container-low p-5 rounded-md flex items-center gap-4 border border-outline-variant/10">
+      <div class="flex-grow">
+        <div class="flex justify-between items-start">
+          <h4 class="font-headline font-bold text-lg text-[#F29221] uppercase italic leading-tight">${item.name}</h4>
+          <span class="font-headline font-bold text-on-surface">R$ ${(item.price * item.qty).toFixed(2).replace('.', ',')}</span>
+        </div>
+        <p class="text-[10px] text-on-surface-variant uppercase tracking-widest mt-1 mb-3">R$ ${item.price.toFixed(2).replace('.', ',')} / un</p>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <button onclick="changeItemQty('${item.name}',-1)" class="w-8 h-8 rounded bg-[#353535] flex items-center justify-center text-[#F29221] active:scale-95">
+              <span class="material-symbols-outlined text-sm">remove</span>
+            </button>
+            <span class="font-bold text-sm px-2">${item.qty}</span>
+            <button onclick="changeItemQty('${item.name}',1)" class="w-8 h-8 rounded bg-[#353535] flex items-center justify-center text-[#F29221] active:scale-95">
+              <span class="material-symbols-outlined text-sm">add</span>
+            </button>
+          </div>
+          <button onclick="removeFromCart('${item.name}')" class="text-error/50 hover:text-error transition-colors">
+            <span class="material-symbols-outlined text-sm">delete</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== MARMITEX =====
+function setupGuarnicoes() {
+  document.getElementById('guarnicoes-grid').innerHTML = GUARNICOES.map(g => `
+    <label class="flex items-center gap-3 p-3 bg-surface-container rounded-lg cursor-pointer border border-transparent hover:border-[#F29221]/30 transition-all group">
+      <input class="w-5 h-5 rounded-sm bg-surface-variant border-outline-variant text-[#F29221] focus:ring-[#F29221]" type="checkbox" name="guarnicao" value="${g}"/>
+      <span class="text-on-surface group-hover:text-[#F29221] transition-colors font-medium">${g}</span>
+    </label>
+  `).join('');
+}
+
+function changeQty(delta) {
+  marmitexQty = Math.max(1, marmitexQty + delta);
+  document.getElementById('marmitex-qty').textContent = marmitexQty;
+}
+
+function addMarmitex() {
+  const selecionadas = [...document.querySelectorAll('input[name="guarnicao"]:checked')].map(c => c.value);
+  const nome = 'Marmitex Frango Empanado' + (selecionadas.length ? ' (' + selecionadas.join(', ') + ')' : '');
+  for (let i = 0; i < marmitexQty; i++) addToCart(nome, 27);
+  showPage('menu');
+}
+
+// ===== FINALIZE ORDER =====
+function finalizarPedido() {
+  try {
+    if (cart.length === 0) { alert('Adicione itens ao carrinho primeiro!'); return; }
+    const delivery = document.querySelector('input[name="delivery"]:checked')?.value || 'retirada';
+    const payment = document.getElementById('payment_method')?.value || 'pix';
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+    let msg = '🍖 *Pedido – Quintal do Ramão*\n\n';
+    cart.forEach(i => { msg += `• ${i.name} x${i.qty} – R$ ${(i.price * i.qty).toFixed(2).replace('.', ',')}\n`; });
+    
+    msg += `\n💳 Pagamento: ${payment.toUpperCase()}\n`;
+    
+    if (delivery === 'entrega') {
+      const rua = document.getElementById('end_rua').value;
+      const bairro = document.getElementById('end_bairro').value;
+      const ref = document.getElementById('end_ref').value;
+      if (!rua || !bairro) { alert('Por favor, preencha o endereço de entrega.'); return; }
+      msg += `📦 Entrega em Domicílio\n📍 Endereço: ${rua}, ${bairro}\n`;
+      if (ref) msg += `📌 Ref: ${ref}\n`;
+    } else {
+      msg += `📦 Entrega: ${delivery === 'retirada' ? 'Retirada no Local' : 'Consumo no Quintal'}\n`;
+    }
+
+    msg += `\n💰 *Total: R$ ${total.toFixed(2).replace('.', ',')}*`;
+
+    // Save order to Supabase
+    const orderData = {
+      customer_name: 'Cliente Web',
+      items: cart,
+      total: total,
+      delivery_method: delivery,
+      payment_method: payment,
+      address: (delivery === 'entrega') ? `${document.getElementById('end_rua').value}, ${document.getElementById('end_bairro').value}` : null,
+      status: 'pendente'
+    };
+
+    // Tentar salvar no Supabase sem bloquear o WhatsApp
+    try {
+      supabaseClient.from('quintal_pedidos').insert([orderData]).then(({ error }) => {
+        if (error) console.error('Erro ao salvar pedido no Supabase:', error);
+      });
+    } catch(e) { console.warn("Supabase save failed", e); }
+
+    // Save order locally for history
+    orders.push({ ...orderData, date: new Date().toLocaleString('pt-BR') });
+    renderOrderHistory();
+    // Clear cart
+    const oldCart = [...cart];
+    cart = [];
+    updateCartUI();
+    // Open WhatsApp
+    const waUrl = 'https://wa.me/5519992288312?text=' + encodeURIComponent(msg);
+    window.open(waUrl, '_blank');
+    showPage('orders');
+  } catch (err) {
+    console.error("Erro ao finalizar pedido:", err);
+    alert("Ocorreu um erro ao processar seu pedido. Por favor, tente novamente.");
+  }
+}
+
+function renderOrderHistory() {
+  const list = document.getElementById('orders-list');
+  if (orders.length === 0) return;
+  list.innerHTML = orders.map((o, i) => `
+    <div class="bg-surface-container-low rounded-xl p-6 mb-6 border border-outline-variant/10">
+      <div class="flex justify-between items-start mb-4">
+        <div>
+          <h3 class="font-headline font-bold text-lg">Pedido #${String(i + 1).padStart(4, '0')}</h3>
+          <p class="text-xs text-on-surface-variant">${o.date}</p>
+        </div>
+        <span class="bg-[#F29221]/10 text-[#F29221] text-xs font-bold px-3 py-1 rounded-full">Enviado</span>
+      </div>
+      ${o.items.map(item => `<p class="text-sm mb-1 text-on-surface-variant">• ${item.name} x${item.qty} — R$ ${(item.price * item.qty).toFixed(2).replace('.', ',')}</p>`).join('')}
+      <div class="mt-3 flex flex-wrap gap-2">
+        <span class="text-[10px] font-bold uppercase tracking-widest px-2 py-1 bg-surface-container-highest rounded text-on-surface-variant">💳 ${o.payment_method?.toUpperCase() || 'PIX'}</span>
+        <span class="text-[10px] font-bold uppercase tracking-widest px-2 py-1 bg-surface-container-highest rounded text-on-surface-variant">📦 ${o.delivery_method === 'retirada' ? 'Retirada' : (o.delivery_method === 'entrega' ? 'Entrega' : 'No Local')}</span>
+      </div>
+      <div class="border-t border-outline-variant/10 mt-4 pt-4 flex justify-between">
+        <span class="font-bold text-on-surface-variant text-sm">Total do Pedido</span>
+        <span class="font-headline font-bold text-[#F29221]">R$ ${o.total.toFixed(2).replace('.', ',')}</span>
+      </div>
+    </div>
+  `).reverse().join('');
+}
+
+// ===== TOAST =====
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) { t = document.createElement('div'); t.id = 'toast'; t.className = 'fixed top-24 left-1/2 -translate-x-1/2 bg-[#F29221] text-[#131313] font-bold px-6 py-3 rounded-full z-[999] transition-all'; document.body.appendChild(t); }
+  t.textContent = '✓ ' + msg;
+  t.style.opacity = '1';
+  setTimeout(() => { t.style.opacity = '0'; }, 2000);
+}
+
+
+// ===== INITIAL CALL =====
+initApp();
+</script>
+<!-- ===== FOOTER ===== -->
+<footer class="mt-20 py-10 border-t border-outline-variant/10 text-center">
+  <p class="text-on-surface-variant text-xs mb-4">© 2024 Quintal do Ramão - Todos os direitos reservados</p>
+  <a href="admin.html" class="opacity-[0.05] hover:opacity-100 transition-opacity text-[10px] uppercase font-bold tracking-widest text-on-surface-variant">
+    Acesso Administrativo
+  </a>
+</footer>
+
+<script>
+  // Hidden Admin Trigger: Long press on the logo in header
+  let logoPressTimer;
+  const logo = document.querySelector('header h1');
+  if (logo) {
+    logo.style.cursor = 'pointer';
+    logo.addEventListener('mousedown', () => { logoPressTimer = setTimeout(() => { window.location.href = 'admin.html'; }, 3000); });
+    logo.addEventListener('mouseup', () => { clearTimeout(logoPressTimer); });
+    logo.addEventListener('touchstart', () => { logoPressTimer = setTimeout(() => { window.location.href = 'admin.html'; }, 3000); });
+    logo.addEventListener('touchend', () => { clearTimeout(logoPressTimer); });
+  }
+</script>
+</body>
+</html>

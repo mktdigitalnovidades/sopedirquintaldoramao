@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Quintal do Ramão - Gestão de Produtos</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,400;0,500;0,700;0,800;0,900;1,700&amp;family=Be+Vietnam+Pro:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface-variant": "#dac2af",
+                      "inverse-surface": "#e5e2e1",
+                      "outline-variant": "#544435",
+                      "surface-tint": "#ffb874",
+                      "surface-bright": "#393939",
+                      "tertiary": "#7ed0ff",
+                      "surface-container": "#20201f",
+                      "secondary-fixed-dim": "#f4bb88",
+                      "tertiary-fixed": "#c5e7ff",
+                      "surface": "#131313",
+                      "secondary-fixed": "#ffdcbf",
+                      "primary": "#ffb874",
+                      "on-primary": "#4b2800",
+                      "secondary-container": "#674018",
+                      "on-tertiary-fixed": "#001e2d",
+                      "on-tertiary-container": "#00435d",
+                      "on-surface": "#e5e2e1",
+                      "error": "#ffb4ab",
+                      "surface-container-high": "#2a2a2a",
+                      "primary-fixed": "#ffdcbf",
+                      "primary-fixed-dim": "#ffb874",
+                      "surface-container-highest": "#353535",
+                      "on-primary-fixed-variant": "#6a3b00",
+                      "on-tertiary-fixed-variant": "#004c6a",
+                      "on-error-container": "#ffdad6",
+                      "outline": "#a28d7b",
+                      "on-background": "#e5e2e1",
+                      "on-primary-fixed": "#2d1600",
+                      "background": "#131313",
+                      "on-secondary-fixed-variant": "#643e16",
+                      "on-secondary-fixed": "#2d1600",
+                      "on-error": "#690005",
+                      "surface-dim": "#131313",
+                      "on-secondary-container": "#e4ae7b",
+                      "tertiary-container": "#00b5f5",
+                      "secondary": "#f4bb88",
+                      "on-secondary": "#4a2802",
+                      "error-container": "#93000a",
+                      "surface-variant": "#353535",
+                      "on-tertiary": "#00344a",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-primary-container": "#5e3300",
+                      "tertiary-fixed-dim": "#7ed0ff",
+                      "inverse-primary": "#8c4f00",
+                      "inverse-on-surface": "#313030",
+                      "primary-container": "#f29221",
+                      "surface-container-low": "#1b1b1b"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "fontFamily": {
+                      "headline": ["Epilogue"],
+                      "body": ["Be Vietnam Pro"],
+                      "label": ["Be Vietnam Pro"]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .chalk-texture {
+            background-image: radial-gradient(#ffffff05 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- Mobile Menu Button (Overlay Trigger) -->
+<button class="lg:hidden fixed bottom-6 right-6 z-[60] bg-primary text-on-primary p-4 rounded-full shadow-2xl" onclick="document.getElementById('side-nav').classList.toggle('-translate-x-full')">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<!-- SideNavBar -->
+<aside class="fixed inset-y-0 left-0 w-64 flex flex-col py-6 bg-[#1b1b1b] border-r border-[#353535]/15 shadow-[10px_0_30px_rgba(0,0,0,0.5)] z-50 font-['Epilogue'] font-medium transform transition-transform duration-300 -translate-x-full lg:translate-x-0" id="side-nav">
+<div class="px-6 mb-10 flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<span class="text-orange-500 font-black uppercase tracking-widest text-xs">Gestão Artisanal</span>
+<span class="text-on-surface font-bold text-xl tracking-tight italic">Quintal do Ramão</span>
+<span class="text-on-surface-variant text-[10px] uppercase tracking-widest opacity-60">Admin Console</span>
+</div>
+<button class="lg:hidden text-on-surface-variant" onclick="document.getElementById('side-nav').classList.add('-translate-x-full')">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/70 hover:text-[#F29221] mx-2 hover:bg-[#353535]/50 transition-all duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Painel</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/70 hover:text-[#F29221] mx-2 hover:bg-[#353535]/50 transition-all duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span>Pedidos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-[#F29221] text-[#131313] rounded-md mx-2 font-bold shadow-lg shadow-primary-container/20" href="#">
+<span class="material-symbols-outlined" data-icon="restaurant_menu">restaurant_menu</span>
+<span>Cardápio</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/70 hover:text-[#F29221] mx-2 hover:bg-[#353535]/50 transition-all duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span>Estoque</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/70 hover:text-[#F29221] mx-2 hover:bg-[#353535]/50 transition-all duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span>Relatórios</span>
+</a>
+</nav>
+<div class="mt-auto px-6 py-4 space-y-6">
+<button class="w-full bg-primary-container text-on-primary-container font-bold py-3 rounded-md shadow-xl shadow-black/40 hover:brightness-110 active:scale-95 transition-all">
+            Novo Pedido
+        </button>
+<div class="pt-6 border-t border-outline-variant/20 flex flex-col gap-2">
+<a class="flex items-center gap-3 text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="settings">settings</span>
+<span>Configurações</span>
+</a>
+<a class="flex items-center gap-3 text-error/70 hover:text-error transition-colors text-sm" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="logout">logout</span>
+<span>Sair</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="lg:ml-64 min-h-screen relative flex flex-col">
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 left-0 lg:left-64 h-16 flex items-center justify-between px-4 lg:px-8 bg-[#131313]/70 backdrop-blur-md border-b border-[#353535]/30 shadow-2xl shadow-black/40 z-40 font-['Epilogue'] tracking-tight">
+<div class="flex items-center gap-4">
+<h1 class="text-lg lg:text-xl font-bold text-on-surface">Cardápio</h1>
+<nav class="hidden sm:flex gap-6 ml-8">
+<button class="text-[#F29221] font-bold border-b-2 border-primary py-4">Produtos</button>
+<button class="text-[#e5e2e1]/60 hover:text-primary transition-colors py-4">Categorias</button>
+<button class="text-[#e5e2e1]/60 hover:text-primary transition-colors py-4">Promoções</button>
+</nav>
+</div>
+<div class="flex items-center gap-3 lg:gap-6">
+<div class="hidden md:flex items-center bg-surface-container rounded-full px-4 py-1.5 border border-outline-variant/10">
+<span class="material-symbols-outlined text-on-surface-variant text-xl mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm text-on-surface w-48" placeholder="Buscar no menu..." type="text"/>
+</div>
+<div class="flex gap-2 lg:gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined hover:text-primary cursor-pointer transition-colors" data-icon="search">search</span>
+<span class="material-symbols-outlined hover:text-primary cursor-pointer transition-colors" data-icon="notifications">notifications</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary-container/20 border border-primary/20 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Avatar do Administrador" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJVgZffDCdzXtmzekTK4SI0G1owAqRx18BRaZUdOnvIkz4a-CVEkGFacwUWDI7wMRq6Bsry-eQ3KAex-YEizwvVDSVgz6yTUFVbJiq0QVTGWZ6MnVMfuF-IAP3kf8pOAST9evvxJEh_MtWduFlOL4YMgtwSXAkVWbchUrHVEpLeW-nIBRGtzIcpfiP6p9R__cx-WTGvpASHQg5_Xm9sIW2Fcf1cq8gTortg4sevmmcSXlT22xhyNuvR68cnR9jR6sPNYHUqAE3a4hS"/>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="mt-16 p-4 lg:p-8 flex flex-col lg:flex-row gap-8 lg:h-[calc(100vh-4rem)] overflow-hidden">
+<!-- Product List -->
+<section class="flex-1 lg:overflow-y-auto lg:pr-4 lg:scrollbar-hide">
+<div class="flex flex-col sm:flex-row justify-between sm:items-end gap-4 mb-8">
+<div>
+<p class="text-primary font-headline italic mb-1">Catálogo de Sabores</p>
+<h2 class="text-3xl lg:text-4xl font-headline font-black tracking-tighter">Produtos</h2>
+</div>
+<button class="flex items-center justify-center gap-2 bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-bold hover:scale-[1.02] transition-transform shadow-lg shadow-primary-container/10">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                    Novo Produto
+                </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-4 lg:gap-6 pb-20">
+<!-- Product Card 1 -->
+<div class="group bg-surface-container-low p-4 rounded-xl flex gap-4 lg:gap-5 border-l-2 border-transparent hover:border-primary transition-all duration-300 hover:bg-surface-container-high cursor-pointer shadow-lg hover:shadow-black/50" onclick="document.getElementById('edit-panel').classList.remove('translate-y-full', 'lg:translate-x-full')">
+<div class="w-24 h-24 lg:w-32 lg:h-32 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container-highest">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="X-Burger Ramão" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrG13PlqKDA3GrxFkHLelf1STwILAyimXnYqrMVc6VhOuSdAza8TKlrI8v6P39LR3fgjvquARIyTQuBnCXRhsTwLk8Pi9CyXw0HPp6qb9FYCNHrTpCYy4x2to_q2KxFw8Tw68xRhbTBDT4Typnarpgp4v1ZJPKxdBZyHu9QoNEScYPyfJ6hXsgAIpL72vpggT8gdWCZ-dmpnORIAXVAUS7DYkyvTl6Ti7sPNftqcnL5YMVfdpCJo5xdY1E2-hopOj1v4nLcor7mqP4"/>
+</div>
+<div class="flex flex-col justify-between flex-1 py-1">
+<div>
+<span class="text-[10px] font-bold text-primary-fixed-dim uppercase tracking-[0.2em]">Lanches</span>
+<h3 class="text-lg lg:text-xl font-headline font-bold text-on-surface mt-1">X-Burger Ramão</h3>
+<p class="text-xs text-on-surface-variant line-clamp-2 mt-2 leading-relaxed italic opacity-80">Pão de brioche tostado na manteiga, blend bovino 180g, muito queijo prato e maionese secreta.</p>
+</div>
+<div class="flex justify-between items-center mt-2">
+<span class="text-lg font-headline font-bold text-primary">R$ 38,90</span>
+<span class="material-symbols-outlined text-on-surface-variant/30 group-hover:text-primary transition-colors" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="group bg-surface-container-low p-4 rounded-xl flex gap-4 lg:gap-5 border-l-2 border-transparent hover:border-primary transition-all duration-300 hover:bg-surface-container-high cursor-pointer shadow-lg hover:shadow-black/50" onclick="document.getElementById('edit-panel').classList.remove('translate-y-full', 'lg:translate-x-full')">
+<div class="w-24 h-24 lg:w-32 lg:h-32 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container-highest">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Marguerita Especial" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdHCNCHPzaOoE33zJoVVMwIcnyAKfmvelErttlDo_px3CscYlT4Sg4fZfDPCLmuGNZ5ODQhXs-_p_ON-qyBVbbvny5Uii2x1Kh1hI6ay9ngkYCaVRGLdZVH3JIs5JP1D7CDtVZGlr5z1MOJsY8kyWRNVh2olwqGZTliuikZZMBDLYQD2lYAnO11EVPQwEIdfBsOHyLUXW27c4JDrRrO_f2x9NNUf_4G4x31ePrRadjH-gSFX2W34Ly5Lj2VIc8iCokHhRTHuA2fBvo"/>
+</div>
+<div class="flex flex-col justify-between flex-1 py-1">
+<div>
+<span class="text-[10px] font-bold text-primary-fixed-dim uppercase tracking-[0.2em]">Pizzas</span>
+<h3 class="text-lg lg:text-xl font-headline font-bold text-on-surface mt-1">Marguerita Especial</h3>
+<p class="text-xs text-on-surface-variant line-clamp-2 mt-2 leading-relaxed italic opacity-80">Molho de tomate artesanal, muçarela de búfala, manjericão fresco e azeite trufado.</p>
+</div>
+<div class="flex justify-between items-center mt-2">
+<span class="text-lg font-headline font-bold text-primary">R$ 54,00</span>
+<span class="material-symbols-outlined text-on-surface-variant/30 group-hover:text-primary transition-colors" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="group bg-surface-container-low p-4 rounded-xl flex gap-4 lg:gap-5 border-l-2 border-transparent hover:border-primary transition-all duration-300 hover:bg-surface-container-high cursor-pointer shadow-lg hover:shadow-black/50" onclick="document.getElementById('edit-panel').classList.remove('translate-y-full', 'lg:translate-x-full')">
+<div class="w-24 h-24 lg:w-32 lg:h-32 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container-highest">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Soda de Laranja" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWUGWegIqzTG93GcDPl7A4kowzqmgZOUGfapkypJ8aEmrCpymUmEtXhoykDUQnbZmGQN9AgfHdoAvvUmy5hA-L8aaYVTc_tuyqzD7UsAN9A6ZetpwS8Xd5Wj-VNR5ZYFp7UCGeOwnMyzNgnqJNPmsQoh6WmuSL-W7e5NCtuNE2S3frrLvUJDw7c8ZV54KoGgHrdPofv4y3rGbaFEZyTHZF6K6TYN1lmauReBej4bJFxmxPhSkg9grP2iriS_i69e5YfM8NHZ4-0Xzp"/>
+</div>
+<div class="flex flex-col justify-between flex-1 py-1">
+<div>
+<span class="text-[10px] font-bold text-primary-fixed-dim uppercase tracking-[0.2em]">Bebidas</span>
+<h3 class="text-lg lg:text-xl font-headline font-bold text-on-surface mt-1">Soda de Laranja</h3>
+<p class="text-xs text-on-surface-variant line-clamp-2 mt-2 leading-relaxed italic opacity-80">Produção própria com laranjas do quintal, gás natural e hortelã fresca.</p>
+</div>
+<div class="flex justify-between items-center mt-2">
+<span class="text-lg font-headline font-bold text-primary">R$ 12,00</span>
+<span class="material-symbols-outlined text-on-surface-variant/30 group-hover:text-primary transition-colors" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group bg-surface-container-low p-4 rounded-xl flex gap-4 lg:gap-5 border-l-2 border-primary transition-all duration-300 hover:bg-surface-container-high cursor-pointer shadow-lg shadow-primary-container/10" onclick="document.getElementById('edit-panel').classList.remove('translate-y-full', 'lg:translate-x-full')">
+<div class="w-24 h-24 lg:w-32 lg:h-32 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container-highest">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Calabresa Defumada" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqxtAImebWA9URR7j9D8a0j-OJkbtHlv6xpPueJQOrk8t7S1fN3bkfKPOgwCVd3cDPrFW2_KC1VrFeIfAgfp-7SOUZLlUWzGrfgNsQ74P5-izR8Si5e-qwjbfIVQMwmgaaw5QNcpSvzL49_P0tmNxw2TAbLl4wARQcs46DCznvYA6plrAgbJwrY9T_OtFKIb-rA5P7oZ-9lrekJn3r3xG8HvtoHfweCT31yZ-Djb3K4k5sq3I6-wQTSQsePh7jkt8IEkzySDvASreW"/>
+</div>
+<div class="flex flex-col justify-between flex-1 py-1">
+<div>
+<span class="text-[10px] font-bold text-primary-fixed-dim uppercase tracking-[0.2em]">Pizzas</span>
+<h3 class="text-lg lg:text-xl font-headline font-bold text-on-surface mt-1">Calabresa Defumada</h3>
+<p class="text-xs text-on-surface-variant line-clamp-2 mt-2 leading-relaxed italic opacity-80">Calabresa artesanal defumada em lenha de laranjeira, cebola roxa e azeitonas pretas.</p>
+</div>
+<div class="flex justify-between items-center mt-2">
+<span class="text-lg font-headline font-bold text-primary">R$ 49,00</span>
+<span class="material-symbols-outlined text-primary" data-icon="edit" style="font-variation-settings: 'FILL' 1;">edit</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Product Form (Lateral Panel / Mobile Fullscreen) -->
+<section class="fixed inset-0 lg:static lg:w-[450px] bg-surface-container border-l lg:border border-outline-variant/15 lg:rounded-2xl flex flex-col overflow-hidden shadow-2xl z-[55] transition-transform duration-300 translate-y-full lg:translate-y-0" id="edit-panel">
+<div class="chalk-texture absolute inset-0 opacity-10 pointer-events-none"></div>
+<div class="p-6 border-b border-outline-variant/10 flex justify-between items-center bg-surface-container-high/50 backdrop-blur-sm z-10">
+<h3 class="text-xl font-headline font-black tracking-tight">Editar Produto</h3>
+<button class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface-container-highest transition-colors" onclick="document.getElementById('edit-panel').classList.add('translate-y-full', 'lg:translate-x-full')">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="close">close</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto p-6 space-y-8 z-10">
+<!-- Image Upload Section -->
+<div class="space-y-3">
+<label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Imagem do Produto</label>
+<div class="relative w-full aspect-video rounded-xl border-2 border-dashed border-outline-variant/30 flex flex-col items-center justify-center bg-surface-container-lowest group cursor-pointer hover:border-primary/50 transition-colors">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant group-hover:scale-110 transition-transform" data-icon="add_a_photo">add_a_photo</span>
+<p class="text-xs text-on-surface-variant mt-2">Clique ou arraste para upload</p><p class="text-[10px] text-on-surface-variant/60 mt-1 uppercase tracking-tighter">Tamanho ideal: 800x800px (Quadrado)</p>
+</div>
+</div>
+<!-- Basic Info -->
+<div class="space-y-6">
+<div class="relative">
+<input class="peer w-full bg-transparent border-0 border-b border-outline-variant/30 px-0 py-2 focus:ring-0 focus:border-primary transition-all text-on-surface font-medium placeholder-transparent" id="name" type="text" value="Calabresa Defumada"/>
+<label class="absolute left-0 -top-3.5 text-on-surface-variant text-xs font-bold uppercase tracking-widest transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-on-surface-variant/50 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-primary peer-focus:text-xs" for="name">Nome do Produto</label>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div class="relative">
+<label class="block text-on-surface-variant text-[10px] font-bold uppercase tracking-widest mb-1.5">Categoria</label>
+<select class="w-full bg-surface-container-highest border-0 rounded-md py-2 px-3 focus:ring-1 focus:ring-primary text-sm text-on-surface font-medium appearance-none">
+<option>Lanches</option>
+<option selected="">Pizzas</option>
+<option>Bebidas</option>
+<option>Sobremesas</option>
+</select>
+</div>
+<div class="relative">
+<label class="block text-on-surface-variant text-[10px] font-bold uppercase tracking-widest mb-1.5">Valor (R$)</label>
+<input class="w-full bg-surface-container-highest border-0 rounded-md py-2 px-3 focus:ring-1 focus:ring-primary text-sm text-on-surface font-bold text-right" type="text" value="49,00"/>
+</div>
+</div>
+<div class="relative">
+<label class="block text-on-surface-variant text-[10px] font-bold uppercase tracking-widest mb-1.5">Descrição</label>
+<textarea class="w-full bg-surface-container-highest border-0 rounded-md py-2 px-3 focus:ring-1 focus:ring-primary text-sm text-on-surface leading-relaxed italic" rows="3">Calabresa artesanal defumada em lenha de laranjeira sobre muçarela derretida, cebola roxa e azeitonas pretas. Finalizada com orégano fresco.</textarea>
+</div>
+</div>
+<!-- Asymmetric Toggle Area -->
+<div class="p-4 bg-surface-container-low rounded-xl flex items-center justify-between border border-primary/10">
+<div>
+<p class="font-bold text-sm">Permitir Meio a Meio</p>
+<p class="text-[10px] text-on-surface-variant italic">Habilita combinação com outros sabores</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+<!-- Variations Section -->
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Variações &amp; Adicionais</label>
+<button class="text-primary text-[10px] font-bold uppercase hover:underline flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="add_circle">add_circle</span>
+                            Novo Grupo
+                        </button>
+</div>
+<div class="space-y-3">
+<div class="bg-surface-container-highest/30 p-3 rounded-lg border border-outline-variant/10">
+<div class="flex justify-between items-center mb-3">
+<span class="text-xs font-bold italic">Tamanho da Pizza</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm cursor-pointer" data-icon="more_vert">more_vert</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-primary/20 text-primary rounded-full text-[10px] font-bold border border-primary/30">Média (6 fatias)</span>
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant rounded-full text-[10px] font-bold">Grande (8 fatias) (+R$ 15)</span>
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant rounded-full text-[10px] font-bold">Gigante (12 fatias) (+R$ 28)</span>
+</div>
+</div>
+<div class="bg-surface-container-highest/30 p-3 rounded-lg border border-outline-variant/10">
+<div class="flex justify-between items-center mb-3">
+<span class="text-xs font-bold italic">Borda Recheada</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm cursor-pointer" data-icon="more_vert">more_vert</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant rounded-full text-[10px] font-bold">Sem Borda</span>
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant rounded-full text-[10px] font-bold">Catupiry Original (+R$ 8)</span>
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant rounded-full text-[10px] font-bold">Cheddar (+R$ 8)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="p-6 bg-surface-container-high/80 backdrop-blur-md border-t border-outline-variant/15 flex gap-4 z-10">
+<button class="flex-1 px-4 py-3 border border-outline-variant/30 text-on-surface rounded-lg font-bold hover:bg-surface-container-highest transition-colors">Descartar</button>
+<button class="flex-[2] px-4 py-3 bg-primary-container text-on-primary-container rounded-lg font-bold shadow-lg shadow-primary-container/20 hover:brightness-110 active:scale-[0.98] transition-all">Salvar</button>
+</div>
+</section>
+</div>
+</main>
+<!-- Chalk Divider Signature -->
+<div class="fixed bottom-0 lg:left-64 right-0 pointer-events-none opacity-20 h-8 flex justify-center items-center overflow-hidden">
+<svg class="w-full h-4" preserveaspectratio="none" viewbox="0 0 1000 20">
+<path d="M0,10 Q25,12 50,10 T100,10 T150,10 T200,10 T250,10 T300,10 T350,10 T400,10 T450,10 T500,10 T550,10 T600,10 T650,10 T700,10 T750,10 T800,10 T850,10 T900,10 T950,10 T1000,10" fill="none" stroke="white" stroke-dasharray="5,3" stroke-width="1.5"></path>
+</svg>
+</div>
+</body></html>

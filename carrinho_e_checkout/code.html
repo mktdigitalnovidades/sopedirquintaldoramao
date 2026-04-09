@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;700;800&amp;family=Be+Vietnam+Pro:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#353535",
+                    "on-tertiary-fixed-variant": "#004c6a",
+                    "tertiary-fixed": "#c5e7ff",
+                    "on-primary": "#4b2800",
+                    "secondary-fixed": "#ffdcbf",
+                    "on-secondary-container": "#e4ae7b",
+                    "tertiary": "#7ed0ff",
+                    "primary": "#ffb874",
+                    "on-primary-container": "#5e3300",
+                    "surface-container-high": "#2a2a2a",
+                    "surface-container-highest": "#353535",
+                    "inverse-on-surface": "#313030",
+                    "on-secondary": "#4a2802",
+                    "secondary-container": "#674018",
+                    "tertiary-container": "#00b5f5",
+                    "on-secondary-fixed-variant": "#643e16",
+                    "inverse-primary": "#8c4f00",
+                    "background": "#131313",
+                    "inverse-surface": "#e5e2e1",
+                    "surface": "#131313",
+                    "surface-container-low": "#1b1b1b",
+                    "on-tertiary-fixed": "#001e2d",
+                    "on-secondary-fixed": "#2d1600",
+                    "surface-container-lowest": "#0e0e0e",
+                    "outline": "#a28d7b",
+                    "on-error": "#690005",
+                    "error-container": "#93000a",
+                    "on-error-container": "#ffdad6",
+                    "secondary": "#f4bb88",
+                    "tertiary-fixed-dim": "#7ed0ff",
+                    "on-primary-fixed-variant": "#6a3b00",
+                    "secondary-fixed-dim": "#f4bb88",
+                    "surface-bright": "#393939",
+                    "error": "#ffb4ab",
+                    "outline-variant": "#544435",
+                    "on-primary-fixed": "#2d1600",
+                    "surface-container": "#20201f",
+                    "on-surface": "#e5e2e1",
+                    "on-tertiary-container": "#00435d",
+                    "surface-tint": "#ffb874",
+                    "primary-fixed-dim": "#ffb874",
+                    "primary-fixed": "#ffdcbf",
+                    "surface-dim": "#131313",
+                    "on-background": "#e5e2e1",
+                    "primary-container": "#f29221",
+                    "on-tertiary": "#00344a",
+                    "on-surface-variant": "#dac2af"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Epilogue"],
+                    "body": ["Be Vietnam Pro"],
+                    "label": ["Be Vietnam Pro"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .chalk-texture {
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary/30 min-h-screen pb-32 chalk-texture">
+<!-- TopAppBar -->
+<header class="bg-[#131313]/70 backdrop-blur-md fixed top-0 w-full z-50 flex items-center justify-between px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#F29221]" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+<h1 class="text-xl font-bold text-[#F29221] uppercase tracking-wider font-headline">Quintal do Ramão</h1>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[#e5e2e1] hover:text-[#F29221] transition-colors duration-300 font-label uppercase text-xs tracking-widest" href="#">Menu</a>
+<a class="text-[#F29221] font-bold font-label uppercase text-xs tracking-widest" href="#">Carrinho</a>
+<a class="text-[#e5e2e1] hover:text-[#F29221] transition-colors duration-300 font-label uppercase text-xs tracking-widest" href="#">Pedidos</a>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-6 pt-24 pb-12">
+<div class="mb-10">
+<h2 class="font-headline text-4xl md:text-5xl font-extrabold text-on-surface mb-2 leading-tight">Seu Pedido</h2>
+<p class="text-on-surface-variant font-body">Confira os itens selecionados para o seu banquete.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+<!-- Cart Items -->
+<div class="lg:col-span-2 space-y-8">
+<section>
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic">Itens no Carrinho</h3>
+<span class="text-label-md text-on-surface-variant">2 Itens</span>
+</div>
+<div class="space-y-4">
+<!-- Item 1 -->
+<div class="bg-surface-container-low p-5 rounded-md flex items-center gap-4 transition-transform active:scale-[0.98]">
+<div class="w-20 h-20 bg-surface-container-highest rounded-md overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover grayscale-[20%]" data-alt="close-up of a gourmet cheeseburger with melting cheddar and crispy bacon on a rustic dark wooden table" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJm_9TzhhZZN5jNpRcHQ9iD5OWQDiyD7jzWai3l4JW16Y5zxJyA_svTqQAXnDuoA8gvwEn5kdaTdliuLrd0eylDwvwXlqlAxypeD6SNcaqoaSNn8l5M_AAcGY6AC6geVvcdno14nF3BmxhwVHzvETan3LibdMQevjLzITEmD0Y3wRK7XctqCvCdRmddVF2QItg2E96yVb4yq9QVge9mbNsxv0s81XAq3YJuii1eG28-RjpZ9d-JcVPrfC0u-6TMTkrc0LngRUeFN5c"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h4 class="font-headline font-bold text-lg text-on-surface leading-tight">Cheddar &amp; Bacon</h4>
+<span class="font-label font-bold text-on-surface">R$ 38,00</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-1 mb-3">Hambúrguer artesanal, dobro de cheddar, bacon crocante.</p>
+<div class="flex items-center gap-3">
+<button class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center text-on-surface hover:bg-outline-variant transition-colors">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="font-bold text-sm px-2">1</span>
+<button class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center text-on-surface hover:bg-outline-variant transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="bg-surface-container-low p-5 rounded-md flex items-center gap-4 transition-transform active:scale-[0.98]">
+<div class="w-20 h-20 bg-surface-container-highest rounded-md overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover grayscale-[20%]" data-alt="overhead shot of a traditional Brazilian lunch plate with breaded chicken, rice, beans, and fresh salad in a rustic tavern setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbO3rwbNiJffQ7PX3OfXmS7bhr73vsy11qkjNYZMHU6GqyefQxxvV21SaCwUS_WcGUhm0K_6ZSTsuY7vP6GVwBGUH0uAH-RJqnFtmDA2wjbRX_pxcFkknaY-cXQQI3n8ge6TvZvyeINyuqM6qRMawWgg-4TAyOv6-fciC0jCKNaDYpjm1b4jVJMa_ZOahpYBSxaEXdDtQ85FSzqXF-xLNWNusxcOJmnV9sW497eRdvl81H726jbYfT5Afux8sWY1FktD_snJ3fzC-h"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h4 class="font-headline font-bold text-lg text-on-surface leading-tight">Marmitex Frango Empanado</h4>
+<span class="font-label font-bold text-on-surface">R$ 32,00</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-1 mb-3">Tamanho G, acompanha arroz, feijão e salada fresca.</p>
+<div class="flex items-center gap-3">
+<button class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center text-on-surface hover:bg-outline-variant transition-colors">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="font-bold text-sm px-2">1</span>
+<button class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center text-on-surface hover:bg-outline-variant transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Chalk Divider -->
+<div class="py-12 flex justify-center opacity-30">
+<svg fill="none" height="10" viewbox="0 0 200 10" width="200" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 5C20 2 40 8 60 5C80 2 100 8 120 5C140 2 160 8 180 5C190 3.5 200 5 200 5" stroke="currentColor" stroke-dasharray="2 6" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</div>
+</section>
+<section class="space-y-10">
+<!-- Delivery Options -->
+<div>
+<h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic mb-6">Como deseja receber?</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<label class="relative flex items-center p-4 rounded-md bg-surface-container-low cursor-pointer hover:bg-surface-container-highest transition-all group">
+<input checked="" class="hidden peer" name="delivery" type="radio" value="retirada"/>
+<div class="w-5 h-5 border-2 border-outline rounded-full mr-4 peer-checked:border-primary flex items-center justify-center transition-colors">
+<div class="w-2.5 h-2.5 bg-primary rounded-full opacity-0 peer-checked:opacity-100"></div>
+</div>
+<div class="flex flex-col">
+<span class="font-bold text-on-surface">Retirada no Local</span>
+<span class="text-xs text-on-surface-variant italic">R$ 0,00</span>
+</div>
+</label>
+<label class="relative flex items-center p-4 rounded-md bg-surface-container-low cursor-pointer hover:bg-surface-container-highest transition-all group">
+<input class="hidden peer" name="delivery" type="radio" value="consumo"/>
+<div class="w-5 h-5 border-2 border-outline rounded-full mr-4 peer-checked:border-primary flex items-center justify-center transition-colors">
+<div class="w-2.5 h-2.5 bg-primary rounded-full opacity-0 peer-checked:opacity-100"></div>
+</div>
+<div class="flex flex-col">
+<span class="font-bold text-on-surface">Consumo no Quintal</span>
+<span class="text-xs text-on-surface-variant italic">R$ 0,00</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Payment Methods -->
+<div>
+<h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic mb-6">Forma de Pagamento</h3>
+<div class="relative group">
+<select class="w-full bg-transparent border-b border-outline-variant/30 py-3 font-body focus:outline-none focus:border-primary transition-all appearance-none cursor-pointer" id="payment_method">
+<option class="bg-surface text-on-surface" value="pix">PIX</option>
+<option class="bg-surface text-on-surface" value="cartao">Cartão</option>
+<option class="bg-surface text-on-surface" value="dinheiro">Dinheiro</option>
+</select>
+<span class="material-symbols-outlined absolute right-0 top-3 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+<!-- Conditionally shown (conceptually via script, here static visual) -->
+<div class="mt-6" id="change_input">
+<label class="block text-xs uppercase tracking-widest text-on-surface-variant font-label mb-2">Troco para quanto?</label>
+<input class="w-full bg-transparent border-b border-outline-variant/30 py-2 font-body focus:outline-none focus:border-primary transition-all placeholder:text-on-surface-variant/40" placeholder="Ex: R$ 100,00" type="text"/>
+</div>
+</div>
+</section>
+</div>
+<!-- Order Summary Sidebar -->
+<div class="lg:col-span-1">
+<div class="bg-surface-container-highest p-8 rounded-md sticky top-28 shadow-[0_20px_40px_rgba(0,0,0,0.4)] border border-outline-variant/10">
+<h3 class="font-headline font-bold text-2xl text-on-surface mb-8 border-b border-outline-variant/20 pb-4">Resumo</h3>
+<div class="space-y-4 mb-8">
+<div class="flex justify-between font-label">
+<span class="text-on-surface-variant">Itens (2)</span>
+<span class="text-on-surface">R$ 70,00</span>
+</div>
+<div class="flex justify-between font-label">
+<span class="text-on-surface-variant">Taxa de Entrega</span>
+<span class="text-on-surface">R$ 0,00</span>
+</div>
+</div>
+<div class="flex justify-between items-end border-t border-outline-variant/20 pt-6 mb-10">
+<span class="font-headline font-bold text-lg text-primary uppercase italic">Total</span>
+<span class="font-headline font-extrabold text-3xl text-on-surface">R$ 70,00</span>
+</div>
+<button class="w-full bg-primary-container text-on-primary-container font-headline font-bold py-5 rounded-md flex items-center justify-center gap-3 transition-all hover:brightness-110 active:scale-95 group shadow-lg shadow-primary/20">
+                        Finalizar Pedido via WhatsApp
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">send</span>
+</button>
+<p class="text-[10px] text-center mt-4 text-on-surface-variant font-label uppercase tracking-widest leading-relaxed">
+                        Ao clicar, seu pedido será enviado para<br/>
+<span class="text-primary font-bold">55 19 99548-2899</span>
+</p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-[#131313]/70 backdrop-blur-md md:hidden shadow-[0_-10px_30px_rgba(0,0,0,0.4)]">
+<button class="flex flex-col items-center justify-center text-[#e5e2e1] p-2 hover:bg-[#353535] rounded-md transition-all">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label text-[10px] uppercase mt-1">Menu</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-[#F29221] text-[#131313] rounded-md p-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shopping_cart</span>
+<span class="font-label text-[10px] uppercase mt-1">Carrinho</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#e5e2e1] p-2 hover:bg-[#353535] rounded-md transition-all">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label text-[10px] uppercase mt-1">Pedidos</span>
+</button>
+</nav>
+</body></html>
