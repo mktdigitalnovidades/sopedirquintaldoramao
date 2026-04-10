@@ -529,7 +529,7 @@
                     <label class="block text-[9px] font-black uppercase tracking-[0.2em] text-on-surface-variant/60 mb-2">Cor Principal</label>
                     <div class="flex gap-2">
                        <input type="color" id="cfg-primary-color" value="#F29221" class="w-10 h-10 rounded-lg overflow-hidden border-0 bg-transparent cursor-pointer">
-                       <input type="text" id="cfg-primary-hex" value="#F29221" class="flex-1 bg-surface-container-highest border-0 rounded-lg text-xs font-mono px-3" readonly>
+                       <input type="text" id="cfg-primary-hex" value="#F29221" class="flex-1 bg-surface-container-highest border-0 rounded-lg text-xs font-mono px-3 focus:ring-1 focus:ring-primary outline-none" maxlength="7" placeholder="#000000">
                     </div>
                  </div>
                  <div>
@@ -1203,6 +1203,14 @@ function hexToRgb(hex) {
 
 document.getElementById('cfg-primary-color')?.addEventListener('input', updateVisuals);
 document.getElementById('cfg-bg-color')?.addEventListener('input', updateVisuals);
+document.getElementById('cfg-primary-hex')?.addEventListener('input', (e) => {
+   let val = e.target.value.trim();
+   if(val.length === 7 && val.startsWith('#')) {
+      const colorInput = document.getElementById('cfg-primary-color');
+      if(colorInput) colorInput.value = val;
+      updateVisuals();
+   }
+});
 
 function updateFeaturedImagePreview(url) {
    const img = document.getElementById('cfg-featured-preview');
