@@ -1319,7 +1319,7 @@ async function saveStoreConfig(btn) {
          featured_image: document.getElementById('cfg-featured-image')?.value || '',
       };
       
-      const { error } = await supabaseClient.from('quintal_configs').upsert({ key: 'store_info', value: val });
+      const { error } = await supabaseClient.from('quintal_configs').upsert({ key: 'store_info', value: val }, { onConflict: 'key' });
       if (!error) {
          alert('Configurações salvas com sucesso!');
          window.location.reload(); // Reload to apply all visual changes
