@@ -368,52 +368,10 @@
         <h4 class="text-2xl font-black font-headline uppercase tracking-tighter italic">Os Queridinhos do Quintal</h4>
         <div class="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent"></div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Item 1 -->
-        <div class="bg-surface-container-low group hover:bg-surface-container-high transition-all rounded-xl p-4 flex gap-4 items-center border border-white/5 shadow-lg">
-          <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 asymmetric-border bg-black/40">
-            <img src="https://images.unsplash.com/photo-1603052875302-d376b7c0638a?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
-          </div>
-          <div class="flex-1 min-w-0">
-            <h5 class="text-xs font-black truncate uppercase tracking-tighter">Coxinha de Rabada</h5>
-            <p class="text-[9px] text-on-surface-variant font-bold mb-1">84 pedidos hoje</p>
-            <div class="flex items-center gap-1 text-primary">
-              <span class="material-symbols-outlined text-xs">trending_up</span>
-              <span class="text-[8px] font-black tracking-widest uppercase">TOP #1</span>
-            </div>
-          </div>
-        </div>
-        <!-- Item 2 -->
-        <div class="bg-surface-container-low group hover:bg-surface-container-high transition-all rounded-xl p-4 flex gap-4 items-center border border-white/5 shadow-lg">
-          <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 asymmetric-border bg-black/40">
-            <img src="https://images.unsplash.com/photo-1535954446003-fb93ae067e1a?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
-          </div>
-          <div class="flex-1 min-w-0">
-            <h5 class="text-xs font-black truncate uppercase tracking-tighter">Chopp Noir Gelo</h5>
-            <p class="text-[9px] text-on-surface-variant font-bold mb-1">76 pedidos hoje</p>
-            <div class="flex items-center gap-1 text-on-surface-variant/40">
-              <span class="material-symbols-outlined text-xs">horizontal_rule</span>
-              <span class="text-[8px] font-black tracking-widest uppercase">TOP #2</span>
-            </div>
-          </div>
-        </div>
-        <!-- Item 3 -->
-        <div class="bg-surface-container-low group hover:bg-surface-container-high transition-all rounded-xl p-4 flex gap-4 items-center border border-white/5 shadow-lg">
-          <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 asymmetric-border bg-black/40">
-            <img src="https://images.unsplash.com/photo-1510626146934-055b4bb3f235?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
-          </div>
-          <div class="flex-1 min-w-0">
-            <h5 class="text-xs font-black truncate uppercase tracking-tighter">Caipirinha Limão</h5>
-            <p class="text-[9px] text-on-surface-variant font-bold mb-1">52 pedidos hoje</p>
-            <div class="flex items-center gap-1 text-primary">
-              <span class="material-symbols-outlined text-xs">trending_up</span>
-              <span class="text-[8px] font-black tracking-widest uppercase">TOP #3</span>
-            </div>
-          </div>
-        </div>
-        <!-- Ver Tudo -->
-        <div class="bg-surface-container-low group hover:bg-surface-container-high transition-all rounded-xl p-4 flex items-center justify-center border border-dashed border-white/10 shadow-lg">
-          <button class="text-[10px] font-black uppercase tracking-widest text-primary hover:scale-105 transition-transform">Ver Lista Completa</button>
+      <div id="best-sellers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Render via JS -->
+        <div class="col-span-full py-10 text-center opacity-20">
+          <p class="text-[10px] font-black uppercase tracking-widest italic">Calculando mais pedidos...</p>
         </div>
       </div>
     </div>
@@ -1758,7 +1716,7 @@ function filterCustomers() {
 
 async function updateStats() {
    const today = new Date().toISOString().split('T')[0];
-   const { data } = await supabaseClient.from('quintal_pedidos').select('total').gte('created_at', today);
+   const { data } = await supabaseClient.from('quintal_pedidos').select('*').gte('created_at', today);
    const orders = data || [];
    const totalSales = orders.reduce((s, o) => s + parseFloat(o.total), 0);
    const ticket = orders.length > 0 ? (totalSales / orders.length) : 0;
@@ -1766,6 +1724,55 @@ async function updateStats() {
    document.getElementById('stat-sales').textContent = 'R$ ' + totalSales.toFixed(2).replace('.', ',');
    document.getElementById('stat-active-orders').textContent = orders.length; // Simplified for "today"
    document.getElementById('stat-ticket').textContent = 'R$ ' + ticket.toFixed(2).replace('.', ',');
+
+   // Calculate Best Sellers (Queridinhos)
+   const itemMap = {};
+   orders.forEach(o => {
+      const items = o.items || [];
+      items.forEach(i => {
+         const name = i.name;
+         itemMap[name] = (itemMap[name] || 0) + i.qty;
+      });
+   });
+
+   const sortedItems = Object.entries(itemMap)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3); // Get Top 3
+
+   const grid = document.getElementById('best-sellers-grid');
+   if (grid) {
+      if (sortedItems.length === 0) {
+         grid.innerHTML = `<div class="col-span-full py-10 text-center opacity-20"><p class="text-[10px] font-black uppercase tracking-widest italic">Aguardando vendas de hoje...</p></div>`;
+         return;
+      }
+
+      grid.innerHTML = sortedItems.map(([name, qty], idx) => {
+         // Find product image in allProducts
+         const productInfo = allProducts.find(p => p.name === name);
+         const img = productInfo ? productInfo.image_url : 'https://via.placeholder.com/200?text=SOPEDIR';
+         
+         return `
+           <div class="bg-surface-container-low group hover:bg-surface-container-high transition-all rounded-xl p-4 flex gap-4 items-center border border-white/5 shadow-lg">
+             <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 asymmetric-border bg-black/40">
+               <img src="${img}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+             </div>
+             <div class="flex-1 min-w-0">
+               <h5 class="text-xs font-black truncate uppercase tracking-tighter">${name}</h5>
+               <p class="text-[9px] text-on-surface-variant font-bold mb-1">${qty} pedidos hoje</p>
+               <div class="flex items-center gap-1 text-primary">
+                 <span class="material-symbols-outlined text-xs">trending_up</span>
+                 <span class="text-[8px] font-black tracking-widest uppercase">TOP #${idx + 1}</span>
+               </div>
+             </div>
+           </div>
+         `;
+      }).join('') + `
+        <!-- Ver Tudo Button placeholder -->
+        <div class="bg-surface-container-low group hover:bg-surface-container-high transition-all rounded-xl p-4 flex items-center justify-center border border-dashed border-white/10 shadow-lg">
+          <button onclick="showAdmin('produtos')" class="text-[10px] font-black uppercase tracking-widest text-primary hover:scale-105 transition-transform">Ver Cardápio</button>
+        </div>
+      `;
+   }
 }
 
 // Iniciar
