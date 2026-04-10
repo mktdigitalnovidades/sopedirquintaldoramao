@@ -1680,9 +1680,9 @@ function renderOrders(data) {
                <div class="flex flex-wrap items-center gap-2 mb-3">
                   <span class="text-[9px] font-black bg-surface-container-highest px-2 py-1 rounded text-on-surface-variant font-mono tracking-widest border border-white/5">#${o.id.slice(-6).toUpperCase()}</span>
                   <div class="flex flex-col">
-                     ${(o.customer_name && o.customer_name.toLowerCase() !== 'cliente web' && o.customer_name.toLowerCase() !== 'cliente')
+                     ${(o.customer_name && o.customer_name.trim() !== '')
                        ? `<h3 class="font-headline font-black text-base tracking-tighter italic uppercase text-on-surface hover:text-[#F29221] transition-colors">${o.customer_name}</h3>`
-                       : `<h3 class="font-headline font-black text-sm tracking-tighter italic uppercase text-on-surface-variant/40">S/ Nome</h3>`
+                       : `<h3 class="font-headline font-black text-sm tracking-tighter italic uppercase text-on-surface-variant/40">S/ NOME</h3>`
                      }
                      ${o.customer_phone
                        ? `<a href="https://wa.me/55${String(o.customer_phone).replace(/\D/g, '')}" target="_blank" class="flex items-center gap-1 text-[10px] font-black tracking-widest uppercase text-[#25D366] hover:brightness-110 mt-0.5">
@@ -1770,13 +1770,34 @@ function showAdmin(section) {
 
 // ===== CRM / CUSTOMERS =====
 async function fetchCustomers() {
-  const { data, error } = await supabaseClient
-    .from('quintal_clientes')
-    .select('*')
-    .order('updated_at', { ascending: false });
-    
-  if (error) { alert('Acesso aos clientes negado pelo Banco (Erro: ' + error.message + '). Verifique suas Políticas e Permissões do Supabase.'); return; }
-  renderCustomers(data);
+  if (allOrdersData.length === 0) {
+      const { data } = await supabaseClient.from('quintal_pedidos').select('*').order('created_at', { ascending: false });
+      allOrdersData = data || [];
+  }
+  
+  const clientMap = {};
+  allOrdersData.forEach(o => {
+     if (!o.customer_phone) return;
+     const f = o.customer_phone;
+     if (!clientMap[f]) {
+         clientMap[f] = {
+             nome: o.customer_name || 'Sem Nome',
+             telefone: f,
+             total_pedidos: 0,
+             ultimo_pedido_id: o.id,
+             updated_at: o.created_at
+         };
+     }
+     clientMap[f].total_pedidos++;
+     if (new Date(o.created_at) > new Date(clientMap[f].updated_at)) {
+         clientMap[f].updated_at = o.created_at;
+         clientMap[f].ultimo_pedido_id = o.id;
+         if (o.customer_name && o.customer_name.trim() !== '') clientMap[f].nome = o.customer_name;
+     }
+  });
+  
+  const list = Object.values(clientMap).sort((a,b) => new Date(b.updated_at) - new Date(a.updated_at));
+  renderCustomers(list);
 }
 
 function renderCustomers(list) {

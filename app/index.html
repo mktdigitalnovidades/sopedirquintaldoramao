@@ -301,12 +301,12 @@
             <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic" data-i18n="cart-items-title">Itens no Carrinho</h3>
             <span id="cart-item-count" class="text-sm text-on-surface-variant">0 Itens</span>
           </div>
-          <div id="empty-cart-msg" class="text-on-surface-variant italic text-center py-12">
-            <span data-i18n="cart-empty">Seu carrinho está vazio.</span>
-            <button onclick="showPage('menu')" class="text-[#F29221] font-bold underline" data-i18n="cart-see-menu">Ver cardápio</button>
+          <div id="empty-cart-msg" class="text-on-surface text-center py-12">
+            <span data-i18n="cart-empty" class="font-extrabold text-lg opacity-80">Seu carrinho está vazio.</span>
+            <button onclick="showPage('menu')" class="text-[#f29221] font-black underline sm:ml-2" data-i18n="cart-see-menu">Dê uma olhada no cardápio</button>
           </div>
           <div id="cart-items" class="space-y-4"></div>
-          <div class="py-8 flex justify-center opacity-30">
+          <div class="py-12 flex justify-center opacity-70">
             <svg fill="none" height="10" viewBox="0 0 200 10" width="200">
               <path d="M0 5C20 2 40 8 60 5C80 2 100 8 120 5C140 2 160 8 180 5C190 3.5 200 5 200 5" stroke="currentColor" stroke-dasharray="2 6" stroke-linecap="round" stroke-width="2"></path>
             </svg>
@@ -847,10 +847,15 @@ async function loadStoreConfig() {
 
     const addrBtnHero = document.getElementById('site-address-link-hero');
     if (addrBtnHero) {
-       if (STORE_CONFIG.google_link) {
-           addrBtnHero.href = STORE_CONFIG.google_link;
-       } else if (STORE_CONFIG.address) {
-           addrBtnHero.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(STORE_CONFIG.address);
+       let linkMaps = STORE_CONFIG.google_link;
+       let fallbackAddress = STORE_CONFIG.address || '';
+       
+       if (fallbackAddress.startsWith('http')) {
+           addrBtnHero.href = fallbackAddress;
+       } else if (linkMaps) {
+           addrBtnHero.href = linkMaps;
+       } else if (fallbackAddress) {
+           addrBtnHero.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(fallbackAddress);
        }
     }
 
