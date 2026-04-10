@@ -171,8 +171,9 @@
 <!-- ===== HEADER STICKY ===== -->
 <header class="bg-[#131313]/80 backdrop-blur-lg sticky top-0 z-50 flex items-center justify-between px-5 py-3 w-full border-b border-white/5">
   <div class="flex items-center gap-2">
-    <div class="bg-[#F29221] p-1.5 rounded-lg shadow-lg shadow-primary/10">
-      <span class="material-symbols-outlined text-xl text-[#131313] font-black">restaurant</span>
+    <div id="logo-header-container" class="bg-[#F29221] p-1.5 rounded-lg shadow-lg shadow-primary/10">
+      <span id="logo-header-icon" class="material-symbols-outlined text-xl text-[#131313] font-black">restaurant</span>
+      <img id="logo-header-img" src="" class="w-6 h-6 object-contain hidden">
     </div>
     <h1 class="text-lg font-black text-[#e5e2e1] uppercase tracking-tighter font-headline italic brand-name">Quintal do Ramão</h1>
   </div>
@@ -190,8 +191,11 @@
       src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-5iLwfDwjU4VC6bjyohtSTDE2PCnAXfm4aBd5UnwtK8_WDTqfDZoYWoFYCdgEupoN1r0HPyJP0qLUzgHMKoYjEUjHYrbwK_FyB2YKa1vkBn1Qs49Dnlrn69g1qwf1YEKek7HxAoOcIegnHTGEGOvThAxFeAcBbwMADl4wvjeNd5ZjbgzLkkXFilkUUMAdEI3WeV7olQMlA__L5Di3vnhkodBVETtaCDpuig4jDVaPoPx8_diI-FhSxpPnIT8jdUuTWE24MGiGxyjC"/>
     <div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
     <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6 pt-5">
-      <span class="material-symbols-outlined text-[#F29221] text-3xl mb-1">restaurant</span>
-      <h2 class="text-2xl md:text-4xl font-headline font-black text-[#F29221] uppercase tracking-tighter mb-2 italic">Quintal do Ramão</h2>
+      <div id="logo-hero-container" class="mb-2">
+        <span id="logo-hero-icon" class="material-symbols-outlined text-[#F29221] text-4xl">restaurant</span>
+        <img id="logo-hero-img" src="" class="w-16 h-16 object-contain hidden drop-shadow-lg">
+      </div>
+      <h2 class="text-2xl md:text-4xl font-headline font-black text-[#F29221] uppercase tracking-tighter mb-2 italic brand-name">Quintal do Ramão</h2>
         <div class="flex items-center justify-center gap-4 mt-1">
           <a id="site-whatsapp-btn" href="#" target="_blank" class="flex items-center gap-2 bg-[#25D366] text-white px-3 py-1.5 rounded-full text-xs font-bold hover:scale-105 transition-transform shadow-lg">
             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.747-2.874-2.512-2.96-2.626-.088-.113-.716-.953-.716-1.819 0-.866.454-1.292.614-1.457.16-.165.346-.207.461-.207s.231.002.333.006c.108.004.254-.042.398.305.144.346.491 1.197.532 1.281.041.083.068.18.013.292-.054.113-.081.18-.162.274-.081.094-.17.21-.244.282-.084.083-.171.174-.074.341.096.166.431.71.923 1.149.632.565 1.166.741 1.332.824.166.083.264.069.362-.041.097-.111.417-.484.529-.65.111-.166.222-.138.374-.083.153.055.97.457 1.136.541.166.083.277.125.319.194.042.069.042.402-.102.807z"></path></svg>
@@ -621,22 +625,61 @@ async function loadStoreConfig() {
        instaBtn.href = STORE_CONFIG.instagram;
     }
 
+    // Update Visuals (Logo & Color)
+    if (STORE_CONFIG.logo_url) {
+      const headerImg = document.getElementById('logo-header-img');
+      const headerIcon = document.getElementById('logo-header-icon');
+      const heroImg = document.getElementById('logo-hero-img');
+      const heroIcon = document.getElementById('logo-hero-icon');
+      
+      if (headerImg) { headerImg.src = STORE_CONFIG.logo_url; headerImg.classList.remove('hidden'); }
+      if (headerIcon) headerIcon.classList.add('hidden');
+      if (heroImg) { heroImg.src = STORE_CONFIG.logo_url; heroImg.classList.remove('hidden'); }
+      if (heroIcon) heroIcon.classList.add('hidden');
+    }
+
+    if (STORE_CONFIG.primary_color) {
+      document.documentElement.style.setProperty('--primary', STORE_CONFIG.primary_color);
+      let styleTag = document.getElementById('dynamic-colors-site');
+      if (!styleTag) {
+        styleTag = document.createElement('style');
+        styleTag.id = 'dynamic-colors-site';
+        document.head.appendChild(styleTag);
+      }
+      styleTag.innerHTML = `
+        :root { --primary: ${STORE_CONFIG.primary_color}; }
+        .text-primary { color: ${STORE_CONFIG.primary_color} !important; }
+        .bg-primary { background-color: ${STORE_CONFIG.primary_color} !important; }
+        .border-primary { border-color: ${STORE_CONFIG.primary_color} !important; }
+        .btn-primary, .bg-[#F29221], .text-[#F29221] { background-color: ${STORE_CONFIG.primary_color}; color: white; }
+        #logo-header-container, #logo-hero-icon { background-color: ${STORE_CONFIG.primary_color} !important; color: #131313 !important; }
+        .text-[#F29221], h2.text-[#F29221] { color: ${STORE_CONFIG.primary_color} !important; }
+      `;
+    }
+
+    if (STORE_CONFIG.theme) {
+      document.documentElement.classList.toggle('dark', STORE_CONFIG.theme === 'dark');
+    }
+
     // Update Checkout Modalities
     if (STORE_CONFIG.modalities && STORE_CONFIG.modalities.length > 0) {
        const mods = STORE_CONFIG.modalities;
-       const elEntrega = document.getElementById('mod-entrega');
-       const elConsumo = document.getElementById('mod-consumo');
-       const elRetirada = document.getElementById('mod-retirada');
+       const modEntrega = document.getElementById('mod-entrega');
+       const modConsumo = document.getElementById('mod-consumo');
+       const modRetirada = document.getElementById('mod-retirada');
 
-       if (elEntrega) elEntrega.style.display = mods.includes('entrega') ? 'flex' : 'none';
-       if (elConsumo) elConsumo.style.display = mods.includes('local') ? 'flex' : 'none';
-       if (elRetirada) elRetirada.style.display = mods.includes('paralevar') ? 'flex' : 'none';
+       if (modEntrega) modEntrega.style.display = mods.includes('entrega') ? 'flex' : 'none';
+       if (modConsumo) modConsumo.style.display = mods.includes('local') ? 'flex' : 'none';
+       if (modRetirada) modRetirada.style.display = mods.includes('paralevar') ? 'flex' : 'none';
 
-       // Ensure at least one is selected if current hidden
-       const activeInput = document.querySelector('input[name="delivery"]:checked');
-       if (activeInput && activeInput.closest('label').style.display === 'none') {
-          const firstVisible = ['mod-retirada', 'mod-consumo', 'mod-entrega'].find(id => document.getElementById(id).style.display !== 'none');
-          if (firstVisible) document.getElementById(firstVisible).querySelector('input').checked = true;
+       // Select first available automatically
+       const firstVisible = ['mod-retirada', 'mod-consumo', 'mod-entrega'].find(id => {
+          const el = document.getElementById(id);
+          return el && el.style.display !== 'none';
+       });
+       if (firstVisible) {
+          const input = document.getElementById(firstVisible).querySelector('input');
+          if (input) input.checked = true;
        }
     }
   }

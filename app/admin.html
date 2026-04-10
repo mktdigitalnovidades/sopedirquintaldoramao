@@ -1083,6 +1083,15 @@ async function loadConfig() {
       document.getElementById('cfg-banner-url').value = currentStoreConfig.banner_url || '';
       if(currentStoreConfig.banner_url) document.getElementById('cfg-banner-preview').src = currentStoreConfig.banner_url;
 
+      // Logo
+      if(currentStoreConfig.logo_url) {
+         document.getElementById('cfg-logo-url').value = currentStoreConfig.logo_url;
+         const logoPreview = document.getElementById('cfg-logo-preview');
+         logoPreview.src = currentStoreConfig.logo_url;
+         logoPreview.classList.remove('hidden');
+         document.getElementById('cfg-logo-placeholder').classList.add('hidden');
+      }
+
       // Appearance
       if(currentStoreConfig.primary_color) {
          document.getElementById('cfg-primary-color').value = currentStoreConfig.primary_color;
@@ -1118,20 +1127,68 @@ function setThemeMode(mode) {
    const btnLight = document.getElementById('theme-light');
    
    if (mode === 'dark') {
-      btnDark.className = "flex items-center justify-center gap-2 py-3 rounded-lg bg-surface text-primary border border-primary/20 shadow-lg transition-all";
-      btnLight.className = "flex items-center justify-center gap-2 py-3 rounded-lg text-on-surface-variant hover:text-white transition-all";
+      document.body.classList.add('dark');
+      document.documentElement.classList.add('dark');
+      if(btnDark) btnDark.className = "flex items-center justify-center gap-2 py-3 rounded-lg bg-surface text-primary border border-primary/20 shadow-lg transition-all";
+      if(btnLight) btnLight.className = "flex items-center justify-center gap-2 py-3 rounded-lg text-on-surface-variant hover:text-white transition-all";
    } else {
-      btnLight.className = "flex items-center justify-center gap-2 py-3 rounded-lg bg-surface text-primary border border-primary/20 shadow-lg transition-all";
-      btnDark.className = "flex items-center justify-center gap-2 py-3 rounded-lg text-on-surface-variant hover:text-white transition-all";
+      document.body.classList.remove('dark');
+      document.documentElement.classList.remove('dark');
+      if(btnLight) btnLight.className = "flex items-center justify-center gap-2 py-3 rounded-lg bg-surface text-primary border border-primary/20 shadow-lg transition-all";
+      if(btnDark) btnDark.className = "flex items-center justify-center gap-2 py-3 rounded-lg text-on-surface-variant hover:text-white transition-all";
    }
 }
 
-// Color Sync
-document.getElementById('cfg-primary-color')?.addEventListener('input', (e) => {
-   document.getElementById('cfg-primary-hex').value = e.target.value;
-});
-document.getElementById('cfg-bg-color')?.addEventListener('input', (e) => {
-   document.getElementById('cfg-bg-hex').value = e.target.value;
+// Visual Sync & Realtime Preview
+function updateVisuals() {
+   const primary = document.getElementById('cfg-primary-color').value;
+   const bg = document.getElementById('cfg-bg-color').value;
+   document.getElementById('cfg-primary-hex').value = primary;
+   document.getElementById('cfg-bg-hex').value = bg;
+   
+   // Apply to Admin in real-time
+   document.documentElement.style.setProperty('--primary', primary);
+   // Force tailwind to see the new primary if needed via style tag
+   let styleTag = document.getElementById('dynamic-colors');
+   if (!styleTag) {
+      styleTag = document.createElement('style');
+      styleTag.id = 'dynamic-colors';
+      document.head.appendChild(styleTag);
+   }
+   styleTag.innerHTML = `
+      :root { 
+         --primary-rgb: ${hexToRgb(primary)};
+         --bg-custom: ${bg};
+      }
+      .text-primary { color: ${primary} !important; }
+      .bg-primary { background-color: ${primary} !important; }
+      .border-primary { border-color: ${primary} !important; }
+      .bg-primary-container { background-color: ${primary} !important; }
+   `;
+}
+
+function hexToRgb(hex) {
+   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+   return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : '242, 146, 33';
+}
+
+document.getElementById('cfg-primary-color')?.addEventListener('input', updateVisuals);
+document.getElementById('cfg-bg-color')?.addEventListener('input', updateVisuals);
+
+// Logo Upload Logic
+document.getElementById('cfg-logo-file')?.addEventListener('change', async (e) => {
+   const file = e.target.files[0];
+   if (!file) return;
+   
+   // Preview local
+   const reader = new FileReader();
+   reader.onload = (ev) => {
+      const preview = document.getElementById('cfg-logo-preview');
+      preview.src = ev.target.result;
+      preview.classList.remove('hidden');
+      document.getElementById('cfg-logo-placeholder').classList.add('hidden');
+   };
+   reader.readAsDataURL(file);
 });
 
 function renderLanguageChecks() {
@@ -1221,27 +1278,49 @@ function addPayment() {
 }
 
 async function saveStoreConfig() {
-   const val = {
-      name: document.getElementById('cfg-name-v2').value,
-      whatsapp: document.getElementById('cfg-whatsapp-v2').value,
-      google_link: document.getElementById('cfg-google-link').value,
-      address: document.getElementById('cfg-address').value,
-      instagram: document.getElementById('cfg-instagram').value,
-      delivery_fee: parseFloat(document.getElementById('cfg-delivery-v2').value) || 0,
-      show_top: document.getElementById('cfg-show-top').checked,
-      banner_url: document.getElementById('cfg-banner-url').value,
-      primary_color: document.getElementById('cfg-primary-color').value,
-      bg_color: document.getElementById('cfg-bg-color').value,
-      theme: currentStoreConfig.theme || 'dark',
-      languages: storeLanguages,
-      modalities: storeModalities,
-      hours: storeHours,
-      payments: storePayments
-   };
-   
-   const { error } = await supabaseClient.from('quintal_configs').upsert({ key: 'store_info', value: val });
-   if (!error) alert('Configurações salvas com sucesso!');
-   else alert('Erro ao salvar: ' + error.message);
+   const btn = event?.submitter || document.activeElement;
+   const originalText = btn.textContent;
+   btn.disabled = true;
+   btn.textContent = 'SALVANDO...';
+
+   try {
+      let logo_url = document.getElementById('cfg-logo-url').value;
+      const logoFile = document.getElementById('cfg-logo-file').files[0];
+
+      if (logoFile) {
+         logo_url = await uploadImage(logoFile);
+      }
+
+      const val = {
+         name: document.getElementById('cfg-name-v2').value,
+         whatsapp: document.getElementById('cfg-whatsapp-v2').value,
+         google_link: document.getElementById('cfg-google-link').value,
+         address: document.getElementById('cfg-address').value,
+         instagram: document.getElementById('cfg-instagram').value,
+         delivery_fee: parseFloat(document.getElementById('cfg-delivery-v2').value) || 0,
+         show_top: document.getElementById('cfg-show-top').checked,
+         banner_url: document.getElementById('cfg-banner-url').value,
+         logo_url: logo_url,
+         primary_color: document.getElementById('cfg-primary-color').value,
+         bg_color: document.getElementById('cfg-bg-color').value,
+         theme: currentStoreConfig.theme || 'dark',
+         languages: storeLanguages,
+         modalities: storeModalities,
+         hours: storeHours,
+         payments: storePayments
+      };
+      
+      const { error } = await supabaseClient.from('quintal_configs').upsert({ key: 'store_info', value: val });
+      if (!error) {
+         alert('Configurações salvas com sucesso!');
+         window.location.reload(); // Reload to apply all visual changes
+      } else throw error;
+   } catch (err) {
+      alert('Erro ao salvar: ' + err.message);
+   } finally {
+      btn.disabled = false;
+      btn.textContent = originalText;
+   }
 }
 
 function renderModalities() {
