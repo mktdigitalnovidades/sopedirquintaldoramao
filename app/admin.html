@@ -594,7 +594,7 @@
                 <input type="text" id="cfg-instagram" class="w-full bg-transparent border-b border-outline-variant/20 py-2 focus:border-primary outline-none text-sm font-bold" placeholder="https://instagram.com/perfil">
               </div>
               <div>
-                <label class="block text-[9px] font-black uppercase tracking-[0.2em] text-on-surface-variant/60 mb-2">Avaliação Google (Link)</label>
+                <label class="block text-[9px] font-black uppercase tracking-[0.2em] text-on-surface-variant/60 mb-2">Link do Google Meu Negócio / Maps</label>
                 <input type="text" id="cfg-google-link" class="w-full bg-transparent border-b border-outline-variant/20 py-2 focus:border-primary outline-none text-[10px] italic overflow-hidden text-ellipsis" placeholder="https://g.page/r/...">
               </div>
             </div>
@@ -643,7 +643,14 @@
             <span class="material-symbols-outlined text-primary">star</span> 5. Destaque do Dia
           </h3>
           <div class="bg-surface-container-low p-6 rounded-2xl border border-outline-variant/10 shadow-xl space-y-5">
-            <p class="text-[9px] font-bold text-on-surface-variant/40 uppercase tracking-widest">Escolha o prato em destaque exibido no topo do site principal</p>
+            <p class="text-[9px] font-bold text-on-surface-variant/40 uppercase tracking-widest leading-loose">Escolha o prato em destaque exibido no topo do site principal</p>
+
+            <div class="bg-surface-container-highest/30 p-4 rounded-xl border border-white/5 shadow-inner mb-4">
+              <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant/80 mb-2 flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">auto_awesome</span> Puxar Direto do Cardápio (Opcional)</label>
+              <select id="cfg-featured-select" class="w-full bg-surface-container border border-white/10 rounded-lg p-3 focus:ring-2 focus:ring-primary text-sm font-bold text-on-surface outline-none cursor-pointer" onchange="populateFeaturedFromSelect(this.value)">
+                <option value="">-- Digitarei manualmente --</option>
+              </select>
+            </div>
 
             <!-- Preview Card -->
             <div class="bg-surface-container-highest rounded-xl p-4 border border-white/5 flex items-center gap-4 mb-2">
@@ -1481,6 +1488,28 @@ async function fetchProducts() {
    const { data } = await supabaseClient.from('quintal_produtos').select('*').order('name');
    allProducts = data || [];
    renderProducts(allProducts);
+
+   const featuredSelect = document.getElementById('cfg-featured-select');
+   if (featuredSelect) {
+      featuredSelect.innerHTML = '<option value="">-- Puxar rápido do cardápio existente --</option>' + 
+         allProducts.map(p => `<option value="${p.id}">${p.name} - R$ ${(parseFloat(p.price)||0).toFixed(2).replace('.',',')}</option>`).join('');
+   }
+}
+
+function populateFeaturedFromSelect(id) {
+   if (!id) return;
+   const p = allProducts.find(x => x.id == id);
+   if (p) {
+      document.getElementById('cfg-featured-name').value = p.name;
+      document.getElementById('cfg-featured-price').value = p.price;
+      document.getElementById('cfg-featured-desc').value = p.description || '';
+      document.getElementById('cfg-featured-image').value = p.image_url || '';
+      
+      document.getElementById('cfg-featured-name-preview').textContent = p.name;
+      document.getElementById('cfg-featured-price-preview').textContent = 'R$ ' + (parseFloat(p.price)||0).toFixed(2).replace('.',',');
+      document.getElementById('cfg-featured-desc-preview').textContent = p.description || 'Descrição...';
+      updateFeaturedImagePreview(p.image_url || '');
+   }
 }
 
 function searchProducts() {
