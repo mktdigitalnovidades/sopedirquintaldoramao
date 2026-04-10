@@ -471,6 +471,7 @@ let cart = [];
 let orders = [];
 let currentCategory = 'lanches';
 let marmitexQty = 1;
+let currentMarmitexItem = null;
 
 let CATEGORIES = [];
 let PRODUCTS = {};
@@ -634,7 +635,7 @@ function showPage(name) {
   // Auto-render specific pages
   if (name === 'cart') renderCartItems();
   if (name === 'orders') renderOrderHistory();
-  if (name === 'marmitex') renderMarmitexGuarnicoes();
+  if (name === 'marmitex') { /* Modal setup is handled by openMarmitexModal now */ }
   
   window.scrollTo(0,0);
 }
@@ -670,10 +671,10 @@ function renderProducts() {
         <p class="text-[9px] text-on-surface-variant line-clamp-2 mt-1 leading-tight font-medium opacity-60">${p.desc || 'Preparado artesanalmente.'}</p>
         <div class="mt-1 flex items-center justify-between">
            <span class="font-headline font-black text-primary text-[11px]">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
-           <button onclick="${currentCategory === 'marmitex' ? "showPage('marmitex')" : "addToCart('" + p.name + "'," + p.price + ")"}"
-            class="w-7 h-7 rounded-lg bg-[#F29221] text-[#131313] flex items-center justify-center active:scale-90 transition-transform shadow-lg shadow-primary/10">
-            <span class="material-symbols-outlined text-lg font-black">add</span>
-          </button>
+      <button onclick="${currentCategory === 'marmitex' ? `openMarmitexModal('${p.name}', ${p.price}, '${p.image}', '${p.desc || ''}')` : "addToCart('" + p.name + "'," + p.price + ")"}"
+        class="w-7 h-7 rounded-lg bg-[#F29221] text-[#131313] flex items-center justify-center active:scale-90 transition-transform shadow-lg shadow-primary/10">
+        <span class="material-symbols-outlined text-lg font-black">add</span>
+      </button>
         </div>
       </div>
     </div>
@@ -821,13 +822,27 @@ function renderCartItems() {
 }
 
 // ===== MARMITEX =====
-function setupGuarnicoes() {
+function openMarmitexModal(name, price, image, desc) {
+  currentMarmitexItem = { name, price, image, desc };
+  marmitexQty = 1;
+  
+  // Update Modal UI
+  const modal = document.getElementById('page-marmitex');
+  modal.querySelector('img').src = image;
+  modal.querySelector('img').alt = name;
+  modal.querySelector('h2').innerHTML = `${name} <span class="text-[#F29221]">(R$ ${price.toFixed(2).replace('.', ',')})</span>`;
+  modal.querySelector('p.text-lg').textContent = desc || 'Acompanha Ovo Frito e Salada';
+  document.getElementById('marmitex-qty').textContent = marmitexQty;
+  
+  // Setup Guarnicoes
   document.getElementById('guarnicoes-grid').innerHTML = GUARNICOES.map(g => `
     <label class="flex items-center gap-3 p-3 bg-surface-container rounded-lg cursor-pointer border border-transparent hover:border-[#F29221]/30 transition-all group">
       <input class="w-5 h-5 rounded-sm bg-surface-variant border-outline-variant text-[#F29221] focus:ring-[#F29221]" type="checkbox" name="guarnicao" value="${g}"/>
       <span class="text-on-surface group-hover:text-[#F29221] transition-colors font-medium">${g}</span>
     </label>
   `).join('');
+  
+  showPage('marmitex');
 }
 
 function changeQty(delta) {
@@ -836,9 +851,13 @@ function changeQty(delta) {
 }
 
 function addMarmitex() {
+  if (!currentMarmitexItem) return;
   const selecionadas = [...document.querySelectorAll('input[name="guarnicao"]:checked')].map(c => c.value);
-  const nome = 'Marmitex Frango Empanado' + (selecionadas.length ? ' (' + selecionadas.join(', ') + ')' : '');
-  for (let i = 0; i < marmitexQty; i++) addToCart(nome, 27);
+  const nomeExibicao = currentMarmitexItem.name + (selecionadas.length ? ' (' + selecionadas.join(', ') + ')' : '');
+  
+  for (let i = 0; i < marmitexQty; i++) {
+    addToCart(nomeExibicao, currentMarmitexItem.price);
+  }
   showPage('menu');
 }
 
