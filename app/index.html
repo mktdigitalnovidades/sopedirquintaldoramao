@@ -129,6 +129,37 @@
     color: #999;
   }
   
+  /* Category scrollbar layout */
+  .category-nav-wrapper {
+    position: sticky;
+    top: 64px;
+    z-index: 40;
+    background: rgba(19, 19, 19, 0.95);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .category-scroll-btn {
+    width: 32px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: #F29221;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .category-tabs-container {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding: 0.75rem 0.25rem;
+    scroll-behavior: smooth;
+    flex-grow: 1;
+  }
+  
   /* Page visibility control */
   .page { display: none; }
   .page.active { display: block; animation: fadeIn 0.3s ease-out; }
@@ -212,14 +243,18 @@
       </div>
     </section>
 
-    <!-- Category Tabs -->
-    <nav class="sticky top-[64px] z-40 bg-background/95 backdrop-blur-md py-3 mb-6 overflow-x-auto no-scrollbar flex gap-2 border-b border-white/5">
-      <button onclick="filterCategory('lanches')" id="tab-lanches" class="tab-btn whitespace-nowrap px-6 py-2 rounded-full bg-[#F29221] text-[#131313] font-bold font-label uppercase text-sm">Lanches</button>
-      <button onclick="filterCategory('prensados')" id="tab-prensados" class="tab-btn whitespace-nowrap px-6 py-2 rounded-full bg-surface-container-highest text-on-surface font-medium font-label uppercase text-sm hover:bg-surface-variant transition-colors">Prensados</button>
-      <button onclick="filterCategory('porcoes')" id="tab-porcoes" class="tab-btn whitespace-nowrap px-6 py-2 rounded-full bg-surface-container-highest text-on-surface font-medium font-label uppercase text-sm hover:bg-surface-variant transition-colors">Porções</button>
-      <button onclick="filterCategory('marmitex')" id="tab-marmitex" class="tab-btn whitespace-nowrap px-6 py-2 rounded-full bg-surface-container-highest text-on-surface font-medium font-label uppercase text-sm hover:bg-surface-variant transition-colors">Marmitex</button>
-      <button onclick="filterCategory('bebidas')" id="tab-bebidas" class="tab-btn whitespace-nowrap px-6 py-2 rounded-full bg-surface-container-highest text-on-surface font-medium font-label uppercase text-sm hover:bg-surface-variant transition-colors">Bebidas</button>
-    </nav>
+    <!-- Category Tabs with Arrows -->
+    <div class="category-nav-wrapper py-1 mb-6">
+      <button class="category-scroll-btn" onclick="scrollCategories(-1)">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      
+      <nav id="category-tabs" class="category-tabs-container no-scrollbar"></nav>
+      
+      <button class="category-scroll-btn" onclick="scrollCategories(1)">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
 
     <!-- Product Grid -->
     <div id="product-grid" class="flex flex-col gap-4"></div>
@@ -496,16 +531,42 @@ async function initApp() {
 }
 
 async function fetchCategoriesFromSupabase() {
-  const { data, error } = await supabaseClient.from('quintal_categorias').select('*').order('name');
+  const { data, error } = await supabaseClient.from('quintal_categorias').select('*');
   if (data) {
-    CATEGORIES = data;
+    const customOrder = [
+      "Marmitas (1 Pessoa)",
+      "Marmitas (2 Pessoas)",
+      "Lanches",
+      "Lanches Prensados",
+      "Porções",
+      "Refrigerantes",
+      "Bebidas sem Álcool",
+      "Bebidas e Cervejas",
+      "Bebidas Quentes"
+    ];
+
+    CATEGORIES = data.sort((a, b) => {
+      let indexA = customOrder.indexOf(a.name);
+      let indexB = customOrder.indexOf(b.name);
+      if (indexA === -1) indexA = 999;
+      if (indexB === -1) indexB = 999;
+      return indexA - indexB;
+    });
+
     renderCategoryTabs();
     if (CATEGORIES.length > 0) currentCategory = CATEGORIES[0].slug;
   }
 }
 
+function scrollCategories(direction) {
+  const container = document.getElementById('category-tabs');
+  if (container) {
+    container.scrollBy({ left: direction * 200, behavior: 'smooth' });
+  }
+}
+
 function renderCategoryTabs() {
-  const nav = document.querySelector('nav.sticky');
+  const nav = document.getElementById('category-tabs');
   if (!nav) return;
   nav.innerHTML = CATEGORIES.map(c => `
     <button onclick="filterCategory('${c.slug}')" id="tab-${c.slug}" 
