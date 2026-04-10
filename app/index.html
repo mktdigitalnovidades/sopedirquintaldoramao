@@ -954,7 +954,16 @@ function renderProducts() {
     return;
   }
   
-  grid.innerHTML = items.map(p => `
+  const isMarmita = currentCategory.includes('marmit');
+  
+  grid.innerHTML = items.map(p => {
+    const safeName = p.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    const safeImage = (p.image || '').replace(/'/g, "\\'");
+    const safeDesc = (p.desc || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    const onclickAction = isMarmita
+      ? `openMarmitexModal('${safeName}', ${p.price}, '${safeImage}', '${safeDesc}')`
+      : `addToCart('${safeName}', ${p.price})`;
+    return `
     <div class="product-list-item h-[84px] shadow-sm">
       <div class="product-img-container border border-white/5">
         <img alt="${p.name}" class="w-full h-full object-cover" src="${p.image}" onerror="this.src='https://via.placeholder.com/400?text=SOPEDIR'"/>
@@ -965,14 +974,15 @@ function renderProducts() {
         <p class="text-[9px] text-on-surface-variant line-clamp-2 mt-1 leading-tight font-medium opacity-60">${p.desc || 'Preparado artesanalmente.'}</p>
         <div class="mt-1 flex items-center justify-between">
            <span class="font-headline font-black text-primary text-[11px]">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
-      <button onclick="${currentCategory === 'marmitex' ? `openMarmitexModal('${p.name}', ${p.price}, '${p.image}', '${p.desc || ''}')` : "addToCart('" + p.name + "'," + p.price + ")"}"
+      <button onclick="${onclickAction}"
         class="w-7 h-7 rounded-lg bg-[#F29221] text-[#131313] flex items-center justify-center active:scale-90 transition-transform shadow-lg shadow-primary/10">
-        <span class="material-symbols-outlined text-lg font-black">add</span>
+        <span class="material-symbols-outlined text-lg font-black">${isMarmita ? 'restaurant_menu' : 'add'}</span>
       </button>
         </div>
       </div>
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
 
