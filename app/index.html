@@ -831,28 +831,35 @@ async function loadStoreConfig() {
       document.documentElement.classList.toggle('dark', STORE_CONFIG.theme === 'dark');
     }
 
-    // Update Checkout Modalities
+    // Update Checkout Modalities - SEMPRE respeitar o que está no Admin
+    const modEntrega = document.getElementById('mod-entrega');
+    const modConsumo = document.getElementById('mod-consumo');
+    const modRetirada = document.getElementById('mod-retirada');
+
     if (STORE_CONFIG.modalities && STORE_CONFIG.modalities.length > 0) {
        const mods = STORE_CONFIG.modalities;
-       const modEntrega = document.getElementById('mod-entrega');
-       const modConsumo = document.getElementById('mod-consumo');
-       const modRetirada = document.getElementById('mod-retirada');
 
-       if (modEntrega) modEntrega.style.display = mods.includes('entrega') ? 'flex' : 'none';
-       if (modConsumo) modConsumo.style.display = mods.includes('local') ? 'flex' : 'none';
-       if (modRetirada) modRetirada.style.display = mods.includes('paralevar') ? 'flex' : 'none';
+       // Esconder TODAS primeiro, depois mostrar apenas as ativas
+       if (modEntrega) modEntrega.style.display = 'none';
+       if (modConsumo) modConsumo.style.display = 'none';
+       if (modRetirada) modRetirada.style.display = 'none';
 
-       // Select first available automatically
-       const firstVisible = ['mod-retirada', 'mod-consumo', 'mod-entrega'].find(id => {
-          const el = document.getElementById(id);
-          return el && el.style.display !== 'none';
-       });
+       if (mods.includes('entrega') && modEntrega) modEntrega.style.display = 'flex';
+       if (mods.includes('local') && modConsumo) modConsumo.style.display = 'flex';
+       if (mods.includes('paralevar') && modRetirada) modRetirada.style.display = 'flex';
+
+       // Desmarcar qualquer radio que esteja em item invisível, selecionar o primeiro visível
+       const allRadios = document.querySelectorAll('input[name="delivery"]');
+       allRadios.forEach(radio => { radio.checked = false; });
+
+       const firstVisible = [modRetirada, modConsumo, modEntrega].find(el => el && el.style.display !== 'none');
        if (firstVisible) {
-          const input = document.getElementById(firstVisible).querySelector('input');
-          if (input) input.checked = true;
+          const input = firstVisible.querySelector('input');
+          if (input) { input.checked = true; updateCartUI(); }
        }
     }
-    
+    // Se não há config de modalities, mantém todas visíveis (padrão)
+
     if (STORE_CONFIG.language) {
       applyLanguage(STORE_CONFIG.language);
     }

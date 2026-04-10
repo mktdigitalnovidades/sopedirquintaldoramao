@@ -813,7 +813,7 @@
        <button type="button" onclick="loadConfig()" class="w-full sm:w-auto px-10 py-4 bg-surface-container-highest text-on-surface font-black rounded-xl hover:scale-105 active:scale-95 transition-all opacity-60">
           DESCARTAR
        </button>
-       <button type="button" onclick="saveStoreConfig()" class="w-full sm:w-auto px-12 py-5 bg-primary text-on-primary font-headline font-black rounded-2xl shadow-2xl shadow-primary/30 hover:brightness-110 hover:scale-105 active:scale-95 transition-all uppercase tracking-tighter">
+       <button type="button" onclick="saveStoreConfig(this)" class="w-full sm:w-auto px-12 py-5 bg-primary text-on-primary font-headline font-black rounded-2xl shadow-2xl shadow-primary/30 hover:brightness-110 hover:scale-105 active:scale-95 transition-all uppercase tracking-tighter">
           SALVAR ALTERAÇÕES
        </button>
     </div>
@@ -1231,8 +1231,8 @@ function addPayment() {
    }
 }
 
-async function saveStoreConfig() {
-   const btn = event?.submitter || document.activeElement;
+async function saveStoreConfig(btn) {
+   if (!btn) btn = document.activeElement;
    const originalText = btn.textContent;
    btn.disabled = true;
    btn.textContent = 'SALVANDO...';
