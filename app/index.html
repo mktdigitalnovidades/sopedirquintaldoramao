@@ -460,8 +460,11 @@
           </div>
           <section class="space-y-4">
             <div class="flex items-center justify-between">
-              <h3 class="text-xl font-headline font-bold text-on-surface uppercase tracking-wide">Escolha suas Guarnições</h3>
-              <span class="text-xs font-label text-[#F29221] bg-[#F29221]/10 px-2 py-1 rounded">OPCIONAL</span>
+              <div class="flex flex-col">
+                <h3 class="text-xl font-headline font-black text-on-surface uppercase tracking-wide">ESCOLHA SUAS GUARNIÇÕES</h3>
+                <p class="text-[10px] text-on-surface-variant/60 font-bold uppercase tracking-widest mt-1">Selecione pelo menos 1 opção</p>
+              </div>
+              <span class="text-[9px] font-black text-[#131313] bg-[#F29221] px-2 py-1 rounded italic">OBRIGATÓRIO</span>
             </div>
             <div class="grid grid-cols-2 gap-3" id="guarnicoes-grid">
               <!-- Built by JS -->
@@ -724,7 +727,7 @@ async function fetchProductsFromSupabase() {
   renderProducts();
 }
 
-const GUARNICOES = ['Arroz', 'Feijão', 'Farofa', 'Fritas', 'Nuggets', 'Polenta Frita', 'Mandioca Frita', 'Legumes'];
+const GUARNICOES = ['Arroz', 'Feijão', 'Farofa', 'Fritas', 'Nuggets', 'Polenta', 'Mandioca', 'Legumes'];
 
 // ===== PAGE NAVIGATION =====
 function showPage(name) {
@@ -958,15 +961,18 @@ function openMarmitexModal(name, price, image, desc) {
   const modal = document.getElementById('page-marmitex');
   modal.querySelector('img').src = image;
   modal.querySelector('img').alt = name;
-  modal.querySelector('h2').innerHTML = `${name} <span class="text-[#F29221]">(R$ ${price.toFixed(2).replace('.', ',')})</span>`;
+  modal.querySelector('h2').innerHTML = `${name} <span class="text-[#f29221] ml-2 tracking-tighter opacity-80">(R$ ${price})</span>`;
   modal.querySelector('p.text-lg').textContent = desc || 'Acompanha Ovo Frito e Salada';
   document.getElementById('marmitex-qty').textContent = marmitexQty;
   
-  // Setup Guarnicoes
+  // Setup Guarnicoes Design according to ref
   document.getElementById('guarnicoes-grid').innerHTML = GUARNICOES.map(g => `
-    <label class="flex items-center gap-3 p-3 bg-surface-container rounded-lg cursor-pointer border border-transparent hover:border-[#F29221]/30 transition-all group">
-      <input class="w-5 h-5 rounded-sm bg-surface-variant border-outline-variant text-[#F29221] focus:ring-[#F29221]" type="checkbox" name="guarnicao" value="${g}"/>
-      <span class="text-on-surface group-hover:text-[#F29221] transition-colors font-medium">${g}</span>
+    <label class="flex items-center gap-3 p-4 bg-surface-container-highest/20 rounded-xl cursor-pointer border border-white/5 hover:bg-surface-container-highest transition-all group has-[:checked]:bg-primary/10 has-[:checked]:border-primary/40">
+      <div class="w-6 h-6 rounded flex items-center justify-center bg-black/40 border border-white/10 group-hover:border-primary/50 transition-colors relative">
+        <input class="sr-only peer" type="checkbox" name="guarnicao" value="${g}"/>
+        <span class="material-symbols-outlined text-primary text-xl scale-0 peer-checked:scale-100 transition-transform">check</span>
+      </div>
+      <span class="text-xs font-black uppercase tracking-tight text-on-surface group-hover:text-primary transition-colors">${g}</span>
     </label>
   `).join('');
   
@@ -981,7 +987,14 @@ function changeQty(delta) {
 function addMarmitex() {
   if (!currentMarmitexItem) return;
   const selecionadas = [...document.querySelectorAll('input[name="guarnicao"]:checked')].map(c => c.value);
-  const nomeExibicao = currentMarmitexItem.name + (selecionadas.length ? ' (' + selecionadas.join(', ') + ')' : '');
+  
+  // OBRIGATORIEDADE CHECK
+  if (selecionadas.length === 0) {
+    alert('⚠️ Por favor, escolha pelo menos 1 guarnição para sua marmita!');
+    return;
+  }
+
+  const nomeExibicao = currentMarmitexItem.name + ' (' + selecionadas.join(', ') + ')';
   
   for (let i = 0; i < marmitexQty; i++) {
     addToCart(nomeExibicao, currentMarmitexItem.price);
