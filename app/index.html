@@ -181,7 +181,6 @@
     <button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-xl">search</button>
   </div>
 </header>
-</header>
 
 <!-- ===== PAGE: MENU ===== -->
 <div id="page-menu" class="page active">
@@ -207,7 +206,7 @@
           </a>
           <a id="site-address-link-hero" href="https://www.google.com/maps/search/?api=1&query=Av.+Nossa+Sra.+de+Fátima,+1042+-+Taquaral,+Campinas+-+SP,+13076-000" target="_blank" class="flex items-center gap-2 bg-[#4285F4] text-white px-3 py-1.5 rounded-full text-xs font-bold hover:scale-105 transition-transform shadow-lg">
              <span class="material-symbols-outlined text-sm">location_on</span>
-             Endereço
+             <span data-i18n="addr-title">Endereço</span>
           </a>
         </div>
     </div>
@@ -218,7 +217,7 @@
     <section class="mb-8 text-center px-2">
       <div class="bg-surface-container-low rounded-2xl p-4 relative overflow-hidden border border-white/5 shadow-2xl">
         <div class="relative z-10 flex flex-col items-center">
-          <span class="hero-badge mb-2">Hoje no Quintal</span>
+          <span class="hero-badge mb-2" data-i18n="hero-today">Hoje no Quintal</span>
           <h2 class="text-2xl font-headline font-black uppercase mb-2 leading-none tracking-tighter italic">Cheddar & Bacon</h2>
           <p class="text-[10px] text-on-surface-variant leading-tight max-w-[240px] mb-4 opacity-70">Brioche, blend bovino 160g, cheddar cremoso e muito bacon crocante.</p>
           
@@ -229,7 +228,7 @@
             </div>
             <button onclick="addToCart('Cheddar & Bacon', 35)" class="bg-[#F29221] text-[#131313] px-6 py-2 rounded-lg font-headline font-black uppercase tracking-wider text-xs flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all">
               <span class="material-symbols-outlined text-base">shopping_cart</span>
-              Adicionar
+              <span data-i18n="btn-add">Adicionar</span>
             </button>
           </div>
           
@@ -262,9 +261,9 @@
 
     <!-- Review Section -->
     <section class="mt-20 mb-10 text-center border-t border-outline-variant/10 pt-10">
-      <p class="text-on-surface-variant text-sm font-label mb-2">Gostou da experiência?</p>
+      <p class="text-on-surface-variant text-sm font-label mb-2" data-i18n="review-ask">Gostou da experiência?</p>
       <a class="inline-flex items-center gap-2 text-[#F29221] font-headline font-bold hover:underline" href="https://g.page/r/CVZHLU1BRp6HEBM/review" target="_blank">
-        Avalie nossa empresa no Google
+        <span data-i18n="review-btn">Avalie nossa empresa no Google</span>
         <span class="material-symbols-outlined text-lg">star</span>
       </a>
     </section>
@@ -282,7 +281,7 @@
     <button onclick="showPage('cart')" class="w-full bg-[#F29221] text-[#131313] py-4 px-6 rounded-2xl flex justify-between items-center shadow-[0_15px_30px_rgba(242,146,33,0.3)] hover:scale-[1.02] transition-transform active:scale-95 border border-white/10 uppercase italic">
       <div class="flex items-center gap-3">
         <div id="cart-count-float" class="bg-[#131313] text-[#F29221] px-2 h-6 flex items-center justify-center rounded font-black text-xs">0</div>
-        <span class="font-headline font-black text-sm tracking-widest">Ver Carrinho</span>
+        <span class="font-headline font-black text-sm tracking-widest" data-i18n="float-cart">Ver Carrinho</span>
       </div>
       <span id="cart-total-float" class="font-headline font-black text-lg">R$ 0,00</span>
     </button>
@@ -293,19 +292,22 @@
 <div id="page-cart" class="page">
   <main class="max-w-4xl mx-auto px-6 pt-8 pb-12">
     <div class="mb-10">
-      <h2 class="font-headline text-4xl md:text-5xl font-extrabold text-on-surface mb-2 leading-tight">Seu Carrinho</h2>
-      <p class="text-on-surface-variant font-body">Confira os itens selecionados para o seu banquete.</p>
+      <h2 class="font-headline text-4xl md:text-5xl font-extrabold text-on-surface mb-2 leading-tight" data-i18n="cart-title">Seu Carrinho</h2>
+      <p class="text-on-surface-variant font-body" data-i18n="cart-desc">Confira os itens selecionados para o seu banquete.</p>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
       <!-- Cart Items -->
       <div class="lg:col-span-2 space-y-8">
         <section>
           <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic">Itens no Carrinho</h3>
+            <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic" data-i18n="cart-items-title">Itens no Carrinho</h3>
             <span id="cart-item-count" class="text-sm text-on-surface-variant">0 Itens</span>
           </div>
           <div id="cart-items" class="space-y-4">
-            <p id="empty-cart-msg" class="text-on-surface-variant italic text-center py-12">Seu carrinho está vazio. <button onclick="showPage('menu')" class="text-[#F29221] font-bold underline">Ver cardápio</button></p>
+            <p id="empty-cart-msg" class="text-on-surface-variant italic text-center py-12">
+              <span data-i18n="cart-empty">Seu carrinho está vazio.</span>
+              <button onclick="showPage('menu')" class="text-[#F29221] font-bold underline" data-i18n="cart-see-menu">Ver cardápio</button>
+            </p>
           </div>
           <div class="py-8 flex justify-center opacity-30">
             <svg fill="none" height="10" viewBox="0 0 200 10" width="200">
@@ -317,59 +319,59 @@
         <!-- Delivery Options -->
         <section class="space-y-6">
           <div>
-            <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic mb-4">Como deseja receber?</h3>
+            <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic mb-4" data-i18n="delivery-title">Como deseja receber?</h3>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="checkout-modalities">
               <label id="mod-retirada" class="flex items-center p-4 rounded-md bg-surface-container-low cursor-pointer hover:bg-surface-container-highest transition-all border-2 border-transparent has-[:checked]:border-primary/50 has-[:checked]:bg-primary/5 group">
                 <input checked class="sr-only peer" name="delivery" type="radio" value="retirada" onchange="updateCartUI()"/>
                 <div class="w-6 h-6 border-2 border-outline rounded-full mr-4 flex items-center justify-center transition-all peer-checked:border-primary peer-checked:bg-primary/10">
                   <div class="w-3 h-3 bg-primary rounded-full transform scale-0 peer-checked:scale-100 transition-transform"></div>
                 </div>
-                <div class="flex flex-col"><span class="font-bold text-on-surface">Retirada</span><span class="text-xs text-on-surface-variant italic">Grátis</span></div>
+                <div class="flex flex-col"><span class="font-bold text-on-surface" data-i18n="mod-retirada">Retirada</span><span class="text-xs text-on-surface-variant italic" data-i18n="mod-free">Grátis</span></div>
               </label>
               <label id="mod-consumo" class="flex items-center p-4 rounded-md bg-surface-container-low cursor-pointer hover:bg-surface-container-highest transition-all border-2 border-transparent has-[:checked]:border-primary/50 has-[:checked]:bg-primary/5 group">
                 <input class="sr-only peer" name="delivery" type="radio" value="consumo" onchange="updateCartUI()"/>
                 <div class="w-6 h-6 border-2 border-outline rounded-full mr-4 flex items-center justify-center transition-all peer-checked:border-primary peer-checked:bg-primary/10">
                   <div class="w-3 h-3 bg-primary rounded-full transform scale-0 peer-checked:scale-100 transition-transform"></div>
                 </div>
-                <div class="flex flex-col"><span class="font-bold text-on-surface">No Quintal</span><span class="text-xs text-on-surface-variant italic">Grátis</span></div>
+                <div class="flex flex-col"><span class="font-bold text-on-surface" data-i18n="mod-consumo">No Quintal</span><span class="text-xs text-on-surface-variant italic" data-i18n="mod-free">Grátis</span></div>
               </label>
               <label id="mod-entrega" class="flex items-center p-4 rounded-md bg-surface-container-low cursor-pointer hover:bg-surface-container-highest transition-all border-2 border-transparent has-[:checked]:border-primary/50 has-[:checked]:bg-primary/5 group">
                 <input class="sr-only peer" name="delivery" type="radio" value="entrega" onchange="updateCartUI()"/>
                 <div class="w-6 h-6 border-2 border-outline rounded-full mr-4 flex items-center justify-center transition-all peer-checked:border-primary peer-checked:bg-primary/10">
                   <div class="w-3 h-3 bg-primary rounded-full transform scale-0 peer-checked:scale-100 transition-transform"></div>
                 </div>
-                <div class="flex flex-col"><span class="font-bold text-on-surface">Entrega</span><span class="text-xs text-on-surface-variant italic">+ Taxa fixada</span></div>
+                <div class="flex flex-col"><span class="font-bold text-on-surface" data-i18n="mod-entrega">Entrega</span><span class="text-xs text-on-surface-variant italic" data-i18n="mod-fee">+ Taxa fixada</span></div>
               </label>
             </div>
           </div>
           <!-- Identification (CRM) -->
           <div class="space-y-4 pt-4 border-t border-outline-variant/10">
-            <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic mb-2">Sua Identificação</h3>
+            <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic mb-2" data-i18n="cust-id-title">Sua Identificação</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="space-y-1">
-                <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant opacity-50">Seu Nome Completo</label>
-                <input type="text" id="cust-name" placeholder="Ex: João Silva" required class="w-full bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm">
+                <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant opacity-50" data-i18n="cust-name-label">Seu Nome Completo</label>
+                <input type="text" id="cust-name" placeholder="Ex: João Silva" data-i18n="cust-name-label" required class="w-full bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm">
               </div>
               <div class="space-y-1">
-                <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant opacity-50">Seu WhatsApp</label>
-                <input type="tel" id="cust-phone" placeholder="Ex: 11999999999" required class="w-full bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm">
+                <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant opacity-50" data-i18n="cust-phone-label">Seu WhatsApp</label>
+                <input type="tel" id="cust-phone" placeholder="Ex: 11999999999" data-i18n="cust-phone-label" required class="w-full bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm">
               </div>
             </div>
           </div>
 
           <!-- Address Fields (Conditional) -->
           <div id="address-fields" class="space-y-4 pt-4 hidden border-t border-outline-variant/10">
-            <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic mb-2">Endereço de Entrega</h3>
+            <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic mb-2" data-i18n="addr-title">Endereço de Entrega</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input type="text" id="end_rua" placeholder="Rua e Número" class="bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm">
-              <input type="text" id="end_bairro" placeholder="Bairro" class="bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm">
-              <input type="text" id="end_ref" placeholder="Ponto de referência" class="bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm md:col-span-2">
+              <input type="text" id="end_rua" placeholder="Rua e Número" data-i18n="addr-rua" class="bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm">
+              <input type="text" id="end_bairro" placeholder="Bairro" data-i18n="addr-bairro" class="bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm">
+              <input type="text" id="end_ref" placeholder="Ponto de referência" data-i18n="addr-ref" class="bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm md:col-span-2">
             </div>
           </div>
           </div>
           <!-- Payment -->
           <div>
-            <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic mb-4">Forma de Pagamento</h3>
+            <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic mb-4" data-i18n="pay-title">Forma de Pagamento</h3>
             <div class="relative">
               <select onchange="updateCartUI()" class="w-full bg-transparent border-b border-outline-variant/30 py-3 font-body focus:outline-none focus:border-primary transition-all appearance-none cursor-pointer" id="payment_method">
                 <option class="bg-surface text-on-surface" value="pix">PIX</option>
@@ -385,35 +387,35 @@
       <!-- Order Summary Sidebar -->
       <div class="lg:col-span-1">
         <div class="bg-surface-container-highest p-8 rounded-md sticky top-28 shadow-[0_20px_40px_rgba(0,0,0,0.4)] border border-outline-variant/10">
-          <h3 class="font-headline font-bold text-2xl text-on-surface mb-8 border-b border-outline-variant/20 pb-4">Resumo</h3>
+          <h3 class="font-headline font-bold text-2xl text-on-surface mb-8 border-b border-outline-variant/20 pb-4" data-i18n="summary-title">Resumo</h3>
           <div class="space-y-4 mb-8">
             <div class="flex justify-between font-label">
-              <span class="text-on-surface-variant">Itens (<span id="summary-count">0</span>)</span>
+              <span class="text-on-surface-variant"><span data-i18n="summary-items">Itens</span> (<span id="summary-count">0</span>)</span>
               <span id="summary-subtotal" class="text-on-surface">R$ 0,00</span>
             </div>
             <div class="flex justify-between font-label border-t border-outline-variant/5 pt-2">
-              <span class="text-on-surface-variant">Método</span>
+              <span class="text-on-surface-variant" data-i18n="summary-method">Método</span>
               <span id="summary-delivery" class="text-[#F29221] font-bold">Retirada</span>
             </div>
             <div class="flex justify-between font-label border-t border-outline-variant/5 pt-2">
-              <span class="text-on-surface-variant">Pagamento</span>
+              <span class="text-on-surface-variant" data-i18n="summary-pay">Pagamento</span>
               <span id="summary-payment" class="text-on-surface font-medium uppercase">PIX</span>
             </div>
             <div class="flex justify-between font-label border-t border-outline-variant/5 pt-2">
-              <span class="text-on-surface-variant">Taxa de Entrega</span>
+              <span class="text-on-surface-variant" data-i18n="summary-fee">Taxa de Entrega</span>
               <span class="text-on-surface">R$ 0,00</span>
             </div>
           </div>
           <div class="flex justify-between items-end border-t border-outline-variant/20 pt-6 mb-10">
-            <span class="font-headline font-bold text-lg text-primary uppercase italic">Total</span>
+            <span class="font-headline font-bold text-lg text-primary uppercase italic" data-i18n="summary-total">Total</span>
             <span id="summary-total" class="font-headline font-extrabold text-3xl text-on-surface">R$ 0,00</span>
           </div>
           <button onclick="finalizarPedido()" class="w-full bg-[#F29221] text-[#131313] font-headline font-bold py-5 rounded-md flex items-center justify-center gap-3 transition-all hover:brightness-110 active:scale-95 group shadow-lg">
-            Finalizar Pedido via WhatsApp
+            <span data-i18n="summary-btn">Finalizar Pedido via WhatsApp</span>
             <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">send</span>
           </button>
           <p class="text-[10px] text-center mt-4 text-on-surface-variant font-label uppercase tracking-widest leading-relaxed">
-            Ao clicar, seu pedido será enviado para<br/>
+            <span data-i18n="summary-disclaimer">Ao clicar, seu pedido será enviado para</span><br/>
             <span class="text-primary font-bold">55 19 99228-8312</span>
           </p>
         </div>
@@ -425,12 +427,12 @@
 <!-- ===== PAGE: ORDERS ===== -->
 <div id="page-orders" class="page">
   <main class="max-w-2xl mx-auto px-6 pt-8 pb-12">
-    <h2 class="font-headline text-4xl font-extrabold mb-2">Meus Pedidos</h2>
-    <p class="text-on-surface-variant mb-10">Histórico de pedidos realizados nesta sessão.</p>
+    <h2 class="font-headline text-4xl font-extrabold mb-2" data-i18n="orders-title">Meus Pedidos</h2>
+    <p class="text-on-surface-variant mb-10" data-i18n="orders-desc">Histórico de pedidos realizados nesta sessão.</p>
     <div id="orders-list">
       <div class="text-center text-on-surface-variant italic py-20">
         <span class="material-symbols-outlined text-5xl block mb-4 opacity-30">receipt_long</span>
-        Nenhum pedido finalizado ainda.
+        <span data-i18n="orders-empty">Nenhum pedido finalizado ainda.</span>
       </div>
     </div>
   </main>
@@ -461,10 +463,10 @@
           <section class="space-y-4">
             <div class="flex items-center justify-between">
               <div class="flex flex-col">
-                <h3 class="text-xl font-headline font-black text-on-surface uppercase tracking-wide">ESCOLHA SUAS GUARNIÇÕES</h3>
-                <p class="text-[10px] text-on-surface-variant/60 font-bold uppercase tracking-widest mt-1">Selecione pelo menos 1 opção</p>
+                <h3 class="text-xl font-headline font-black text-on-surface uppercase tracking-wide" data-i18n="marmitex-sides">ESCOLHA SUAS GUARNIÇÕES</h3>
+                <p class="text-[10px] text-on-surface-variant/60 font-bold uppercase tracking-widest mt-1" data-i18n="marmitex-min">Selecione pelo menos 1 opção</p>
               </div>
-              <span class="text-[9px] font-black text-[#131313] bg-[#F29221] px-2 py-1 rounded italic">OBRIGATÓRIO</span>
+              <span class="text-[9px] font-black text-[#131313] bg-[#F29221] px-2 py-1 rounded italic" data-i18n="marmitex-req">OBRIGATÓRIO</span>
             </div>
             <div class="grid grid-cols-2 gap-3" id="guarnicoes-grid">
               <!-- Built by JS -->
@@ -472,7 +474,7 @@
           </section>
           <footer class="mt-4 pt-6 border-t border-outline-variant/10 flex flex-col gap-6">
             <div class="flex items-center justify-between">
-              <span class="text-sm font-label uppercase tracking-widest text-on-surface-variant">Quantidade</span>
+              <span class="text-sm font-label uppercase tracking-widest text-on-surface-variant" data-i18n="marmitex-qty">Quantidade</span>
               <div class="flex items-center bg-surface-container-highest rounded-full p-1 border border-outline-variant/20">
                 <button onclick="changeQty(-1)" class="w-10 h-10 flex items-center justify-center rounded-full text-[#F29221] hover:bg-surface-variant active:scale-95 transition-all">
                   <span class="material-symbols-outlined">remove</span>
@@ -485,7 +487,7 @@
             </div>
             <button onclick="addMarmitex()" class="w-full py-5 bg-[#F29221] text-[#131313] font-headline font-extrabold text-xl rounded-lg shadow-xl active:scale-[0.98] transition-transform flex items-center justify-center gap-3 hover:brightness-110">
               <span class="material-symbols-outlined">shopping_basket</span>
-              Adicionar ao Carrinho
+              <span data-i18n="marmitex-btn">Adicionar ao Carrinho</span>
             </button>
           </footer>
         </div>
@@ -500,7 +502,7 @@
     <div class="p-1.5 rounded-lg bg-[#F29221] text-[#131313] shadow-md transition-all">
       <span class="material-symbols-outlined text-xl font-black">restaurant_menu</span>
     </div>
-    <span class="text-[9px] uppercase font-bold text-primary tracking-wider">Menu</span>
+    <span class="text-[9px] uppercase font-bold text-primary tracking-wider" data-i18n="nav-menu">Menu</span>
   </button>
   
   <button id="nav-cart" onclick="showPage('cart')" class="flex flex-col items-center justify-center gap-0.5 group opacity-40">
@@ -508,14 +510,14 @@
       <span class="material-symbols-outlined text-xl">shopping_cart</span>
       <span id="mobile-cart-badge" class="absolute -top-1 -right-1 bg-[#F29221] text-[#131313] text-[8px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center" style="display:none">0</span>
     </div>
-    <span class="text-[9px] uppercase font-bold text-on-surface-variant tracking-wider">Carrinho</span>
+    <span class="text-[9px] uppercase font-bold text-on-surface-variant tracking-wider" data-i18n="nav-cart">Carrinho</span>
   </button>
   
   <button id="nav-orders" onclick="showPage('orders')" class="flex flex-col items-center justify-center gap-0.5 group opacity-40">
     <div class="p-1.5 rounded-lg bg-surface-container-highest text-on-surface transition-all">
       <span class="material-symbols-outlined text-xl">receipt_long</span>
     </div>
-    <span class="text-[9px] uppercase font-bold text-on-surface-variant tracking-wider">Pedidos</span>
+    <span class="text-[9px] uppercase font-bold text-on-surface-variant tracking-wider" data-i18n="nav-orders">Pedidos</span>
   </button>
 </nav>
 
@@ -599,6 +601,163 @@ function renderCategoryTabs() {
     const tab = document.getElementById('tab-' + currentCategory);
     if (tab) tab.classList.add('active');
   }
+}
+
+const TRANSLATIONS = {
+  'Português': {
+    'nav-menu': 'Menu',
+    'nav-cart': 'Carrinho',
+    'nav-orders': 'Pedidos',
+    'hero-today': 'Hoje no Quintal',
+    'btn-add': 'Adicionar',
+    'review-ask': 'Gostou da experiência?',
+    'review-btn': 'Avalie nossa empresa no Google',
+    'float-cart': 'Ver Carrinho',
+    'cart-title': 'Seu Carrinho',
+    'cart-desc': 'Confira os itens selecionados para o seu banquete.',
+    'cart-items-title': 'Itens no Carrinho',
+    'cart-empty': 'Seu carrinho está vazio.',
+    'cart-see-menu': 'Ver cardápio',
+    'delivery-title': 'Como deseja receber?',
+    'mod-retirada': 'Retirada',
+    'mod-consumo': 'No Quintal',
+    'mod-entrega': 'Entrega',
+    'mod-free': 'Grátis',
+    'mod-fee': '+ Taxa fixada',
+    'cust-id-title': 'Sua Identificação',
+    'cust-name-label': 'Seu Nome Completo',
+    'cust-phone-label': 'Seu WhatsApp',
+    'addr-title': 'Endereço de Entrega',
+    'addr-rua': 'Rua e Número',
+    'addr-bairro': 'Bairro',
+    'addr-ref': 'Ponto de referência',
+    'pay-title': 'Forma de Pagamento',
+    'summary-title': 'Resumo',
+    'summary-items': 'Itens',
+    'summary-method': 'Método',
+    'summary-pay': 'Pagamento',
+    'summary-fee': 'Taxa de Entrega',
+    'summary-total': 'Total',
+    'summary-btn': 'Finalizar Pedido via WhatsApp',
+    'summary-disclaimer': 'Ao clicar, seu pedido será enviado para',
+    'orders-title': 'Meus Pedidos',
+    'orders-desc': 'Histórico de pedidos realizados nesta sessão.',
+    'orders-empty': 'Nenhum pedido finalizado ainda.',
+    'marmitex-sides': 'ESCOLHA SUAS GUARNIÇÕES',
+    'marmitex-min': 'Selecione pelo menos 1 opção',
+    'marmitex-req': 'OBRIGATÓRIO',
+    'marmitex-qty': 'Quantidade',
+    'marmitex-btn': 'Adicionar ao Carrinho',
+    'toast-added': 'Adicionado ao carrinho!'
+  },
+  'Inglês': {
+    'nav-menu': 'Menu',
+    'nav-cart': 'Cart',
+    'nav-orders': 'Orders',
+    'hero-today': 'Today at Quintal',
+    'btn-add': 'Add',
+    'review-ask': 'Did you enjoy it?',
+    'review-btn': 'Rate us on Google',
+    'float-cart': 'View Cart',
+    'cart-title': 'Your Cart',
+    'cart-desc': 'Check the items selected for your feast.',
+    'cart-items-title': 'Items in Cart',
+    'cart-empty': 'Your cart is empty.',
+    'cart-see-menu': 'See menu',
+    'delivery-title': 'How do you want to receive?',
+    'mod-retirada': 'Pickup',
+    'mod-consumo': 'At Quintal',
+    'mod-entrega': 'Delivery',
+    'mod-free': 'Free',
+    'mod-fee': '+ Delivery fee',
+    'cust-id-title': 'Your Identification',
+    'cust-name-label': 'Full Name',
+    'cust-phone-label': 'WhatsApp Number',
+    'addr-title': 'Delivery Address',
+    'addr-rua': 'Street and Number',
+    'addr-bairro': 'Neighborhood',
+    'addr-ref': 'Reference point',
+    'pay-title': 'Payment Method',
+    'summary-title': 'Summary',
+    'summary-items': 'Items',
+    'summary-method': 'Method',
+    'summary-pay': 'Payment',
+    'summary-fee': 'Delivery Fee',
+    'summary-total': 'Total',
+    'summary-btn': 'Finish Order via WhatsApp',
+    'summary-disclaimer': 'By clicking, your order will be sent to',
+    'orders-title': 'My Orders',
+    'orders-desc': 'Order history for this session.',
+    'orders-empty': 'No orders finished yet.',
+    'marmitex-sides': 'CHOOSE YOUR SIDES',
+    'marmitex-min': 'Select at least 1 option',
+    'marmitex-req': 'REQUIRED',
+    'marmitex-qty': 'Quantity',
+    'marmitex-btn': 'Add to Cart',
+    'toast-added': 'Added to cart!'
+  },
+  'Espanhol': {
+    'nav-menu': 'Menú',
+    'nav-cart': 'Carrito',
+    'nav-orders': 'Pedidos',
+    'hero-today': 'Hoy en el Quintal',
+    'btn-add': 'Añadir',
+    'review-ask': '¿Te gustó la experiencia?',
+    'review-btn': 'Califícanos en Google',
+    'float-cart': 'Ver Carrito',
+    'cart-title': 'Tu Carrito',
+    'cart-desc': 'Consulta los artículos seleccionados para tu banquete.',
+    'cart-items-title': 'Artículos en el Carrito',
+    'cart-empty': 'Tu carrito está vacío.',
+    'cart-see-menu': 'Ver menú',
+    'delivery-title': '¿Cómo quieres recibirlo?',
+    'mod-retirada': 'Retirada',
+    'mod-consumo': 'En el local',
+    'mod-entrega': 'Entrega',
+    'mod-free': 'Gratis',
+    'mod-fee': '+ Tarifa fija',
+    'cust-id-title': 'Tu Identificación',
+    'cust-name-label': 'Nombre Completo',
+    'cust-phone-label': 'Tu WhatsApp',
+    'addr-title': 'Dirección de Entrega',
+    'addr-rua': 'Calle y Número',
+    'addr-bairro': 'Barrio',
+    'addr-ref': 'Punto de referencia',
+    'pay-title': 'Forma de Pago',
+    'summary-title': 'Resumen',
+    'summary-items': 'Artículos',
+    'summary-method': 'Método',
+    'summary-pay': 'Pago',
+    'summary-fee': 'Tarifa de Envío',
+    'summary-total': 'Total',
+    'summary-btn': 'Finalizar Pedido por WhatsApp',
+    'summary-disclaimer': 'Al hacer clic, su pedido será enviado a',
+    'orders-title': 'Mis Pedidos',
+    'orders-desc': 'Historial de pedidos realizados en esta sesión.',
+    'orders-empty': 'Aún no hay pedidos finalizados.',
+    'marmitex-sides': 'ELIGE TUS GUARNICIONES',
+    'marmitex-min': 'Selecciona al menos 1 opción',
+    'marmitex-req': 'OBLIGATORIO',
+    'marmitex-qty': 'Cantidad',
+    'marmitex-btn': 'Añadir al Carrito',
+    'toast-added': '¡Añadido al carrito!'
+  }
+};
+
+function applyLanguage(lang) {
+  const t = TRANSLATIONS[lang] || TRANSLATIONS['Português'];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key]) {
+      if (el.tagName === 'INPUT' && el.placeholder) { el.placeholder = t[key]; }
+      else { el.textContent = t[key]; }
+    }
+  });
+  // Special for placeholder-like elements that are not inputs
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (t[key]) el.placeholder = t[key];
+  });
 }
 
 async function loadStoreConfig() {
@@ -692,6 +851,10 @@ async function loadStoreConfig() {
           const input = document.getElementById(firstVisible).querySelector('input');
           if (input) input.checked = true;
        }
+    }
+    
+    if (STORE_CONFIG.language) {
+      applyLanguage(STORE_CONFIG.language);
     }
   }
 }
