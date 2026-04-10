@@ -301,12 +301,11 @@
             <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic" data-i18n="cart-items-title">Itens no Carrinho</h3>
             <span id="cart-item-count" class="text-sm text-on-surface-variant">0 Itens</span>
           </div>
-          <div id="cart-items" class="space-y-4">
-            <p id="empty-cart-msg" class="text-on-surface-variant italic text-center py-12">
-              <span data-i18n="cart-empty">Seu carrinho está vazio.</span>
-              <button onclick="showPage('menu')" class="text-[#F29221] font-bold underline" data-i18n="cart-see-menu">Ver cardápio</button>
-            </p>
+          <div id="empty-cart-msg" class="text-on-surface-variant italic text-center py-12">
+            <span data-i18n="cart-empty">Seu carrinho está vazio.</span>
+            <button onclick="showPage('menu')" class="text-[#F29221] font-bold underline" data-i18n="cart-see-menu">Ver cardápio</button>
           </div>
+          <div id="cart-items" class="space-y-4"></div>
           <div class="py-8 flex justify-center opacity-30">
             <svg fill="none" height="10" viewBox="0 0 200 10" width="200">
               <path d="M0 5C20 2 40 8 60 5C80 2 100 8 120 5C140 2 160 8 180 5C190 3.5 200 5 200 5" stroke="currentColor" stroke-dasharray="2 6" stroke-linecap="round" stroke-width="2"></path>
@@ -348,11 +347,11 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="space-y-1">
                 <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant opacity-50" data-i18n="cust-name-label">Seu Nome Completo</label>
-                <input type="text" id="cust-name" placeholder="Ex: João Silva" data-i18n="cust-name-label" required class="w-full bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm">
+                <input type="text" id="cust-name" placeholder="Ex: João Silva" required class="w-full bg-surface-container-highest border border-white/10 focus:border-primary shadow-inner rounded-xl px-4 py-3 outline-none text-on-surface font-bold text-sm transition-all focus:shadow-md focus:shadow-primary/20">
               </div>
               <div class="space-y-1">
                 <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant opacity-50" data-i18n="cust-phone-label">Seu WhatsApp</label>
-                <input type="tel" id="cust-phone" placeholder="Ex: 11999999999" data-i18n="cust-phone-label" required class="w-full bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm">
+                <input type="tel" id="cust-phone" placeholder="Ex: 11999999999" required class="w-full bg-surface-container-highest border border-white/10 focus:border-primary shadow-inner rounded-xl px-4 py-3 outline-none text-on-surface font-bold text-sm transition-all focus:shadow-md focus:shadow-primary/20">
               </div>
             </div>
           </div>
@@ -361,22 +360,22 @@
           <div id="address-fields" class="space-y-4 pt-4 hidden border-t border-outline-variant/10">
             <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic mb-2" data-i18n="addr-title">Endereço de Entrega</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input type="text" id="end_rua" placeholder="Rua e Número" data-i18n="addr-rua" class="bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm">
-              <input type="text" id="end_bairro" placeholder="Bairro" data-i18n="addr-bairro" class="bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm">
-              <input type="text" id="end_ref" placeholder="Ponto de referência" data-i18n="addr-ref" class="bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm md:col-span-2">
+              <input type="text" id="end_rua" placeholder="Rua e Número" data-i18n="addr-rua" class="bg-surface-container-highest border border-white/10 focus:border-primary rounded-xl px-4 py-3 outline-none text-on-surface font-medium text-sm transition-all">
+              <input type="text" id="end_bairro" placeholder="Bairro" data-i18n="addr-bairro" class="bg-surface-container-highest border border-white/10 focus:border-primary rounded-xl px-4 py-3 outline-none text-on-surface font-medium text-sm transition-all">
+              <input type="text" id="end_ref" placeholder="Ponto de referência" data-i18n="addr-ref" class="bg-surface-container-highest border border-white/10 focus:border-primary rounded-xl px-4 py-3 outline-none text-on-surface font-medium text-sm md:col-span-2 transition-all">
             </div>
           </div>
-          </div>
+          
           <!-- Payment -->
-          <div>
+          <div class="pt-4 border-t border-outline-variant/10">
             <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic mb-4" data-i18n="pay-title">Forma de Pagamento</h3>
             <div class="relative">
-              <select onchange="updateCartUI()" class="w-full bg-transparent border-b border-outline-variant/30 py-3 font-body focus:outline-none focus:border-primary transition-all appearance-none cursor-pointer" id="payment_method">
+              <select onchange="updateCartUI()" class="w-full bg-surface-container-highest border border-white/10 rounded-xl px-4 py-3 text-on-surface font-bold font-body focus:outline-none focus:border-primary transition-all appearance-none cursor-pointer" id="payment_method">
                 <option class="bg-surface text-on-surface" value="pix">PIX</option>
                 <option class="bg-surface text-on-surface" value="cartao">Cartão</option>
                 <option class="bg-surface text-on-surface" value="dinheiro">Dinheiro</option>
               </select>
-              <span class="material-symbols-outlined absolute right-0 top-3 text-on-surface-variant pointer-events-none">expand_more</span>
+              <span class="material-symbols-outlined absolute right-4 top-3 text-primary pointer-events-none font-bold">expand_more</span>
             </div>
           </div>
         </section>
