@@ -182,6 +182,10 @@
 <span class="material-symbols-outlined">receipt_long</span>
 <span>Pedidos</span>
 </a>
+<a onclick="showAdmin('clientes')" class="nav-link flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/70 hover:text-[#F29221] mx-2 hover:bg-[#353535]/50 transition-all duration-200 hover:translate-x-1 cursor-pointer" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Clientes</span>
+</a>
 <a onclick="showAdmin('produtos')" class="nav-link flex items-center gap-3 px-4 py-3 text-[#e5e2e1]/70 hover:text-[#F29221] mx-2 hover:bg-[#353535]/50 transition-all duration-200 hover:translate-x-1 cursor-pointer" href="#">
 <span class="material-symbols-outlined">restaurant_menu</span>
 <span>Cardápio</span>
@@ -493,6 +497,39 @@
           </div>
         </div>
       </aside>
+    </div>
+  </div>
+
+  <!-- CLIENTES CRM -->
+  <div id="admin-clientes" class="admin-page">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
+      <div>
+        <h3 class="text-3xl font-headline font-black text-on-surface tracking-tight uppercase italic">Base de Clientes</h3>
+        <p class="text-on-surface-variant mt-1 text-xs font-medium">Gestão de recorrência e contatos do Quintal.</p>
+      </div>
+      <div class="relative w-full sm:w-64">
+        <input type="text" id="search-customers" oninput="filterCustomers()" placeholder="Buscar cliente ou tel..." class="w-full bg-surface-container-low border border-white/5 rounded-xl py-3 pl-12 pr-4 text-xs outline-none focus:border-primary transition-all shadow-lg font-medium">
+        <span class="material-symbols-outlined absolute left-4 top-3 text-on-surface-variant text-lg">search</span>
+      </div>
+    </div>
+
+    <div class="bg-surface-container-low rounded-3xl overflow-hidden border border-white/5 shadow-2xl">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead class="bg-black/20 text-[10px] font-black uppercase tracking-[0.2rem] text-on-surface-variant/60">
+            <tr>
+              <th class="py-5 px-6">Nome do Cliente</th>
+              <th class="py-5 px-6">WhatsApp</th>
+              <th class="py-5 px-6">Última Compra</th>
+              <th class="py-5 px-6 text-center">Frequência</th>
+              <th class="py-5 px-6 text-right">Histórico</th>
+            </tr>
+          </thead>
+          <tbody id="customers-list" class="divide-y divide-white/5">
+            <!-- Render via JS -->
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -1576,6 +1613,68 @@ function showAdmin(section) {
    });
 
    if (window.innerWidth < 1024) toggleSidebar();
+   
+   if (section === 'pedidos') fetchOrders();
+   if (section === 'produtos') fetchProducts();
+   if (section === 'clientes') fetchCustomers();
+}
+
+// ===== CRM / CUSTOMERS =====
+async function fetchCustomers() {
+  const { data, error } = await supabaseClient
+    .from('quintal_clientes')
+    .select('*')
+    .order('updated_at', { ascending: false });
+    
+  if (error) { console.error(error); return; }
+  renderCustomers(data);
+}
+
+function renderCustomers(list) {
+  const container = document.getElementById('customers-list');
+  if (!container) return;
+  
+  if (list.length === 0) {
+    container.innerHTML = `<tr><td colspan="5" class="py-12 text-center text-on-surface-variant italic opacity-30">Nenhum cliente cadastrado ainda.</td></tr>`;
+    return;
+  }
+  
+  container.innerHTML = list.map(c => `
+    <tr class="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
+      <td class="py-5 px-4 font-headline font-bold text-on-surface uppercase tracking-tighter italic text-lg">${c.nome}</td>
+      <td class="py-5 px-4">
+        <div class="flex flex-col">
+          <span class="text-sm font-bold text-primary">${c.telefone}</span>
+          <a href="https://wa.me/55${c.telefone.replace(/\D/g,'')}" target="_blank" class="text-[9px] text-on-surface-variant hover:text-[#25D366] font-black uppercase tracking-widest mt-1 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[10px]">chat</span> WhatsApp
+          </a>
+        </div>
+      </td>
+      <td class="py-5 px-4">
+        <div class="flex flex-col">
+          <span class="text-xs font-bold text-on-surface">${new Date(c.updated_at).toLocaleDateString('pt-BR')}</span>
+          <span class="text-[9px] text-on-surface-variant uppercase tracking-widest opacity-40">Pedido: #${c.ultimo_pedido_id?.slice(-4).toUpperCase() || '---'}</span>
+        </div>
+      </td>
+      <td class="py-5 px-4">
+        <span class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center text-xs font-black text-primary border border-primary/20">${c.total_pedidos || 1}</span>
+      </td>
+      <td class="py-5 px-4 text-right">
+        <button onclick="viewCustomerOrders('${c.telefone}')" class="p-2 text-on-surface-variant hover:text-primary transition-all">
+          <span class="material-symbols-outlined text-lg">history</span>
+        </button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function filterCustomers() {
+  const term = document.getElementById('search-customers').value.toLowerCase();
+  const rows = document.querySelectorAll('#customers-list tr');
+  rows.forEach(r => {
+    const text = r.innerText.toLowerCase();
+    r.style.display = text.includes(term) ? '' : 'none';
+  });
 }
 
 async function updateStats() {

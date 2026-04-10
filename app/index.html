@@ -334,8 +334,23 @@
               </label>
             </div>
           </div>
+          <!-- Identification (CRM) -->
+          <div class="space-y-4 pt-4 border-t border-outline-variant/10">
+            <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic mb-2">Sua Identificação</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="space-y-1">
+                <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant opacity-50">Seu Nome Completo</label>
+                <input type="text" id="cust-name" placeholder="Ex: João Silva" required class="w-full bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm">
+              </div>
+              <div class="space-y-1">
+                <label class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant opacity-50">Seu WhatsApp</label>
+                <input type="tel" id="cust-phone" placeholder="Ex: 11999999999" required class="w-full bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm">
+              </div>
+            </div>
+          </div>
+
           <!-- Address Fields (Conditional) -->
-          <div id="address-fields" class="space-y-4 pt-4 hidden">
+          <div id="address-fields" class="space-y-4 pt-4 hidden border-t border-outline-variant/10">
             <h3 class="text-lg font-headline font-bold text-primary uppercase tracking-tighter italic mb-2">Endereço de Entrega</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <input type="text" id="end_rua" placeholder="Rua e Número" class="bg-surface-container-low border-b border-outline-variant/30 focus:border-primary border-t-0 border-x-0 py-3 outline-none text-on-surface text-sm">
@@ -924,14 +939,27 @@ function addMarmitex() {
 }
 
 // ===== FINALIZE ORDER =====
-function finalizarPedido() {
+async function finalizarPedido() {
   try {
     if (cart.length === 0) { alert('Adicione itens ao carrinho primeiro!'); return; }
+    
+    // Identification
+    const nomeCliente = document.getElementById('cust-name').value.trim();
+    const telefoneCliente = document.getElementById('cust-phone').value.replace(/\D/g, '');
+    
+    if (!nomeCliente || telefoneCliente.length < 10) {
+      alert('Por favor, preencha seu nome e um WhatsApp válido!');
+      return;
+    }
+
     const delivery = document.querySelector('input[name="delivery"]:checked')?.value || 'retirada';
     const payment = document.getElementById('payment_method')?.value || 'pix';
     const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
 
     let msg = '🍖 *Pedido – Quintal do Ramão*\n\n';
+    msg += `👤 *Cliente:* ${nomeCliente}\n`;
+    msg += `📱 *WhatsApp:* ${telefoneCliente}\n\n`;
+    
     cart.forEach(i => { msg += `• ${i.name} x${i.qty} – R$ ${(i.price * i.qty).toFixed(2).replace('.', ',')}\n`; });
     
     msg += `\n💳 Pagamento: ${payment.toUpperCase()}\n`;
@@ -951,7 +979,8 @@ function finalizarPedido() {
 
     // Save order to Supabase
     const orderData = {
-      customer_name: 'Cliente Web',
+      customer_name: nomeCliente,
+      customer_phone: telefoneCliente,
       items: cart,
       total: total,
       delivery_method: delivery,
@@ -960,22 +989,50 @@ function finalizarPedido() {
       status: 'pendente'
     };
 
-    // Tentar salvar no Supabase sem bloquear o WhatsApp
+    // Tentar salvar no Supabase
     try {
-      supabaseClient.from('quintal_pedidos').insert([orderData]).then(({ error }) => {
-        if (error) console.error('Erro ao salvar pedido no Supabase:', error);
-      });
-    } catch(e) { console.warn("Supabase save failed", e); }
+      const { data: orderResponse, error: orderErr } = await supabaseClient
+        .from('quintal_pedidos')
+        .insert([orderData])
+        .select();
+
+      if (orderErr) throw orderErr;
+      
+      const savedOrder = orderResponse[0];
+
+      // CRM Logic: Save/Update Customer
+      const { data: existingCust } = await supabaseClient
+        .from('quintal_clientes')
+        .select('*')
+        .eq('telefone', telefoneCliente);
+
+      if (existingCust && existingCust.length > 0) {
+        // Update recurrence
+        await supabaseClient.from('quintal_clientes').update({
+          nome: nomeCliente, // actualize name just in case
+          ultimo_pedido_id: savedOrder.id,
+          total_pedidos: (existingCust[0].total_pedidos || 0) + 1,
+          updated_at: new Date().toISOString()
+        }).eq('id', existingCust[0].id);
+      } else {
+        // Create new customer
+        await supabaseClient.from('quintal_clientes').insert({
+          nome: nomeCliente,
+          telefone: telefoneCliente,
+          ultimo_pedido_id: savedOrder.id,
+          total_pedidos: 1
+        });
+      }
+    } catch(e) { console.error("Supabase/CRM sync failed", e); }
 
     // Save order locally for history
     orders.push({ ...orderData, date: new Date().toLocaleString('pt-BR') });
     renderOrderHistory();
     // Clear cart
-    const oldCart = [...cart];
     cart = [];
     updateCartUI();
     // Open WhatsApp
-    const waUrl = 'https://wa.me/5519992288312?text=' + encodeURIComponent(msg);
+    const waUrl = `https://wa.me/5519992288312?text=${encodeURIComponent(msg)}`;
     window.open(waUrl, '_blank');
     showPage('orders');
   } catch (err) {
