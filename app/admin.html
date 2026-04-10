@@ -668,14 +668,73 @@
             </div>
           </div>
         </section>
+
+        <!-- 5. DESTAQUE DO DIA -->
+        <section>
+          <h3 class="flex items-center gap-3 text-lg font-headline font-bold mb-6 text-on-surface">
+            <span class="material-symbols-outlined text-primary">star</span> 5. Destaque do Dia
+          </h3>
+          <div class="bg-surface-container-low p-6 rounded-2xl border border-outline-variant/10 shadow-xl space-y-5">
+            <p class="text-[9px] font-bold text-on-surface-variant/40 uppercase tracking-widest">Escolha o prato em destaque exibido no topo do site principal</p>
+
+            <!-- Preview Card -->
+            <div class="bg-surface-container-highest rounded-xl p-4 border border-white/5 flex items-center gap-4 mb-2">
+              <div class="w-16 h-16 rounded-xl overflow-hidden bg-surface-container flex-shrink-0 border border-white/10">
+                <img id="cfg-featured-preview" src="" class="w-full h-full object-cover" onerror="this.style.display='none'" style="display:none">
+                <div id="cfg-featured-placeholder" class="w-full h-full flex items-center justify-center">
+                  <span class="material-symbols-outlined text-2xl text-on-surface-variant/30">restaurant</span>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p id="cfg-featured-name-preview" class="font-headline font-black text-sm uppercase tracking-tight text-on-surface italic">Nome do Prato</p>
+                <p id="cfg-featured-desc-preview" class="text-[9px] text-on-surface-variant/60 leading-tight mt-0.5 line-clamp-2">Descrição do prato...</p>
+              </div>
+              <span id="cfg-featured-price-preview" class="font-headline font-black text-primary text-lg flex-shrink-0">R$ 0,00</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[9px] font-black uppercase tracking-[0.2em] text-on-surface-variant/60 mb-2">Nome do Prato</label>
+                <input type="text" id="cfg-featured-name"
+                  class="w-full bg-surface-container-highest border-0 rounded-xl p-3 focus:ring-2 focus:ring-primary text-sm font-bold"
+                  placeholder="Ex: Cheddar &amp; Bacon"
+                  oninput="document.getElementById('cfg-featured-name-preview').textContent = this.value || 'Nome do Prato'">
+              </div>
+              <div>
+                <label class="block text-[9px] font-black uppercase tracking-[0.2em] text-on-surface-variant/60 mb-2">Preço (R$)</label>
+                <input type="number" step="0.01" id="cfg-featured-price"
+                  class="w-full bg-surface-container-highest border-0 rounded-xl p-3 focus:ring-2 focus:ring-primary text-sm font-black"
+                  placeholder="0,00"
+                  oninput="document.getElementById('cfg-featured-price-preview').textContent = 'R$ ' + (parseFloat(this.value)||0).toFixed(2).replace('.',',')">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[9px] font-black uppercase tracking-[0.2em] text-on-surface-variant/60 mb-2">Descrição</label>
+              <textarea id="cfg-featured-desc" rows="2"
+                class="w-full bg-surface-container-highest border-0 rounded-xl p-3 text-sm italic leading-relaxed"
+                placeholder="Ingredientes e destaques do prato..."
+                oninput="document.getElementById('cfg-featured-desc-preview').textContent = this.value || 'Descrição do prato...'"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-[9px] font-black uppercase tracking-[0.2em] text-on-surface-variant/60 mb-2">URL da Imagem do Prato</label>
+              <input type="text" id="cfg-featured-image"
+                class="w-full bg-surface-container-highest border-0 rounded-xl p-3 text-xs font-mono"
+                placeholder="https://..."
+                oninput="updateFeaturedImagePreview(this.value)">
+              <p class="text-[9px] text-on-surface-variant/40 mt-1 italic">Recomendado: imagem quadrada 400x400px</p>
+            </div>
+          </div>
+        </section>
       </div>
 
       <!-- DIREITA: HORÁRIOS, ENTREGA, PAGAMENTO -->
       <div class="space-y-12">
-        <!-- 5. HORÁRIOS -->
+        <!-- 6. HORÁRIOS -->
         <section>
           <h3 class="flex items-center gap-3 text-lg font-headline font-bold mb-6 text-on-surface">
-            <span class="material-symbols-outlined text-primary">schedule</span> 5. Horários de Funcionamento
+            <span class="material-symbols-outlined text-primary">schedule</span> 6. Horários de Funcionamento
           </h3>
           <div class="bg-surface-container-low p-6 lg:p-10 rounded-2xl border border-outline-variant/10 shadow-xl">
              <div class="overflow-x-auto">
@@ -769,10 +828,10 @@
           </div>
         </section>
 
-        <!-- 7. PAGAMENTO -->
+        <!-- 8. PAGAMENTO -->
         <section>
           <h3 class="flex items-center gap-3 text-lg font-headline font-bold mb-6 text-on-surface">
-            <span class="material-symbols-outlined text-primary">payments</span> 7. Pagamento
+            <span class="material-symbols-outlined text-primary">payments</span> 8. Pagamento
           </h3>
           <div class="bg-surface-container-low p-8 rounded-2xl border border-outline-variant/10 shadow-xl space-y-6">
              <div class="flex flex-wrap gap-3" id="payment-grid">
@@ -1037,6 +1096,17 @@ async function loadConfig() {
       document.getElementById('cfg-banner-url').value = currentStoreConfig.banner_url || '';
       if(currentStoreConfig.banner_url) document.getElementById('cfg-banner-preview').src = currentStoreConfig.banner_url;
 
+      // Destaque do Dia
+      document.getElementById('cfg-featured-name').value = currentStoreConfig.featured_name || '';
+      document.getElementById('cfg-featured-desc').value = currentStoreConfig.featured_desc || '';
+      document.getElementById('cfg-featured-price').value = currentStoreConfig.featured_price || '';
+      document.getElementById('cfg-featured-image').value = currentStoreConfig.featured_image || '';
+      // Atualizar preview
+      document.getElementById('cfg-featured-name-preview').textContent = currentStoreConfig.featured_name || 'Nome do Prato';
+      document.getElementById('cfg-featured-desc-preview').textContent = currentStoreConfig.featured_desc || 'Descrição do prato...';
+      document.getElementById('cfg-featured-price-preview').textContent = 'R$ ' + (parseFloat(currentStoreConfig.featured_price)||0).toFixed(2).replace('.',',');
+      if (currentStoreConfig.featured_image) updateFeaturedImagePreview(currentStoreConfig.featured_image);
+
       // Logo
       if(currentStoreConfig.logo_url) {
          document.getElementById('cfg-logo-url').value = currentStoreConfig.logo_url;
@@ -1128,6 +1198,19 @@ function hexToRgb(hex) {
 
 document.getElementById('cfg-primary-color')?.addEventListener('input', updateVisuals);
 document.getElementById('cfg-bg-color')?.addEventListener('input', updateVisuals);
+
+function updateFeaturedImagePreview(url) {
+   const img = document.getElementById('cfg-featured-preview');
+   const placeholder = document.getElementById('cfg-featured-placeholder');
+   if (url && url.startsWith('http')) {
+      img.src = url;
+      img.style.display = 'block';
+      if (placeholder) placeholder.style.display = 'none';
+   } else {
+      img.style.display = 'none';
+      if (placeholder) placeholder.style.display = 'flex';
+   }
+}
 
 // Logo Upload Logic
 document.getElementById('cfg-logo-file')?.addEventListener('change', async (e) => {
@@ -1260,7 +1343,11 @@ async function saveStoreConfig(btn) {
          language: storeLanguage,
          modalities: storeModalities,
          hours: storeHours,
-         payments: storePayments
+         payments: storePayments,
+         featured_name: document.getElementById('cfg-featured-name').value,
+         featured_desc: document.getElementById('cfg-featured-desc').value,
+         featured_price: parseFloat(document.getElementById('cfg-featured-price').value) || 0,
+         featured_image: document.getElementById('cfg-featured-image').value,
       };
       
       const { error } = await supabaseClient.from('quintal_configs').upsert({ key: 'store_info', value: val });

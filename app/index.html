@@ -218,22 +218,22 @@
       <div class="bg-surface-container-low rounded-2xl p-4 relative overflow-hidden border border-white/5 shadow-2xl">
         <div class="relative z-10 flex flex-col items-center">
           <span class="hero-badge mb-2" data-i18n="hero-today">Hoje no Quintal</span>
-          <h2 class="text-2xl font-headline font-black uppercase mb-2 leading-none tracking-tighter italic">Cheddar & Bacon</h2>
-          <p class="text-[10px] text-on-surface-variant leading-tight max-w-[240px] mb-4 opacity-70">Brioche, blend bovino 160g, cheddar cremoso e muito bacon crocante.</p>
+          <h2 id="featured-name" class="text-2xl font-headline font-black uppercase mb-2 leading-none tracking-tighter italic">Cheddar &amp; Bacon</h2>
+          <p id="featured-desc" class="text-[10px] text-on-surface-variant leading-tight max-w-[240px] mb-4 opacity-70">Brioche, blend bovino 160g, cheddar cremoso e muito bacon crocante.</p>
           
           <div class="flex items-center gap-4 mb-4">
             <div class="flex items-baseline gap-0.5">
               <span class="text-xs font-bold text-primary">R$</span>
-              <span class="text-2xl font-headline font-black text-primary">35,00</span>
+              <span id="featured-price" class="text-2xl font-headline font-black text-primary">35,00</span>
             </div>
-            <button onclick="addToCart('Cheddar & Bacon', 35)" class="bg-[#F29221] text-[#131313] px-6 py-2 rounded-lg font-headline font-black uppercase tracking-wider text-xs flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all">
+            <button id="featured-btn" onclick="addToCart('Cheddar & Bacon', 35)" class="bg-[#F29221] text-[#131313] px-6 py-2 rounded-lg font-headline font-black uppercase tracking-wider text-xs flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all">
               <span class="material-symbols-outlined text-base">shopping_cart</span>
               <span data-i18n="btn-add">Adicionar</span>
             </button>
           </div>
           
           <div class="relative w-full max-w-[200px] aspect-square mx-auto">
-             <img alt="Cheddar &amp; Bacon Burger" class="w-full h-full object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
+             <img id="featured-img" alt="Prato em Destaque" class="w-full h-full object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]"
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyeWN_T_CQcVbpda3zOqecO2AGEKmdlNHHB3q2cUoc0a7WAnVadUNe5aZoKZSXqJ-a-HGFqduXTqn4FY_hXWrb4gURMuGXm8MHb4Cbv3lg-zr5OHZ2jkd0nIkjzrDJf358vrW8r9IwG4xQOY9TUzFrbxqFuEnPuUZILaoNm3Dx5AxjuvOBFhwi79uEARSyKXNvHXapmVXzBhRkQHGIcxEOtc7GPr86z0sPQ_Ph5SfK0JA8-43OlWBjNi7DAsUSrx40jpKhyL099q4d"/>
              <div class="absolute bottom-2 right-0 bg-[#353535] px-3 py-1 rounded-md transform rotate-6 border border-white/10 shadow-lg scale-75">
                <span class="text-[#F29221] font-headline font-black text-xs uppercase italic tracking-widest">Artesanal</span>
@@ -862,6 +862,25 @@ async function loadStoreConfig() {
 
     if (STORE_CONFIG.language) {
       applyLanguage(STORE_CONFIG.language);
+    }
+
+    // Destaque do Dia — atualizar o card com dados do Admin
+    if (STORE_CONFIG.featured_name) {
+      const featuredName = document.getElementById('featured-name');
+      const featuredDesc = document.getElementById('featured-desc');
+      const featuredPrice = document.getElementById('featured-price');
+      const featuredImg = document.getElementById('featured-img');
+      const featuredBtn = document.getElementById('featured-btn');
+
+      if (featuredName) featuredName.textContent = STORE_CONFIG.featured_name;
+      if (featuredDesc) featuredDesc.textContent = STORE_CONFIG.featured_desc || '';
+      if (featuredPrice) featuredPrice.textContent = (parseFloat(STORE_CONFIG.featured_price) || 0).toFixed(2).replace('.', ',');
+      if (featuredImg && STORE_CONFIG.featured_image) featuredImg.src = STORE_CONFIG.featured_image;
+      if (featuredBtn) {
+        const price = parseFloat(STORE_CONFIG.featured_price) || 0;
+        const name = STORE_CONFIG.featured_name.replace(/'/g, "\\'");
+        featuredBtn.onclick = () => addToCart(STORE_CONFIG.featured_name, price);
+      }
     }
   }
 }
