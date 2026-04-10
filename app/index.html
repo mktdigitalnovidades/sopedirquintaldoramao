@@ -821,7 +821,42 @@ async function loadStoreConfig() {
         .border-primary, .border-\\[\\#F29221\\], .border-\\[\\#f29221\\] { border-color: ${STORE_CONFIG.primary_color} !important; }
         .btn-primary { background-color: ${STORE_CONFIG.primary_color}; color: white; }
         #logo-header-container, #logo-hero-icon { background-color: ${STORE_CONFIG.primary_color} !important; color: ${STORE_CONFIG.primary_color.includes('ffffff') ? '#131313' : '#ffffff'} !important; }
+        path[stroke="#F29221"], path[stroke="#f29221"] { stroke: ${STORE_CONFIG.primary_color} !important; }
+        .bg-\\[\\#F29221\\]\\/10 { background-color: ${STORE_CONFIG.primary_color}1A !important; }
       `;
+      window.purifyDOMColors = function(root = document) {
+         if(!STORE_CONFIG.primary_color) return;
+         const targets = (root.querySelectorAll) ? root.querySelectorAll('[class*="f29221"], [class*="F29221"]') : [];
+         targets.forEach(el => {
+            if(el.className && typeof el.className === 'string') {
+               el.className = el.className.replace(/\[#F29221\]/g, 'primary').replace(/\[#f29221\]/g, 'primary');
+            }
+         });
+         const strokes = (root.querySelectorAll) ? root.querySelectorAll('[stroke="#F29221"], [stroke="#f29221"]') : [];
+         strokes.forEach(el => { el.setAttribute('stroke', STORE_CONFIG.primary_color); });
+      };
+      purifyDOMColors();
+      
+      if(!window.colorObserverSetup) {
+         window.colorObserverSetup = true;
+         new MutationObserver(m => {
+            m.forEach(rec => {
+               if(rec.addedNodes.length > 0) {
+                  rec.addedNodes.forEach(node => {
+                     if(node.nodeType === 1) {
+                         if(node.className && typeof node.className === 'string' && (node.className.includes('#F29221') || node.className.includes('#f29221'))) {
+                            node.className = node.className.replace(/\[#F29221\]/g, 'primary').replace(/\[#f29221\]/g, 'primary');
+                         }
+                         if(node.getAttribute && (node.getAttribute('stroke') === '#F29221' || node.getAttribute('stroke') === '#f29221')) {
+                            node.setAttribute('stroke', STORE_CONFIG.primary_color);
+                         }
+                         purifyDOMColors(node);
+                     }
+                  });
+               }
+            });
+         }).observe(document.body, {childList: true, subtree: true});
+      }
     }
 
     if (STORE_CONFIG.bg_color === '#ffffff') {

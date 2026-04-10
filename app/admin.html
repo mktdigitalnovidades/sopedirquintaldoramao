@@ -1089,6 +1089,7 @@ async function loadConfig() {
          document.getElementById('cfg-bg-hex').value = currentStoreConfig.bg_color;
       }
       setThemeMode(currentStoreConfig.theme || 'dark');
+      updateVisuals();
 
       // Language
       storeLanguage = currentStoreConfig.language || 'Português';
@@ -1146,7 +1147,53 @@ function updateVisuals() {
       .border-primary, .border-\\[\\#F29221\\], .border-\\[\\#f29221\\] { border-color: ${primary} !important; }
       .bg-primary-container { background-color: ${primary}20 !important; border-color: ${primary}40 !important;}
       .text-on-primary-container, .text-\\[\\#F29221\\] { color: ${primary} !important; }
+      path[stroke="#F29221"], path[stroke="#f29221"] { stroke: ${primary} !important; }
    `;
+   
+   if (bg === '#ffffff') {
+       styleTag.innerHTML += `
+         body, .bg-background, .bg-[#131313], .bg-surface-container-low, .bg-surface-container-highest, .bg-surface { background-color: #fcfcfc !important; }
+         .text-on-surface, .text-[#e5e2e1], .text-[#131313] { color: #1a1a1a !important; }
+         .text-on-surface-variant { color: #5a5a5a !important; }
+         .border-white\\/5, .border-outline-variant\\/10, .border-outline-variant\\/20, .border-outline-variant\\/30 { border-color: rgba(0,0,0,0.1) !important; }
+         .bg-\\[\\#353535\\] { background-color: #f0f0f0 !important; }
+         .bg-surface\\/50 { background-color: rgba(255,255,255,0.7) !important; }
+       `;
+   }
+   
+   window.purifyDOMColors = function(root = document) {
+      if(!primary) return;
+      const targets = (root.querySelectorAll) ? root.querySelectorAll('[class*="f29221"], [class*="F29221"]') : [];
+      targets.forEach(el => {
+         if(el.className && typeof el.className === 'string') {
+            el.className = el.className.replace(/\[#F29221\]/g, 'primary').replace(/\[#f29221\]/g, 'primary');
+         }
+      });
+      const strokes = (root.querySelectorAll) ? root.querySelectorAll('[stroke="#F29221"], [stroke="#f29221"]') : [];
+      strokes.forEach(el => { el.setAttribute('stroke', primary); });
+   };
+   purifyDOMColors();
+   
+   if(!window.colorObserverSetup) {
+      window.colorObserverSetup = true;
+      new MutationObserver(m => {
+         m.forEach(rec => {
+            if(rec.addedNodes.length > 0) {
+               rec.addedNodes.forEach(node => {
+                  if(node.nodeType === 1) {
+                      if(node.className && typeof node.className === 'string' && (node.className.includes('#F29221') || node.className.includes('#f29221'))) {
+                         node.className = node.className.replace(/\[#F29221\]/g, 'primary').replace(/\[#f29221\]/g, 'primary');
+                      }
+                      if(node.getAttribute && (node.getAttribute('stroke') === '#F29221' || node.getAttribute('stroke') === '#f29221')) {
+                         node.setAttribute('stroke', primary);
+                      }
+                      purifyDOMColors(node);
+                  }
+               });
+            }
+         });
+      }).observe(document.body, {childList: true, subtree: true});
+   }
 }
 
 function hexToRgb(hex) {
