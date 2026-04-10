@@ -523,21 +523,7 @@
             <span class="material-symbols-outlined text-primary">palette</span> 1. Aparência
           </h3>
           <div class="bg-surface-container-low p-6 rounded-2xl border border-outline-variant/10 shadow-xl space-y-8">
-            <div class="grid grid-cols-2 gap-6">
-              <div>
-                <label class="block text-[9px] font-black uppercase tracking-[0.2em] text-on-surface-variant/60 mb-4">Modo de Exibição</label>
-                <div class="grid grid-cols-2 gap-2 p-1.5 bg-surface-container-highest rounded-xl border border-white/5">
-                  <button type="button" onclick="setThemeMode('dark')" id="theme-dark" class="flex items-center justify-center gap-2 py-3 rounded-lg bg-surface text-primary border border-primary/20 shadow-lg transition-all">
-                    <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1">dark_mode</span>
-                    <span class="text-[10px] font-black">Escuro</span>
-                  </button>
-                  <button type="button" onclick="setThemeMode('light')" id="theme-light" class="flex items-center justify-center gap-2 py-3 rounded-lg text-on-surface-variant hover:text-white transition-all">
-                    <span class="material-symbols-outlined text-sm">light_mode</span>
-                    <span class="text-[10px] font-black">Claro</span>
-                  </button>
-                </div>
-              </div>
-              <div class="space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                  <div>
                     <label class="block text-[9px] font-black uppercase tracking-[0.2em] text-on-surface-variant/60 mb-2">Cor Principal</label>
                     <div class="flex gap-2">
@@ -546,11 +532,12 @@
                     </div>
                  </div>
                  <div>
-                    <label class="block text-[9px] font-black uppercase tracking-[0.2em] text-on-surface-variant/60 mb-2">Cor de Fundo</label>
-                    <div class="flex gap-2">
-                       <input type="color" id="cfg-bg-color" value="#131313" class="w-10 h-10 rounded-lg overflow-hidden border-0 bg-transparent cursor-pointer">
-                       <input type="text" id="cfg-bg-hex" value="#131313" class="flex-1 bg-surface-container-highest border-0 rounded-lg text-xs font-mono px-3" readonly>
-                    </div>
+                    <label class="block text-[9px] font-black uppercase tracking-[0.2em] text-on-surface-variant/60 mb-2">Cor de Fundo / Modo</label>
+                    <select id="cfg-bg-color" onchange="document.getElementById('cfg-bg-hex').value = this.value; setThemeMode(this.value === '#ffffff' ? 'light' : 'dark')" class="w-full bg-surface-container-highest border-0 rounded-lg text-xs font-bold px-3 py-3 outline-none focus:ring-1 focus:ring-primary text-on-surface cursor-pointer">
+                      <option value="#131313">Preta (Letras Brancas)</option>
+                      <option value="#ffffff">Branca (Letras Pretas)</option>
+                    </select>
+                    <input type="hidden" id="cfg-bg-hex" value="#131313">
                  </div>
               </div>
             </div>
@@ -1122,19 +1109,13 @@ async function loadConfig() {
 
 function setThemeMode(mode) {
    currentStoreConfig.theme = mode;
-   const btnDark = document.getElementById('theme-dark');
-   const btnLight = document.getElementById('theme-light');
    
    if (mode === 'dark') {
       document.body.classList.add('dark');
       document.documentElement.classList.add('dark');
-      if(btnDark) btnDark.className = "flex items-center justify-center gap-2 py-3 rounded-lg bg-surface text-primary border border-primary/20 shadow-lg transition-all";
-      if(btnLight) btnLight.className = "flex items-center justify-center gap-2 py-3 rounded-lg text-on-surface-variant hover:text-white transition-all";
    } else {
       document.body.classList.remove('dark');
       document.documentElement.classList.remove('dark');
-      if(btnLight) btnLight.className = "flex items-center justify-center gap-2 py-3 rounded-lg bg-surface text-primary border border-primary/20 shadow-lg transition-all";
-      if(btnDark) btnDark.className = "flex items-center justify-center gap-2 py-3 rounded-lg text-on-surface-variant hover:text-white transition-all";
    }
 }
 
@@ -1159,10 +1140,11 @@ function updateVisuals() {
          --primary-rgb: ${hexToRgb(primary)};
          --bg-custom: ${bg};
       }
-      .text-primary { color: ${primary} !important; }
-      .bg-primary { background-color: ${primary} !important; }
-      .border-primary { border-color: ${primary} !important; }
-      .bg-primary-container { background-color: ${primary} !important; }
+      .text-primary, .text-\\[\\#F29221\\], .text-\\[\\#f29221\\] { color: ${primary} !important; }
+      .bg-primary, .bg-\\[\\#F29221\\], .bg-\\[\\#f29221\\] { background-color: ${primary} !important; }
+      .border-primary, .border-\\[\\#F29221\\], .border-\\[\\#f29221\\] { border-color: ${primary} !important; }
+      .bg-primary-container { background-color: ${primary}20 !important; border-color: ${primary}40 !important;}
+      .text-on-primary-container, .text-\\[\\#F29221\\] { color: ${primary} !important; }
    `;
 }
 
