@@ -86,6 +86,27 @@
         }
     </script>
 <style>
+        :root {
+          --bg-admin: #131313;
+          --sidebar-bg: #1b1b1b;
+          --text-admin: #e5e2e1;
+          --text-muted: #dac2af;
+          --surface-admin: #202020;
+          --border-admin: rgba(255, 255, 255, 0.05);
+        }
+
+        html:not(.dark), body:not(.dark) {
+          --bg-admin: #ffffff;
+          --sidebar-bg: #f8f8f8;
+          --text-admin: #131313;
+          --text-muted: #555555;
+          --surface-admin: #ffffff;
+          --border-admin: rgba(0, 0, 0, 0.08);
+        }
+
+        body { background-color: var(--bg-admin); color: var(--text-admin); transition: all 0.3s ease; }
+        #admin-sidebar { background-color: var(--sidebar-bg); border-right: 1px solid var(--border-admin); }
+
         .material-symbols-outlined {
             font-family: 'Material Symbols Outlined' !important;
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -534,7 +555,7 @@
                  </div>
                  <div>
                     <label class="block text-[9px] font-black uppercase tracking-[0.2em] text-on-surface-variant/60 mb-2">Cor de Fundo / Modo</label>
-                    <select id="cfg-bg-color" onchange="document.getElementById('cfg-bg-hex').value = this.value; setThemeMode(this.value === '#ffffff' ? 'light' : 'dark')" class="w-full bg-surface-container-highest border-0 rounded-lg text-xs font-bold px-3 py-3 outline-none focus:ring-1 focus:ring-primary text-on-surface cursor-pointer">
+                    <select id="cfg-bg-color" onchange="document.getElementById('cfg-bg-hex').value = this.value; setThemeMode(this.value === '#ffffff' ? 'light' : 'dark'); updateVisuals()" class="w-full bg-surface-container-highest border-0 rounded-lg text-xs font-bold px-3 py-3 outline-none focus:ring-1 focus:ring-primary text-on-surface cursor-pointer">
                       <option value="#131313">Preta (Letras Brancas)</option>
                       <option value="#ffffff">Branca (Letras Pretas)</option>
                     </select>
@@ -1130,7 +1151,8 @@ function updateVisuals() {
    
    // Apply to Admin in real-time
    document.documentElement.style.setProperty('--primary', primary);
-   // Force tailwind to see the new primary if needed via style tag
+   document.documentElement.style.setProperty('--primary-rgb', hexToRgb(primary));
+
    let styleTag = document.getElementById('dynamic-colors');
    if (!styleTag) {
       styleTag = document.createElement('style');
@@ -1139,6 +1161,7 @@ function updateVisuals() {
    }
    styleTag.innerHTML = `
       :root { 
+         --primary: ${primary};
          --primary-rgb: ${hexToRgb(primary)};
          --bg-custom: ${bg};
       }
@@ -1147,18 +1170,28 @@ function updateVisuals() {
       .border-primary, .border-\\[\\#F29221\\], .border-\\[\\#f29221\\] { border-color: ${primary} !important; }
       .bg-primary-container { background-color: ${primary}20 !important; border-color: ${primary}40 !important;}
       .text-on-primary-container, .text-\\[\\#F29221\\] { color: ${primary} !important; }
-      path[stroke="#F29221"], path[stroke="#f29221"] { stroke: ${primary} !important; }
+      path[stroke*="#F29221"], path[stroke*="#f29221"] { stroke: ${primary} !important; }
    `;
    
    if (bg === '#ffffff') {
        styleTag.innerHTML += `
-         body, .bg-background, .bg-[#131313], .bg-surface-container-low, .bg-surface-container-highest, .bg-surface { background-color: #fcfcfc !important; }
-         .text-on-surface, .text-[#e5e2e1], .text-[#131313] { color: #1a1a1a !important; }
-         .text-on-surface-variant { color: #5a5a5a !important; }
-         .border-white\\/5, .border-outline-variant\\/10, .border-outline-variant\\/20, .border-outline-variant\\/30 { border-color: rgba(0,0,0,0.1) !important; }
-         .bg-\\[\\#353535\\] { background-color: #f0f0f0 !important; }
+         body, .bg-background, [class*="bg-[#131313]"], .bg-surface-container-low, .bg-surface-container-highest, .bg-surface-container, .bg-surface { background-color: #ffffff !important; }
+         #admin-sidebar { background-color: #f8f8f8 !important; border-right: 1px solid rgba(0,0,0,0.08) !important; }
+         .text-on-surface, .text-\\[\\#e5e2e1\\], .text-\\[\\#131313\\], h1, h2, h3, h4, .font-headline { color: #131313 !important; }
+         .text-on-surface-variant { color: #555555 !important; }
+         .border-white\\/5, .border-white\\/10, .border-outline-variant\\/10, .border-outline-variant\\/20, .border-outline-variant\\/30 { border-color: rgba(0,0,0,0.08) !important; }
+         [class*="bg-[#353535]"], .bg-surface-container-low { background-color: #f3f3f3 !important; }
          .bg-surface\\/50 { background-color: rgba(255,255,255,0.7) !important; }
+         .nav-link { color: #555555 !important; }
+         .nav-link:hover, .nav-link.active { color: ${primary} !important; background-color: rgba(0,0,0,0.03) !important; }
+         input, select, textarea { background-color: #ffffff !important; border: 1px solid #cccccc !important; color: #131313 !important; }
+         section > .bg-surface-container-low { background-color: #ffffff !important; border: 1px solid rgba(0,0,0,0.05) !important; }
        `;
+       document.documentElement.classList.remove('dark');
+       document.body.classList.remove('dark');
+   } else {
+       document.documentElement.classList.add('dark');
+       document.body.classList.add('dark');
    }
    
    window.purifyDOMColors = function(root = document) {
@@ -1166,10 +1199,10 @@ function updateVisuals() {
       const targets = (root.querySelectorAll) ? root.querySelectorAll('[class*="f29221"], [class*="F29221"]') : [];
       targets.forEach(el => {
          if(el.className && typeof el.className === 'string') {
-            el.className = el.className.replace(/\[#F29221\]/g, 'primary').replace(/\[#f29221\]/g, 'primary');
+            el.className = el.className.replace(/\[#F29221\]/gi, 'primary');
          }
       });
-      const strokes = (root.querySelectorAll) ? root.querySelectorAll('[stroke="#F29221"], [stroke="#f29221"]') : [];
+      const strokes = (root.querySelectorAll) ? root.querySelectorAll('[stroke*="#F29221"], [stroke*="#f29221"]') : [];
       strokes.forEach(el => { el.setAttribute('stroke', primary); });
    };
    purifyDOMColors();
@@ -1177,21 +1210,17 @@ function updateVisuals() {
    if(!window.colorObserverSetup) {
       window.colorObserverSetup = true;
       new MutationObserver(m => {
-         m.forEach(rec => {
-            if(rec.addedNodes.length > 0) {
-               rec.addedNodes.forEach(node => {
-                  if(node.nodeType === 1) {
-                      if(node.className && typeof node.className === 'string' && (node.className.includes('#F29221') || node.className.includes('#f29221'))) {
-                         node.className = node.className.replace(/\[#F29221\]/g, 'primary').replace(/\[#f29221\]/g, 'primary');
-                      }
-                      if(node.getAttribute && (node.getAttribute('stroke') === '#F29221' || node.getAttribute('stroke') === '#f29221')) {
-                         node.setAttribute('stroke', primary);
-                      }
-                      purifyDOMColors(node);
-                  }
-               });
+         m.forEach(rec => { rec.addedNodes.forEach(node => {
+            if(node.nodeType === 1) {
+                if(node.className && typeof node.className === 'string' && /f29221/i.test(node.className)) {
+                   node.className = node.className.replace(/\[#F29221\]/gi, 'primary');
+                }
+                if(node.getAttribute && /f29221/i.test(node.getAttribute('stroke')||'')) {
+                   node.setAttribute('stroke', primary);
+                }
+                purifyDOMColors(node);
             }
-         });
+         }); });
       }).observe(document.body, {childList: true, subtree: true});
    }
 }
