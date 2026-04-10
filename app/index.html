@@ -1288,8 +1288,7 @@ async function finalizarPedido() {
 
     // Save order to Supabase
     const orderData = {
-      customer_name: nomeCliente,
-      customer_phone: telefoneCliente,
+      customer_name: nomeCliente + '|||' + telefoneCliente,
       items: cart,
       total: total,
       delivery_method: delivery,

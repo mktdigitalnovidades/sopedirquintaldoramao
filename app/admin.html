@@ -580,8 +580,8 @@
                 <input type="text" id="cfg-name-v2" class="w-full bg-transparent border-b border-outline-variant/20 py-3 focus:border-primary outline-none font-headline font-black text-xl italic" placeholder="Quintal do Ramão">
               </div>
               <div>
-                <label class="block text-[9px] font-black uppercase tracking-[0.2em] text-on-surface-variant/60 mb-2">Endereço Completo</label>
-                <input type="text" id="cfg-address" class="w-full bg-transparent border-b border-outline-variant/20 py-3 focus:border-primary outline-none text-sm font-bold" placeholder="Rua Exemplo, 123 - Bairro, Cidade">
+                <label class="block text-[9px] font-black uppercase tracking-[0.2em] text-on-surface/80 mb-2">Endereço Físico ou Google Maps Link</label>
+                <input type="text" id="cfg-address" class="w-full bg-transparent border-b border-outline-variant/20 py-3 focus:border-primary outline-none text-[11px] font-bold text-on-surface" placeholder="Digite endereço ou cole htts://maps...">
               </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -1645,7 +1645,17 @@ let allOrdersData = [];
 async function fetchOrders() {
    const { data, error } = await supabaseClient.from('quintal_pedidos').select('*').order('created_at', { ascending: false });
    if (error) { alert('Acesso aos pedidos foi negado pelo Banco (Erro: ' + error.message + '). Verifique suas Permissões e RLS do Supabase.'); return; }
-   allOrdersData = data || [];
+   
+   allOrdersData = (data || []).map(o => {
+      let n = o.customer_name || '';
+      let p = '';
+      if (n.includes('|||')) {
+         const parts = n.split('|||');
+         n = parts[0];
+         p = parts[1];
+      }
+      return { ...o, customer_name_parsed: n, customer_phone_parsed: p };
+   });
    renderOrders(allOrdersData);
 }
 
@@ -1680,14 +1690,14 @@ function renderOrders(data) {
                <div class="flex flex-wrap items-center gap-2 mb-3">
                   <span class="text-[9px] font-black bg-surface-container-highest px-2 py-1 rounded text-on-surface-variant font-mono tracking-widest border border-white/5">#${o.id.slice(-6).toUpperCase()}</span>
                   <div class="flex flex-col">
-                     ${(o.customer_name && o.customer_name.trim() !== '')
-                       ? `<h3 class="font-headline font-black text-base tracking-tighter italic uppercase text-on-surface hover:text-[#F29221] transition-colors">${o.customer_name}</h3>`
+                     ${(o.customer_name_parsed && o.customer_name_parsed.trim() !== '')
+                       ? `<h3 class="font-headline font-black text-base tracking-tighter italic uppercase text-on-surface hover:text-[#F29221] transition-colors">${o.customer_name_parsed}</h3>`
                        : `<h3 class="font-headline font-black text-sm tracking-tighter italic uppercase text-on-surface-variant/40">S/ NOME</h3>`
                      }
-                     ${o.customer_phone
-                       ? `<a href="https://wa.me/55${String(o.customer_phone).replace(/\D/g, '')}" target="_blank" class="flex items-center gap-1 text-[10px] font-black tracking-widest uppercase text-[#25D366] hover:brightness-110 mt-0.5">
+                     ${o.customer_phone_parsed
+                       ? `<a href="https://wa.me/55${String(o.customer_phone_parsed).replace(/\\D/g, '')}" target="_blank" class="flex items-center gap-1 text-[10px] font-black tracking-widest uppercase text-[#25D366] hover:brightness-110 mt-0.5">
                            <span class="material-symbols-outlined" style="font-size:12px">phone</span>
-                           ${o.customer_phone}
+                           ${o.customer_phone_parsed}
                          </a>`
                        : `<span class="text-[9px] font-bold text-on-surface-variant/30 mt-0.5">Sem Telefone</span>`
                      }
@@ -1772,16 +1782,21 @@ function showAdmin(section) {
 async function fetchCustomers() {
   if (allOrdersData.length === 0) {
       const { data } = await supabaseClient.from('quintal_pedidos').select('*').order('created_at', { ascending: false });
-      allOrdersData = data || [];
+      allOrdersData = (data || []).map(o => {
+          let n = o.customer_name || '';
+          let p = '';
+          if (n.includes('|||')) { p = n.split('|||')[1]; n = n.split('|||')[0]; }
+          return { ...o, customer_name_parsed: n, customer_phone_parsed: p };
+      });
   }
   
   const clientMap = {};
   allOrdersData.forEach(o => {
-     if (!o.customer_phone) return;
-     const f = o.customer_phone;
+     if (!o.customer_phone_parsed) return;
+     const f = o.customer_phone_parsed;
      if (!clientMap[f]) {
          clientMap[f] = {
-             nome: o.customer_name || 'Sem Nome',
+             nome: o.customer_name_parsed || 'Sem Nome',
              telefone: f,
              total_pedidos: 0,
              ultimo_pedido_id: o.id,
@@ -1792,7 +1807,7 @@ async function fetchCustomers() {
      if (new Date(o.created_at) > new Date(clientMap[f].updated_at)) {
          clientMap[f].updated_at = o.created_at;
          clientMap[f].ultimo_pedido_id = o.id;
-         if (o.customer_name && o.customer_name.trim() !== '') clientMap[f].nome = o.customer_name;
+         if (o.customer_name_parsed && o.customer_name_parsed.trim() !== '') clientMap[f].nome = o.customer_name_parsed;
      }
   });
   
