@@ -1274,34 +1274,35 @@ async function saveStoreConfig(btn) {
    btn.textContent = 'SALVANDO...';
 
    try {
-      let logo_url = document.getElementById('cfg-logo-url').value;
-      const logoFile = document.getElementById('cfg-logo-file').files[0];
+      let logo_url = document.getElementById('cfg-logo-url')?.value || '';
+      const logoFileInput = document.getElementById('cfg-logo-file');
+      const logoFile = logoFileInput && logoFileInput.files ? logoFileInput.files[0] : null;
 
       if (logoFile) {
          logo_url = await uploadImage(logoFile);
       }
 
       const val = {
-         name: document.getElementById('cfg-name-v2').value,
-         whatsapp: document.getElementById('cfg-whatsapp-v2').value,
-         google_link: document.getElementById('cfg-google-link').value,
-         address: document.getElementById('cfg-address').value,
-         instagram: document.getElementById('cfg-instagram').value,
-         delivery_fee: parseFloat(document.getElementById('cfg-delivery-v2').value) || 0,
-         show_top: document.getElementById('cfg-show-top').checked,
-         banner_url: document.getElementById('cfg-banner-url').value,
+         name: document.getElementById('cfg-name-v2')?.value || '',
+         whatsapp: document.getElementById('cfg-whatsapp-v2')?.value || '',
+         google_link: document.getElementById('cfg-google-link')?.value || '',
+         address: document.getElementById('cfg-address')?.value || '',
+         instagram: document.getElementById('cfg-instagram')?.value || '',
+         delivery_fee: parseFloat(document.getElementById('cfg-delivery-v2')?.value) || 0,
+         show_top: document.getElementById('cfg-show-top')?.checked || false,
+         banner_url: document.getElementById('cfg-banner-url')?.value || '',
          logo_url: logo_url,
-         primary_color: document.getElementById('cfg-primary-color').value,
-         bg_color: document.getElementById('cfg-bg-color').value,
+         primary_color: document.getElementById('cfg-primary-color')?.value || '#F29221',
+         bg_color: document.getElementById('cfg-bg-color')?.value || '#131313',
          theme: currentStoreConfig.theme || 'dark',
          language: storeLanguage,
          modalities: storeModalities,
          hours: storeHours,
          payments: storePayments,
-         featured_name: document.getElementById('cfg-featured-name').value,
-         featured_desc: document.getElementById('cfg-featured-desc').value,
-         featured_price: parseFloat(document.getElementById('cfg-featured-price').value) || 0,
-         featured_image: document.getElementById('cfg-featured-image').value,
+         featured_name: document.getElementById('cfg-featured-name')?.value || '',
+         featured_desc: document.getElementById('cfg-featured-desc')?.value || '',
+         featured_price: parseFloat(document.getElementById('cfg-featured-price')?.value) || 0,
+         featured_image: document.getElementById('cfg-featured-image')?.value || '',
       };
       
       const { error } = await supabaseClient.from('quintal_configs').upsert({ key: 'store_info', value: val });
