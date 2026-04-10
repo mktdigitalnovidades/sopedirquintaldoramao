@@ -887,12 +887,6 @@ function finalizarPedido() {
     } catch(e) { console.warn("Supabase save failed", e); }
 
     // Save order locally for history
-    // - [x] Reduzir Escala Global no CSS (`index.html`)
-    // - [x] Compactar Seção Hero e Destaque (Banner Inicial)
-    // - [x] Ajustar Abas de Categorias (Mais densas)
-    // - [x] Redesenhar Lista de Produtos (Fotos 64px / Altura 80px)
-    // - [x] Refinar Bottom Nav (Mais fina)
-    // - [x] Validação Final da Harmonia Visual
     orders.push({ ...orderData, date: new Date().toLocaleString('pt-BR') });
     renderOrderHistory();
     // Clear cart
