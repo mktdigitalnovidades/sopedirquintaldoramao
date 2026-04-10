@@ -824,66 +824,65 @@
 </main>
 
 <!-- ===== MODAL PRODUTO ===== -->
-<div id="modal-produto" class="fixed inset-0 z-[110] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
-   <div class="w-full max-w-2xl bg-surface-container p-8 rounded-3xl border border-outline-variant/20 shadow-2xl relative overflow-hidden">
+<div id="modal-produto" class="fixed inset-0 z-[110] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-3">
+   <div class="w-full max-w-2xl bg-surface-container rounded-2xl border border-outline-variant/20 shadow-2xl relative overflow-hidden flex flex-col" style="max-height: 95dvh;">
       <div class="chalk-texture absolute inset-0 opacity-10 pointer-events-none"></div>
-      <div class="relative z-10">
-         <div class="flex justify-between items-center mb-8">
-            <h3 id="modal-title" class="text-2xl font-headline font-black tracking-tight">Editar Item</h3>
-            <button onclick="closeProductForm()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-highest transition-colors">
-               <span class="material-symbols-outlined text-on-surface-variant">close</span>
-            </button>
-         </div>
-         <form id="product-form" class="space-y-6">
+      <!-- Header fixo -->
+      <div class="relative z-10 flex justify-between items-center p-5 pb-3 border-b border-outline-variant/10 flex-shrink-0">
+         <h3 id="modal-title" class="text-lg font-headline font-black tracking-tight">Editar Item</h3>
+         <button onclick="closeProductForm()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-surface-container-highest transition-colors">
+            <span class="material-symbols-outlined text-on-surface-variant">close</span>
+         </button>
+      </div>
+      <!-- Corpo com scroll -->
+      <div class="relative z-10 overflow-y-auto flex-1 p-5">
+         <form id="product-form" class="space-y-4">
             <input type="hidden" id="p-id">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-               <!-- Left Column -->
-               <div class="space-y-6">
-                  <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-2">Nome do Produto</label>
-                    <input type="text" id="p-name" required class="w-full bg-surface-container-highest border-0 rounded-xl p-3 focus:ring-2 focus:ring-primary text-on-surface font-medium" placeholder="Ex: Burger do Ramão">
-                  </div>
-                  <div class="grid grid-cols-2 gap-4">
-                    <div>
-                      <label class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-2">Valor (R$)</label>
-                      <input type="number" step="0.01" id="p-price" required class="w-full bg-surface-container-highest border-0 rounded-xl p-3 focus:ring-2 focus:ring-primary text-on-surface font-black" placeholder="0,00">
-                    </div>
-                    <div>
-                      <label class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-2">Categoria</label>
-                      <select id="p-category" class="w-full bg-surface-container-highest border-0 rounded-xl p-3 focus:ring-2 focus:ring-primary text-sm text-on-surface font-medium appearance-none">
-                         <!-- Opções dinâmicas -->
-                      </select>
-                    </div>
-                  </div>
-                  <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-2">Descrição Artesanal</label>
-                    <textarea id="p-desc" rows="4" class="w-full bg-surface-container-highest border-0 rounded-xl p-3 text-sm italic leading-relaxed" placeholder="Descreva os ingredientes e o sabor..."></textarea>
-                  </div>
-               </div>
-               <!-- Right Column -->
-               <div class="space-y-6">
-                  <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-2">Upload Direto</label>
-                    <div class="relative group cursor-pointer">
-                      <input type="file" id="p-file" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20">
-                      <div class="w-full aspect-video bg-surface-container-lowest border-2 border-dashed border-outline-variant/30 rounded-xl flex flex-col items-center justify-center group-hover:border-primary/50 transition-colors">
-                        <span class="material-symbols-outlined text-3xl text-on-surface-variant group-hover:scale-110 transition-transform">add_a_photo</span>
-                        <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mt-2">Clique para Upload</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-2">Ou Link da Imagem</label>
-                    <input type="text" id="p-image" placeholder="https://unsplash.com/..." class="w-full bg-surface-container-highest border-0 rounded-xl p-3 text-xs font-mono truncate">
-                    <p class="text-[9px] text-on-surface-variant mt-2 italic px-1">Recomendado: 800x800px para melhor visualização.</p>
-                  </div>
-               </div>
+            <!-- Nome -->
+            <div>
+              <label class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5">Nome do Produto</label>
+              <input type="text" id="p-name" required class="w-full bg-surface-container-highest border-0 rounded-xl p-3 focus:ring-2 focus:ring-primary text-on-surface font-medium text-sm" placeholder="Ex: Burger do Ramão">
             </div>
-            <div class="pt-8 border-t border-outline-variant/10 flex gap-4">
-               <button type="button" onclick="closeProductForm()" class="flex-1 py-4 font-bold border border-outline-variant/20 rounded-xl hover:bg-surface-container-highest transition-colors">DESCARTAR</button>
-               <button type="submit" class="flex-[1.5] py-4 bg-primary-container text-on-primary-container font-black rounded-xl shadow-xl shadow-primary-container/20 hover:scale-[1.02] active:scale-[0.98] transition-all">SALVAR NO CARDÁPIO</button>
+            <!-- Preço e Categoria -->
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5">Valor (R$)</label>
+                <input type="number" step="0.01" id="p-price" required class="w-full bg-surface-container-highest border-0 rounded-xl p-3 focus:ring-2 focus:ring-primary text-on-surface font-black text-sm" placeholder="0,00">
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5">Categoria</label>
+                <select id="p-category" class="w-full bg-surface-container-highest border-0 rounded-xl p-3 focus:ring-2 focus:ring-primary text-sm text-on-surface font-medium appearance-none">
+                   <!-- Opções dinâmicas -->
+                </select>
+              </div>
+            </div>
+            <!-- Descrição -->
+            <div>
+              <label class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5">Descrição Artesanal</label>
+              <textarea id="p-desc" rows="3" class="w-full bg-surface-container-highest border-0 rounded-xl p-3 text-sm italic leading-relaxed" placeholder="Descreva os ingredientes e o sabor..."></textarea>
+            </div>
+            <!-- Upload -->
+            <div>
+              <label class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5">Upload de Imagem</label>
+              <div class="relative group cursor-pointer">
+                <input type="file" id="p-file" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20">
+                <div class="w-full py-6 bg-surface-container-lowest border-2 border-dashed border-outline-variant/30 rounded-xl flex flex-col items-center justify-center group-hover:border-primary/50 transition-colors">
+                  <span class="material-symbols-outlined text-2xl text-on-surface-variant">add_a_photo</span>
+                  <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mt-1">Clique para Upload</p>
+                </div>
+              </div>
+            </div>
+            <!-- Link da imagem -->
+            <div>
+              <label class="block text-[10px] font-bold uppercase tracking-widest text-primary mb-1.5">Ou Link da Imagem</label>
+              <input type="text" id="p-image" placeholder="https://unsplash.com/..." class="w-full bg-surface-container-highest border-0 rounded-xl p-3 text-xs font-mono">
             </div>
          </form>
+      </div>
+      <!-- Footer fixo com botões -->
+      <div class="relative z-10 p-4 border-t border-outline-variant/10 flex gap-3 flex-shrink-0 bg-surface-container">
+         <button type="button" onclick="closeProductForm()" class="flex-1 py-3 text-sm font-bold border border-outline-variant/20 rounded-xl hover:bg-surface-container-highest transition-colors">DESCARTAR</button>
+         <button type="submit" form="product-form" class="flex-[2] py-3 bg-primary-container text-on-primary-container text-sm font-black rounded-xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all">SALVAR NO CARDÁPIO</button>
       </div>
    </div>
 </div>
@@ -1445,26 +1444,27 @@ function renderProducts(productsList) {
    const grid = document.getElementById('products-grid');
    if (!grid) return;
    
-   grid.className = "space-y-3";
+   grid.className = "space-y-2";
    grid.innerHTML = (productsList || []).map(p => `
-      <div class="flex items-center justify-between p-3 bg-surface-container-low rounded-xl border border-outline-variant/10 group hover:border-primary/30 transition-all">
-         <div class="flex items-center gap-4 flex-1 min-w-0">
-            <div class="w-14 h-14 rounded-lg overflow-hidden bg-surface-container flex-shrink-0">
-               <img src="${p.image_url || 'https://via.placeholder.com/400?text=SOPEDIR'}" class="w-full h-full object-cover">
-            </div>
-            <div class="truncate">
-               <p class="font-headline font-black text-on-surface uppercase tracking-tight truncate">${p.name}</p>
-               <p class="text-[10px] text-primary font-black uppercase tracking-widest">${p.category}</p>
-            </div>
+      <div class="flex items-center gap-3 p-3 bg-surface-container-low rounded-xl border border-outline-variant/10 group hover:border-primary/30 transition-all">
+         <!-- Imagem -->
+         <div class="w-12 h-12 rounded-lg overflow-hidden bg-surface-container flex-shrink-0">
+            <img src="${p.image_url || 'https://via.placeholder.com/400?text=SOPEDIR'}" class="w-full h-full object-cover">
          </div>
-         <div class="flex items-center gap-6">
-            <span class="font-headline font-black text-on-surface text-lg">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
-            <div class="flex gap-1">
-               <button onclick='editProduct(${JSON.stringify(p)})' class="p-2 text-on-surface-variant hover:text-primary transition-all">
-                  <span class="material-symbols-outlined text-sm">edit</span>
+         <!-- Nome e categoria - sem truncate, quebra em 2 linhas -->
+         <div class="flex-1 min-w-0">
+            <p class="font-headline font-black text-on-surface uppercase tracking-tight text-sm leading-tight break-words">${p.name}</p>
+            <p class="text-[9px] text-primary font-black uppercase tracking-widest mt-0.5">${p.category}</p>
+         </div>
+         <!-- Preço e ações -->
+         <div class="flex flex-col items-end gap-1 flex-shrink-0">
+            <span class="font-headline font-black text-on-surface text-sm">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
+            <div class="flex gap-0.5">
+               <button onclick='editProduct(${JSON.stringify(p)})' class="p-1.5 text-on-surface-variant hover:text-primary transition-all">
+                  <span class="material-symbols-outlined" style="font-size:16px">edit</span>
                </button>
-               <button onclick="deleteProduct(${p.id})" class="p-2 text-on-surface-variant hover:text-error transition-all">
-                  <span class="material-symbols-outlined text-sm">delete</span>
+               <button onclick="deleteProduct(${p.id})" class="p-1.5 text-on-surface-variant hover:text-error transition-all">
+                  <span class="material-symbols-outlined" style="font-size:16px">delete</span>
                </button>
             </div>
          </div>

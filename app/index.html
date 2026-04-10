@@ -1187,12 +1187,30 @@ async function finalizarPedido() {
   try {
     if (cart.length === 0) { alert('Adicione itens ao carrinho primeiro!'); return; }
     
-    // Identification
-    const nomeCliente = document.getElementById('cust-name').value.trim();
-    const telefoneCliente = document.getElementById('cust-phone').value.replace(/\D/g, '');
+    // Identification — OBRIGATÓRIO
+    const nomeInput = document.getElementById('cust-name');
+    const foneInput = document.getElementById('cust-phone');
+    const nomeCliente = nomeInput.value.trim();
+    const telefoneCliente = foneInput.value.replace(/\D/g, '');
     
-    if (!nomeCliente || telefoneCliente.length < 10) {
-      alert('Por favor, preencha seu nome e um WhatsApp válido!');
+    // Reset estilos de erro
+    nomeInput.style.borderColor = '';
+    foneInput.style.borderColor = '';
+    
+    if (!nomeCliente) {
+      nomeInput.style.borderColor = '#ef4444';
+      nomeInput.style.borderWidth = '2px';
+      nomeInput.style.borderStyle = 'solid';
+      nomeInput.focus();
+      showToast('⚠️ Preencha seu nome completo!');
+      return;
+    }
+    if (telefoneCliente.length < 10) {
+      foneInput.style.borderColor = '#ef4444';
+      foneInput.style.borderWidth = '2px';
+      foneInput.style.borderStyle = 'solid';
+      foneInput.focus();
+      showToast('⚠️ Preencha um WhatsApp válido!');
       return;
     }
 
