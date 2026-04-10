@@ -161,6 +161,9 @@
 <aside class="fixed inset-y-0 left-0 w-64 flex flex-col py-6 bg-[#1b1b1b] border-r border-[#353535]/15 shadow-[10px_0_30px_rgba(0,0,0,0.5)] z-50 font-['Epilogue'] font-medium transform transition-transform duration-300 -translate-x-full lg:translate-x-0" id="side-nav">
 <div class="px-6 mb-10 flex justify-between items-start">
   <div class="flex flex-col gap-1">
+    <div class="w-14 h-14 bg-surface-container-highest p-1.5 rounded-xl border border-white/5 flex items-center justify-center mb-2 shadow-lg">
+      <img src="logo.png" alt="Logotipo Oficial" class="w-full h-full object-contain">
+    </div>
     <span class="text-on-surface-variant font-black uppercase tracking-widest text-[10px] opacity-70">Gestão administrativa</span>
     <span class="text-on-surface font-bold text-xl tracking-tight italic">Quintal do Ramão</span>
   </div>
@@ -561,6 +564,17 @@
           </h3>
           <div class="bg-surface-container-low p-8 rounded-2xl border border-outline-variant/10 shadow-xl space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="md:col-span-2">
+                 <label class="block text-[9px] font-black uppercase tracking-[0.2em] text-on-surface-variant/60 mb-2">Logotipo da Empresa</label>
+                 <div class="flex items-center gap-4">
+                    <img id="cfg-logo-preview" src="logo.png" class="w-16 h-16 object-contain bg-surface-container-highest rounded-lg p-2 border border-white/5">
+                    <div class="flex-1">
+                       <input type="file" id="cfg-logo-file" accept="image/*" class="w-full bg-transparent border-b border-outline-variant/30 py-2 focus:border-primary outline-none text-xs text-on-surface-variant">
+                       <input type="hidden" id="cfg-logo-url">
+                       <p class="text-[9px] text-on-surface-variant/60 mt-1 italic tracking-widest uppercase">Use foto Padrão ou Suba uma com Fundo Transparente (PNG)</p>
+                    </div>
+                 </div>
+              </div>
               <div>
                 <label class="block text-[9px] font-black uppercase tracking-[0.2em] text-on-surface-variant/60 mb-2">Nome da Loja</label>
                 <input type="text" id="cfg-name-v2" class="w-full bg-transparent border-b border-outline-variant/20 py-3 focus:border-primary outline-none font-headline font-black text-xl italic" placeholder="Quintal do Ramão">
