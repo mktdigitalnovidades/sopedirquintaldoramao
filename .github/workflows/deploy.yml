@@ -1,0 +1,30 @@
+name: Deploy Quintal do Ramão → Hostinger
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Permite rodar manualmente
+
+jobs:
+  deploy:
+    name: Deploy via FTP
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Deploy para Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+          local-dir: ./app/        # Envia apenas a pasta /app
+          server-dir: /public_html/ # Caminho raiz na Hostinger (ajuste se necessário)
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
