@@ -1032,9 +1032,39 @@
                </div>
             </div>
             <!-- Link da imagem -->
-            <div class="mb-8 p-1">
+            <div class="mb-4 p-1">
                <label class="block text-[8px] font-black uppercase tracking-widest text-on-surface-variant opacity-40 mb-1.5">Ou use o link de uma imagem externa</label>
                <input type="text" id="p-image" oninput="updateGeneralImagePreview(this.value, 'p-preview')" class="w-full bg-surface-container-highest/50 border-0 rounded-xl p-3 text-xs font-medium" placeholder="https://unsplash.com/...">
+            </div>
+
+            <!-- ===== SEÇÃO DE GRUPOS DE CUSTOMIZAÇÃO ===== -->
+            <div class="border-t border-outline-variant/10 pt-5 mt-2">
+              <!-- Cabeçalho -->
+              <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-primary text-lg">tune</span>
+                  <div>
+                    <h4 class="text-xs font-black uppercase tracking-widest text-on-surface">Customizar Opções / Adicionais</h4>
+                    <p class="text-[9px] text-on-surface-variant/50 font-medium">Configure os campos de escolha do cliente</p>
+                  </div>
+                </div>
+                <button type="button" onclick="addCustomGroup()" class="flex items-center gap-1.5 bg-primary/10 hover:bg-primary/20 border border-primary/20 text-primary px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all active:scale-95">
+                  <span class="material-symbols-outlined text-sm">add</span> Criar Campo
+                </button>
+              </div>
+
+              <!-- Modelos Rápidos -->
+              <div class="flex flex-wrap gap-2 mb-4 p-3 bg-black/20 rounded-xl border border-white/5">
+                <span class="text-[9px] font-black text-on-surface-variant/40 uppercase tracking-widest self-center mr-1">Modelo Rápido:</span>
+                <button type="button" onclick="applyPreset('marmita')" class="text-[9px] font-black uppercase tracking-wider bg-surface-container hover:bg-primary hover:text-on-primary border border-outline-variant/20 hover:border-primary px-3 py-1.5 rounded-lg transition-all active:scale-95">🍱 Marmita</button>
+                <button type="button" onclick="applyPreset('pizza')" class="text-[9px] font-black uppercase tracking-wider bg-surface-container hover:bg-primary hover:text-on-primary border border-outline-variant/20 hover:border-primary px-3 py-1.5 rounded-lg transition-all active:scale-95">🍕 Pizza</button>
+                <button type="button" onclick="applyPreset('acai')" class="text-[9px] font-black uppercase tracking-wider bg-surface-container hover:bg-primary hover:text-on-primary border border-outline-variant/20 hover:border-primary px-3 py-1.5 rounded-lg transition-all active:scale-95">🍇 Açaí</button>
+              </div>
+
+              <!-- Lista de Grupos Dinâmicos -->
+              <div id="custom-groups-list" class="space-y-3 max-h-64 overflow-y-auto pr-1 scrollbar-hide">
+                <p class="text-center text-[9px] font-black uppercase tracking-widest text-on-surface-variant/30 py-5 border border-dashed border-outline-variant/20 rounded-xl italic">Nenhuma customização. Este produto será adicionado diretamente ao carrinho.</p>
+              </div>
             </div>
 
             <!-- Footer interno (Final do Formulário) -->
@@ -1954,20 +1984,26 @@ function renderProducts(productsList) {
    if (!grid) return;
    
    grid.className = "space-y-2";
-   grid.innerHTML = (productsList || []).map(p => `
+   grid.innerHTML = (productsList || []).map(p => {
+      const hasOptions = p.options && Array.isArray(p.options) && p.options.length > 0;
+      return `
       <div class="flex items-center gap-3 p-3 bg-surface-container-low rounded-xl border border-outline-variant/10 group hover:border-primary/30 transition-all">
          <!-- Imagem -->
-         <div class="w-12 h-12 rounded-lg overflow-hidden bg-surface-container flex-shrink-0">
-            <img src="${p.image_url || 'https://via.placeholder.com/400?text=SOPEDIR'}" class="w-full h-full object-cover">
+         <div class="w-12 h-12 rounded-lg overflow-hidden bg-surface-container flex-shrink-0 relative">
+            <img src="${p.image_url || 'logo.png'}" class="w-full h-full object-cover">
+            ${hasOptions ? '<div class="absolute bottom-0 left-0 right-0 bg-primary/90 text-[#131313] text-[6px] font-black uppercase tracking-wider text-center py-0.5">Custom</div>' : ''}
          </div>
-         <!-- Nome e categoria - sem truncate, quebra em 2 linhas -->
+         <!-- Nome e categoria -->
          <div class="flex-1 min-w-0">
-            <p class="font-headline font-black text-on-surface uppercase tracking-tight text-sm leading-tight break-words">${p.name}</p>
+            <div class="flex items-center gap-2">
+              <p class="font-headline font-black text-on-surface uppercase tracking-tight text-sm leading-tight break-words">${p.name}</p>
+              ${hasOptions ? '<span class="text-[7px] bg-primary/10 border border-primary/20 text-primary font-black uppercase tracking-widest px-1.5 py-0.5 rounded-md shrink-0">✦ Customizável</span>' : ''}
+            </div>
             <p class="text-[9px] text-primary font-black uppercase tracking-widest mt-0.5">${p.category}</p>
          </div>
          <!-- Preço e ações -->
          <div class="flex flex-col items-end gap-1 flex-shrink-0">
-            <span class="font-headline font-black text-on-surface text-sm">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
+            <span class="font-headline font-black text-on-surface text-sm">R$ ${(parseFloat(p.price)||0).toFixed(2).replace('.', ',')}</span>
             <div class="flex gap-0.5">
                <button onclick='openProductForm(${JSON.stringify(p)})' class="p-1.5 text-on-surface-variant hover:text-primary transition-all">
                   <span class="material-symbols-outlined" style="font-size:16px">edit</span>
@@ -1978,7 +2014,8 @@ function renderProducts(productsList) {
             </div>
          </div>
       </div>
-   `).join('');
+   `;
+   }).join('');
 }
 
 async function uploadImage(file) {
@@ -2015,12 +2052,89 @@ async function uploadImage(file) {
     });
 }
 
+// ===== GERENCIAMENTO DE GRUPOS DE CUSTOMIZAÇÃO =====
+let currentCustomGroups = [];
+
+function renderCustomGroups() {
+   const container = document.getElementById('custom-groups-list');
+   if (!container) return;
+   if (currentCustomGroups.length === 0) {
+      container.innerHTML = '<p class="text-center text-[9px] font-black uppercase tracking-widest text-on-surface-variant/30 py-5 border border-dashed border-outline-variant/20 rounded-xl italic">Nenhuma customização. Este produto será adicionado diretamente ao carrinho.</p>';
+      return;
+   }
+   container.innerHTML = currentCustomGroups.map((g, idx) => `
+      <div class="bg-surface-container-highest/40 p-4 rounded-xl border border-outline-variant/10 space-y-3 relative" data-group-id="${g.id}">
+         <button type="button" onclick="removeCustomGroup('${g.id}')" class="absolute top-3 right-3 w-6 h-6 flex items-center justify-center rounded-full bg-error/10 hover:bg-error/20 text-error transition-all">
+            <span class="material-symbols-outlined text-sm">close</span>
+         </button>
+         <div>
+            <label class="block text-[9px] font-black uppercase tracking-widest text-primary/70 mb-1.5">Título do Campo / Grupo</label>
+            <input type="text" value="${g.name}" oninput="updateCustomGroup('${g.id}', 'name', this.value)" placeholder="Ex: Escolha suas guarnições, Adicionais..." class="w-full bg-surface-container border-0 rounded-lg p-2.5 text-xs font-bold focus:ring-1 focus:ring-primary outline-none">
+         </div>
+         <div class="grid grid-cols-2 gap-3">
+            <div>
+               <label class="block text-[9px] font-black uppercase tracking-widest text-on-surface-variant/50 mb-1.5">Máximo de Escolhas</label>
+               <input type="number" min="0" value="${g.max_choices}" oninput="updateCustomGroup('${g.id}', 'max_choices', this.value)" placeholder="Ex: 3" class="w-full bg-surface-container border-0 rounded-lg p-2.5 text-xs font-bold focus:ring-1 focus:ring-primary outline-none">
+            </div>
+            <div class="flex items-center gap-2 pt-5">
+               <input type="checkbox" id="req-${g.id}" ${g.required ? 'checked' : ''} onchange="updateCustomGroup('${g.id}', 'required', this.checked)" class="w-4 h-4 rounded border-outline-variant/30 bg-surface-container text-primary focus:ring-0 cursor-pointer">
+               <label for="req-${g.id}" class="text-[9px] font-black uppercase tracking-widest text-on-surface-variant/60 cursor-pointer select-none">Obrigatório</label>
+            </div>
+         </div>
+         <div>
+            <label class="block text-[9px] font-black uppercase tracking-widest text-on-surface-variant/50 mb-1.5">Opções (separadas por vírgula)</label>
+            <input type="text" value="${g.choices}" oninput="updateCustomGroup('${g.id}', 'choices', this.value)" placeholder="Ex: Arroz, Feijão, Farofa, Fritas" class="w-full bg-surface-container border-0 rounded-lg p-2.5 text-xs font-bold focus:ring-1 focus:ring-primary outline-none">
+         </div>
+      </div>
+   `).join('');
+}
+
+function addCustomGroup() {
+   currentCustomGroups.push({
+      id: Date.now().toString(),
+      name: '',
+      max_choices: '',
+      choices: '',
+      required: false
+   });
+   renderCustomGroups();
+}
+
+function removeCustomGroup(id) {
+   currentCustomGroups = currentCustomGroups.filter(g => g.id !== id);
+   renderCustomGroups();
+}
+
+function updateCustomGroup(id, field, value) {
+   const g = currentCustomGroups.find(x => x.id === id);
+   if (g) g[field] = value;
+}
+
+function applyPreset(type) {
+   if (type === 'marmita') {
+      currentCustomGroups = [
+         { id: '1', name: 'Campo 1 – Base (Escolha até 3)', max_choices: 3, choices: 'Arroz, Feijão, Farofa', required: true },
+         { id: '2', name: 'Campo 2 – Acompanhamentos (Escolha até 2)', max_choices: 2, choices: 'Fritas, Mandioca, Polenta, Nuggets, Legumes', required: false },
+         { id: '3', name: 'Campo 3 – Salada/Ovos (Escolha 1)', max_choices: 1, choices: 'Salada, Ovo mole, Ovo duro', required: false }
+      ];
+   } else if (type === 'pizza') {
+      currentCustomGroups = [
+         { id: '1', name: 'Tamanho (Escolha 1)', max_choices: 1, choices: 'Inteira, Meio a Meio', required: true },
+         { id: '2', name: 'Deseja adicionar ou retirar algo?', max_choices: 0, choices: 'Escreva nas observações', required: false }
+      ];
+   } else if (type === 'acai') {
+      currentCustomGroups = [
+         { id: '1', name: 'Acompanhamentos (Escolha até 3)', max_choices: 3, choices: 'Banana, Morango, Leite Condensado, Leite em Pó, Granola, Nutella', required: false }
+      ];
+   }
+   renderCustomGroups();
+}
+
 function openProductForm(p = null) {
    const form = document.getElementById('product-form');
-   const preview = document.getElementById('p-preview');
-   const placeholder = document.getElementById('p-preview-placeholder');
    
    form.reset();
+   currentCustomGroups = [];
    document.getElementById('p-id').value = p ? p.id : '';
    document.getElementById('modal-title').textContent = p ? 'Editar Item' : 'Novo Produto';
    
@@ -2030,12 +2144,22 @@ function openProductForm(p = null) {
       document.getElementById('p-category').value = p.category;
       document.getElementById('p-image').value = p.image_url || '';
       document.getElementById('p-desc').value = p.description || '';
-      
+      // Carregar grupos de customização existentes
+      if (p.options && Array.isArray(p.options) && p.options.length > 0) {
+         currentCustomGroups = p.options.map((g, i) => ({
+            id: g.id || String(Date.now() + i),
+            name: g.name || '',
+            max_choices: g.max_choices !== undefined ? g.max_choices : '',
+            choices: Array.isArray(g.choices) ? g.choices.join(', ') : (g.choices || ''),
+            required: !!g.required
+         }));
+      }
       updateGeneralImagePreview(p.image_url, 'p-preview');
    } else {
       updateGeneralImagePreview('', 'p-preview');
    }
    
+   renderCustomGroups();
    document.getElementById('modal-produto').style.display = 'flex';
 }
 
@@ -2072,15 +2196,25 @@ document.getElementById('product-form').addEventListener('submit', async (e) => 
 
       if (!name) throw new Error("O nome do produto é obrigatório.");
 
+      // Montar array de opções de customização
+      const formattedOptions = currentCustomGroups
+         .filter(g => g.name && g.name.trim() && g.choices && g.choices.trim())
+         .map(g => ({
+            id: g.id,
+            name: g.name.trim(),
+            max_choices: g.max_choices !== '' && g.max_choices !== undefined ? Number(g.max_choices) : 0,
+            choices: g.choices.split(',').map(c => c.trim()).filter(Boolean),
+            required: !!g.required
+         }));
+
       const pData = {
          name,
          price,
          category,
          image_url: image_url || '',
-         description: description || ''
+         description: description || '',
+         options: formattedOptions.length > 0 ? formattedOptions : null
       };
-      
-      console.log('Salvando produto:', pData);
 
       let res;
       if (id) {
