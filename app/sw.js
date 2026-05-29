@@ -1,4 +1,4 @@
-const CACHE_NAME = 'quintal-v5';
+const CACHE_NAME = 'quintal-v6'; // v6: fix anti-FOUC flash branco
 const ASSETS = [
   './',
   './index.html',
