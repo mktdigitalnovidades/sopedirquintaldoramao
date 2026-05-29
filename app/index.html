@@ -892,14 +892,19 @@ async function loadStoreConfig() {
     const fixedAddr = 'Av. Nossa Sra. de Fátima, 1042 - Taquaral, Campinas - SP, 13076-000';
     if (addrText) {
       const displayAddr = (STORE_CONFIG.address || fixedAddr);
-      // Se for um link, não mostramos o texto gigante, apenas um resumo ou placeholder
-      if (displayAddr.startsWith('http')) {
-        addrText.textContent = 'Clique no botão abaixo para ver a localização';
+      if (displayAddr.startsWith('http') || displayAddr.includes('google.com/maps') || displayAddr.includes('maps.google')) {
+        addrText.textContent = 'Rua Dr. José de Queirós Aranha, 458 – Vila Mariana, São Paulo - SP';
       } else {
         addrText.textContent = displayAddr;
       }
     }
-    if (addrLink) addrLink.href = STORE_CONFIG.google_link || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(STORE_CONFIG.address || fixedAddr)}`;
+    if (addrLink) {
+      if (STORE_CONFIG.address && (STORE_CONFIG.address.startsWith('http') || STORE_CONFIG.address.includes('google.com/maps') || STORE_CONFIG.address.includes('maps.google'))) {
+        addrLink.href = STORE_CONFIG.address;
+      } else {
+        addrLink.href = STORE_CONFIG.google_link || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(STORE_CONFIG.address || fixedAddr)}`;
+      }
+    }
     
     const heroAddr = document.getElementById('site-address-link-hero');
     if (heroAddr) {
