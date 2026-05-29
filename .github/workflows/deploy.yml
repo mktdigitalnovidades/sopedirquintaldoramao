@@ -18,12 +18,12 @@ jobs:
       - name: Deploy para Hostinger via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: 147.79.84.216
-          username: u554585359.sopedir.online
+          server: ftp.sopedir.online
+          username: u554585359.quintal
           password: ${{ secrets.FTP_PASS }}
           port: 21
-          local-dir: ./app/        # Envia apenas a pasta /app
-          server-dir: /public_html/quintaldoramao.sopedir.online/ # Caminho raiz na Hostinger (ajuste se necessário)
+          local-dir: ./app/
+          server-dir: /quintaldoramao.sopedir.online/
           dangerous-clean-slate: false
           exclude: |
             **/.git*
