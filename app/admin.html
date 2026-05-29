@@ -1983,6 +1983,10 @@ function renderProducts(productsList) {
    const grid = document.getElementById('products-grid');
    if (!grid) return;
    
+   // Mapa global de produtos para edicao segura sem JSON inline
+   window._prodMap = {};
+   (productsList || []).forEach(p => { window._prodMap[String(p.id)] = p; });
+
    grid.className = "space-y-2";
    grid.innerHTML = (productsList || []).map(p => {
       const hasOptions = p.options && Array.isArray(p.options) && p.options.length > 0;
@@ -2005,10 +2009,10 @@ function renderProducts(productsList) {
          <div class="flex flex-col items-end gap-1 flex-shrink-0">
             <span class="font-headline font-black text-on-surface text-sm">R$ ${(parseFloat(p.price)||0).toFixed(2).replace('.', ',')}</span>
             <div class="flex gap-0.5">
-               <button onclick='openProductForm(${JSON.stringify(p)})' class="p-1.5 text-on-surface-variant hover:text-primary transition-all">
+               <button onclick="editProductById('${p.id}')" class="p-1.5 text-on-surface-variant hover:text-primary transition-all" title="Editar">
                   <span class="material-symbols-outlined" style="font-size:16px">edit</span>
                </button>
-               <button onclick="deleteProduct('${p.id}')" class="p-1.5 text-on-surface-variant hover:text-error transition-all">
+               <button onclick="deleteProduct('${p.id}')" class="p-1.5 text-on-surface-variant hover:text-error transition-all" title="Excluir">
                   <span class="material-symbols-outlined" style="font-size:16px">delete</span>
                </button>
             </div>
@@ -2016,6 +2020,19 @@ function renderProducts(productsList) {
       </div>
    `;
    }).join('');
+}
+
+// Função auxiliar: busca produto pelo id no mapa global e abre formulario de edicao
+function editProductById(id) {
+   const p = window._prodMap ? window._prodMap[String(id)] : null;
+   if (!p) {
+      // Fallback: buscar em allProducts
+      const fallback = allProducts.find(x => String(x.id) === String(id));
+      if (fallback) { openProductForm(fallback); return; }
+      alert('Produto não encontrado. Recarregue a página.');
+      return;
+   }
+   openProductForm(p);
 }
 
 async function uploadImage(file) {
