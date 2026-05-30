@@ -214,7 +214,7 @@
 <div class="px-6 mb-10 flex justify-between items-start">
   <div class="flex flex-col gap-1">
     <div class="w-16 h-16 bg-surface-container-highest p-1 rounded-xl border border-white/5 flex items-center justify-center mb-2 shadow-lg overflow-visible">
-      <img src="logo.png" alt="Logotipo Oficial" class="w-full h-full object-contain drop-shadow-md">
+      <img src="/logo.png" alt="Logotipo Oficial" class="w-full h-full object-contain drop-shadow-md">
     </div>
     <span class="text-on-surface-variant font-black uppercase tracking-widest text-[10px] opacity-70">Gestão administrativa</span>
     <span class="text-on-surface font-bold text-xl tracking-tight italic">Quintal do Ramão</span>
@@ -666,7 +666,7 @@
               <div class="md:col-span-2">
                  <label class="block text-[9px] font-black uppercase tracking-[0.2em] text-on-surface-variant/60 mb-2">Logotipo da Empresa</label>
                  <div class="flex items-center gap-4">
-                    <img id="cfg-logo-preview" src="logo.png" class="w-16 h-16 object-contain bg-surface-container-highest rounded-lg p-2 border border-black/10">
+                    <img id="cfg-logo-preview" src="/logo.png" class="w-16 h-16 object-contain bg-surface-container-highest rounded-lg p-2 border border-black/10">
                     <div class="flex-1">
                        <input type="file" id="cfg-logo-file" accept="image/*" onchange="previewLocalImage(this, 'cfg-logo-preview')" class="w-full bg-transparent border-b border-outline-variant/30 py-2 focus:border-primary outline-none text-xs text-on-surface-variant">
                        <input type="hidden" id="cfg-logo-url">
@@ -2025,7 +2025,7 @@ function renderProducts(productsList) {
       <div class="flex items-center gap-3 p-3 bg-surface-container-low rounded-xl border border-outline-variant/10 group hover:border-primary/30 transition-all">
          <!-- Imagem -->
          <div class="w-12 h-12 rounded-lg overflow-hidden bg-surface-container flex-shrink-0 relative">
-            <img src="${p.image_url || 'logo.png'}" class="w-full h-full object-cover">
+            <img src="${p.image_url || '/logo.png'}" class="w-full h-full object-cover">
             ${hasOptions ? '<div class="absolute bottom-0 left-0 right-0 bg-primary/90 text-[#131313] text-[6px] font-black uppercase tracking-wider text-center py-0.5">Custom</div>' : ''}
          </div>
          <!-- Nome e categoria -->
@@ -2802,7 +2802,7 @@ function renderManualOrderProductList() {
    
    container.innerHTML = filtered.map(p => `
       <div class="bg-surface-container-highest/20 p-3 rounded-xl border border-white/5 flex items-center gap-3">
-         <img src="${p.image_url || 'logo.png'}" class="w-10 h-10 rounded-lg object-cover">
+         <img src="${p.image_url || '/logo.png'}" class="w-10 h-10 rounded-lg object-cover">
          <div class="flex-1 min-w-0">
             <p class="text-[11px] font-black text-on-surface truncate">${p.name}</p>
             <p class="text-[9px] font-bold text-primary">R$ ${p.price.toFixed(2).replace('.',',')}</p>
@@ -3192,7 +3192,7 @@ function renderBestSellersFromOrders(orders) {
 
    grid.innerHTML = sortedItems.map(([name, qty], idx) => {
       const p = allProducts.find(x => x.name === name);
-      const img = p ? p.image_url : 'logo.png';
+      const img = p ? p.image_url : '/logo.png';
       return `
         <div class="bg-surface-container-low group hover:bg-surface-container-high transition-all rounded-xl p-4 flex gap-4 items-center border border-white/5 shadow-lg">
           <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 asymmetric-border bg-black/40">
@@ -3373,7 +3373,7 @@ async function showFullBestSellers() {
    
    const listContent = sorted.map(([name, qty], idx) => {
       const p = allProducts.find(x => x.name === name);
-      const img = p ? p.image_url : 'logo.png';
+      const img = p ? p.image_url : '/logo.png';
       return `
         <div class="flex items-center justify-between p-4 bg-black/20 rounded-2xl border border-white/5 group hover:border-primary/30 transition-all">
            <div class="flex items-center gap-4">
