@@ -1142,20 +1142,74 @@ async function loadStoreConfig() {
       }
     }
 
+    function parseOpeningHoursResilient(hoursFromDb) {
+      const days = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+      const result = {};
+
+      const daysMapping = {
+         'Segunda': 'Segunda', 'segunda': 'Segunda',
+         'Terça': 'Terça', 'Terca': 'Terça', 'Tera': 'Terça',
+         'Quarta': 'Quarta', 'quarta': 'Quarta',
+         'Quinta': 'Quinta', 'quinta': 'Quinta',
+         'Sexta': 'Sexta', 'sexta': 'Sexta',
+         'Sábado': 'Sábado', 'Sabado': 'Sábado', 'Sǭbado': 'Sábado', 'Sbado': 'Sábado',
+         'Domingo': 'Domingo', 'domingo': 'Domingo'
+      };
+
+      days.forEach(d => {
+         result[d] = { closed: d === 'Quarta', ranges: [{ open: '18:00', close: '23:30' }] };
+      });
+
+      if (!hoursFromDb || typeof hoursFromDb !== 'object') {
+         return result;
+      }
+
+      Object.keys(hoursFromDb).forEach(key => {
+         const normalizedDay = daysMapping[key] || key;
+         if (!days.includes(normalizedDay)) return;
+
+         const raw = hoursFromDb[key];
+         if (!raw) return;
+
+         const isClosed = raw.closed === true;
+
+         if (Array.isArray(raw.ranges)) {
+            result[normalizedDay] = {
+               closed: isClosed,
+               ranges: raw.ranges.length > 0 ? raw.ranges.map(r => ({
+                  open: r.open || '18:00',
+                  close: r.close || '23:30'
+               })) : [{ open: '18:00', close: '23:30' }]
+            };
+         } else if (Array.isArray(raw.periods)) {
+            result[normalizedDay] = {
+               closed: isClosed,
+               ranges: raw.periods.length > 0 ? raw.periods.map(p => ({
+                  open: p.open || '18:00',
+                  close: p.close || '23:30'
+               })) : [{ open: '18:00', close: '23:30' }]
+            };
+         } else {
+            result[normalizedDay] = {
+               closed: isClosed,
+               ranges: [{ open: raw.open || '18:00', close: raw.close || '23:30' }]
+            };
+         }
+      });
+
+      return result;
+    }
+
     // Update Hours List in Footer
     const hoursContainer = document.getElementById('site-hours-list');
     if (hoursContainer && STORE_CONFIG.hours) {
       const days = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+      const normalizedHours = parseOpeningHoursResilient(STORE_CONFIG.hours);
       hoursContainer.innerHTML = days.map(d => {
-        const h = STORE_CONFIG.hours[d];
+        const h = normalizedHours[d];
         if (!h || h.closed) return `<div class="flex justify-between text-[10px] font-bold opacity-30"><span>${d}</span><span>Fechado</span></div>`;
         
-        let timeStr = '';
-        if (h.ranges) {
-           timeStr = h.ranges.map(r => `${r.open}-${r.close}`).join(', ');
-        } else {
-           timeStr = `${h.open}-${h.close}`;
-        }
+        const timeStr = h.ranges.map(r => `${r.open}-${r.close}`).join(', ');
         
         return `<div class="flex justify-between text-[10px] font-bold text-on-surface-variant">
            <span class="opacity-40 uppercase tracking-tighter">${d}</span>

@@ -1399,15 +1399,85 @@ async function initAdmin() {
 let storeLanguage = 'Português';
 let storePayments = ['PIX Direto', 'Crédito/Débito', 'Dinheiro'];
 let storeHours = {
-   Segunda: { open: '18:00', close: '23:30' },
-   Terça: { open: '18:00', close: '23:30' },
-   Quarta: { open: '00:00', close: '00:00', closed: true },
-   Quinta: { open: '18:00', close: '00:00' },
-   Sexta: { open: '12:00', close: '02:00' },
-   Sábado: { open: '12:00', close: '02:00' },
-   Domingo: { open: '12:00', close: '20:00' }
+   Segunda: { ranges: [{ open: '18:00', close: '23:30' }], closed: false },
+   Terça: { ranges: [{ open: '18:00', close: '23:30' }], closed: false },
+   Quarta: { ranges: [{ open: '18:00', close: '23:30' }], closed: true },
+   Quinta: { ranges: [{ open: '18:00', close: '23:30' }], closed: false },
+   Sexta: { ranges: [{ open: '18:00', close: '02:00' }], closed: false },
+   Sábado: { ranges: [{ open: '18:00', close: '02:00' }], closed: false },
+   Domingo: { ranges: [{ open: '18:00', close: '23:30' }], closed: false }
 };
 let storeModalities = ['entrega', 'paralevar'];
+
+function parseOpeningHoursResilient(hoursFromDb) {
+   const days = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+   const result = {};
+
+   // Mapeamento para corrigir chaves corrompidas, legadas ou sem acento
+   const daysMapping = {
+      'Segunda': 'Segunda', 'segunda': 'Segunda',
+      'Terça': 'Terça', 'Terca': 'Terça', 'Tera': 'Terça',
+      'Quarta': 'Quarta', 'quarta': 'Quarta',
+      'Quinta': 'Quinta', 'quinta': 'Quinta',
+      'Sexta': 'Sexta', 'sexta': 'Sexta',
+      'Sábado': 'Sábado', 'Sabado': 'Sábado', 'Sǭbado': 'Sábado', 'Sbado': 'Sábado',
+      'Domingo': 'Domingo', 'domingo': 'Domingo'
+   };
+
+   // Inicializa com padrões coerentes
+   days.forEach(d => {
+      result[d] = { 
+         closed: d === 'Quarta', 
+         ranges: d === 'Sexta' || d === 'Sábado' 
+            ? [{ open: '18:00', close: '02:00' }] 
+            : [{ open: '18:00', close: '23:30' }] 
+      };
+   });
+
+   if (!hoursFromDb || typeof hoursFromDb !== 'object') {
+      return result;
+   }
+
+   Object.keys(hoursFromDb).forEach(key => {
+      const normalizedDay = daysMapping[key] || key;
+      if (!days.includes(normalizedDay)) return; // Ignora chaves desconhecidas
+
+      const raw = hoursFromDb[key];
+      if (!raw) return;
+
+      const isClosed = raw.closed === true;
+
+      // Caso 1: Tem ranges (formato estático do Quintal)
+      if (Array.isArray(raw.ranges)) {
+         result[normalizedDay] = {
+            closed: isClosed,
+            ranges: raw.ranges.length > 0 ? raw.ranges.map(r => ({
+               open: r.open || '18:00',
+               close: r.close || '23:30'
+            })) : [{ open: '18:00', close: '23:30' }]
+         };
+      }
+      // Caso 2: Tem periods (formato SaaS/React do principal)
+      else if (Array.isArray(raw.periods)) {
+         result[normalizedDay] = {
+            closed: isClosed,
+            ranges: raw.periods.length > 0 ? raw.periods.map(p => ({
+               open: p.open || '18:00',
+               close: p.close || '23:30'
+            })) : [{ open: '18:00', close: '23:30' }]
+         };
+      }
+      // Caso 3: Formato legado com open/close diretamente no dia
+      else {
+         result[normalizedDay] = {
+            closed: isClosed,
+            ranges: [{ open: raw.open || '18:00', close: raw.close || '23:30' }]
+         };
+      }
+   });
+
+   return result;
+}
 
 async function loadConfig() {
    const { data } = await supabaseClient.from('quintal_configs').select('*').eq('key', 'store_info').single();
@@ -1466,16 +1536,7 @@ async function loadConfig() {
       renderModalities();
 
       // Hours
-      let hRaw = currentStoreConfig.hours || storeHours;
-      Object.keys(hRaw).forEach(day => {
-         if(hRaw[day] && !hRaw[day].ranges) {
-            hRaw[day] = {
-               ranges: [{ open: hRaw[day].open || '00:00', close: hRaw[day].close || '00:00' }],
-               closed: hRaw[day].closed === true
-            };
-         }
-      });
-      storeHours = hRaw;
+      storeHours = parseOpeningHoursResilient(currentStoreConfig.hours || storeHours);
       renderHoursTable();
 
       // Payments
@@ -2941,6 +3002,7 @@ function showAdmin(section) {
    if (section === 'pedidos') fetchOrders();
    if (section === 'produtos') fetchProducts();
    if (section === 'clientes') fetchCustomers();
+   if (section === 'categorias') fetchCategories();
 }
 
 // ===== CRM / CUSTOMERS =====
@@ -2956,6 +3018,7 @@ async function fetchCustomers() {
     ultimo_pedido_id: c.ultimo_pedido_id,
     updated_at: c.updated_at || c.created_at
   }));
+  window.allCustomersList = list;
   renderCustomers(list);
 }
 
@@ -2990,7 +3053,7 @@ function renderCustomers(list) {
       </td>
       <td class="py-5 px-4 text-right">
         <div class="flex justify-end gap-1">
-           <button onclick='openCustomerForm(${JSON.stringify(c)})' class="p-2 text-on-surface-variant hover:text-primary transition-all">
+           <button onclick="openCustomerForm('${c.id}')" class="p-2 text-on-surface-variant hover:text-primary transition-all">
              <span class="material-symbols-outlined text-lg">edit</span>
            </button>
            <button onclick="viewCustomerOrders('${c.telefone}')" class="p-2 text-on-surface-variant hover:text-primary transition-all">
@@ -3073,9 +3136,14 @@ function filterCustomers() {
 
 // ===== NOVAS FUNÇÕES CLIENTE =====
 function openCustomerForm(c) {
-   document.getElementById('edit-cust-id').value = c.id;
-   document.getElementById('edit-cust-nome').value = c.nome;
-   document.getElementById('edit-cust-telefone').value = c.telefone;
+   let clientObj = c;
+   if (typeof c === 'string' || typeof c === 'number') {
+      clientObj = (window.allCustomersList || []).find(x => String(x.id) === String(c));
+   }
+   if (!clientObj) return;
+   document.getElementById('edit-cust-id').value = clientObj.id;
+   document.getElementById('edit-cust-nome').value = clientObj.nome;
+   document.getElementById('edit-cust-telefone').value = clientObj.telefone;
    document.getElementById('modal-editar-cliente').classList.remove('hidden');
    document.getElementById('modal-editar-cliente').classList.add('flex');
 }
