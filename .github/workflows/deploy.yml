@@ -15,7 +15,7 @@ jobs:
       - name: Checkout do repositório
         uses: actions/checkout@v4
 
-      - name: Deploy para Hostinger (Subdomínio) via FTP
+      - name: Deploy para Hostinger via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ftp.sopedir.online
@@ -24,21 +24,6 @@ jobs:
           port: 21
           local-dir: ./app/
           server-dir: /quintaldoramao.sopedir.online/
-          dangerous-clean-slate: false
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-
-      - name: Deploy para Hostinger (Subpasta Principal) via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ftp.sopedir.online
-          username: u554585359.quintal
-          password: ${{ secrets.FTP_PASS }}
-          port: 21
-          local-dir: ./app/
-          server-dir: /quintaldoramao/
           dangerous-clean-slate: false
           exclude: |
             **/.git*
