@@ -1560,26 +1560,47 @@ async function finalizarPedido() {
     const payment = document.getElementById('payment_method')?.value || 'pix';
     const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
 
-    let msg = '🍖 *Pedido – Quintal do Ramão*\n\n';
-    msg += `👤 *Cliente:* ${nomeCliente}\n`;
-    msg += `📱 *WhatsApp:* ${telefoneCliente}\n\n`;
-    
-    cart.forEach(i => { msg += `• ${i.name} x${i.qty} – R$ ${(i.price * i.qty).toFixed(2).replace('.', ',')}\n`; });
-    
-    msg += `\n💳 Pagamento: ${payment.toUpperCase()}\n`;
+    const now = new Date();
+    const dataStr = now.toLocaleDateString('pt-BR');
+    const horaStr = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+    let msg = `*Novo Pedido - ${STORE_CONFIG.name || 'Quintal do Ramão'}*\n` +
+      `${dataStr}  /  ${horaStr}\n` +
+      `-----------------------------------\n` +
+      `*Cliente:* ${nomeCliente}\n` +
+      `*WhatsApp:* ${telefoneCliente}\n` +
+      `*Método:* ${delivery === 'retirada' ? 'Retirada no Balcão' : delivery === 'consumo' ? 'Consumir no Quintal' : 'Entrega em Domicílio'}\n` +
+      `*Pagamento:* ${payment.toUpperCase()}\n` +
+      `-----------------------------------\n` +
+      `*Itens:*\n`;
+      
+    cart.forEach(i => {
+      let itemText = `• ${i.name} x${i.qty} – R$ ${(i.price * i.qty).toFixed(2).replace('.', ',')}\n`;
+      const match = i.name.match(/(.+?)\s*\((.+?)\)/);
+      if (match) {
+        const prodName = match[1].trim();
+        const sides = match[2].split(',').map(s => s.trim());
+        itemText = `${i.qty}x *${prodName}* - R$ ${(i.price * i.qty).toFixed(2).replace('.', ',')}\n`;
+        itemText += `  - Campo 1 – ${sides.join(', ')}\n`;
+      } else {
+        itemText = `${i.qty}x *${i.name}* - R$ ${(i.price * i.qty).toFixed(2).replace('.', ',')}\n`;
+      }
+      msg += itemText;
+    });
+
+    msg += `-----------------------------------\n`;
     
     if (delivery === 'entrega') {
       const rua = document.getElementById('end_rua').value;
       const bairro = document.getElementById('end_bairro').value;
       const ref = document.getElementById('end_ref').value;
       if (!rua || !bairro) { alert('Por favor, preencha o endereço de entrega.'); return; }
-      msg += `📦 Entrega em Domicílio\n📍 Endereço: ${rua}, ${bairro}\n`;
+      msg += `📍 Endereço: ${rua}, ${bairro}\n`;
       if (ref) msg += `📌 Ref: ${ref}\n`;
-    } else {
-      msg += `📦 Entrega: ${delivery === 'retirada' ? 'Retirada no Local' : 'Consumo no Quintal'}\n`;
+      msg += `-----------------------------------\n`;
     }
 
-    msg += `\n💰 *Total: R$ ${total.toFixed(2).replace('.', ',')}*`;
+    msg += `*TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*`;
 
     // Save order to Supabase
     const orderData = {
@@ -1635,7 +1656,8 @@ async function finalizarPedido() {
     cart = [];
     updateCartUI();
     // Open WhatsApp
-    const waUrl = `https://wa.me/5519992288312?text=${encodeURIComponent(msg)}`;
+    const targetPhone = STORE_CONFIG.whatsapp ? STORE_CONFIG.whatsapp.replace(/\D/g, '') : '19992288312';
+    const waUrl = `https://wa.me/55${targetPhone}?text=${encodeURIComponent(msg)}`;
     window.open(waUrl, '_blank');
     showPage('orders');
   } catch (err) {
