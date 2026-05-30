@@ -689,6 +689,8 @@ async function initApp() {
   await loadStoreConfig();
   await fetchCategoriesFromSupabase();
   await fetchProductsFromSupabase();
+  await loadClientOrdersFromSupabase();
+  setupRealtimeOrders();
   showPage('menu');
 }
 
@@ -1676,7 +1678,7 @@ function renderOrderHistory() {
           <h3 class="font-headline font-bold text-lg">Pedido #${String(i + 1).padStart(4, '0')}</h3>
           <p class="text-xs text-on-surface-variant">${o.date}</p>
         </div>
-        <span class="bg-[#F29221]/10 text-[#F29221] text-xs font-bold px-3 py-1 rounded-full">Enviado</span>
+        <span class="bg-[#F29221]/10 text-[#F29221] text-xs font-bold px-3 py-1 rounded-full">${o.status === 'pendente' ? 'Pendente' : o.status === 'preparando' ? 'Em Preparo' : o.status === 'finalizado' ? 'Finalizado' : o.status === 'arquivado' ? 'Arquivado' : 'Enviado'}</span>
       </div>
       ${o.items.map(item => {
         let itemHtml = `<p class="text-sm mb-1 text-on-surface-variant">• ${item.name} x${item.qty || item.quantity || 1} — R$ ${(item.price * (item.qty || item.quantity || 1)).toFixed(2).replace('.', ',')}</p>`;
@@ -1701,6 +1703,80 @@ function renderOrderHistory() {
       </div>
     </div>
   `).reverse().join('');
+}
+
+async function loadClientOrdersFromSupabase() {
+  const savedPhone = localStorage.getItem('cust_phone');
+  if (!savedPhone) return;
+
+  const cleanPhone = savedPhone.replace(/\D/g, '');
+  if (!cleanPhone) return;
+
+  try {
+    const { data, error } = await supabaseClient
+      .from('quintal_pedidos')
+      .select('*')
+      .ilike('customer_name', `%|||${cleanPhone}`)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    if (data) {
+      orders = data.map(o => {
+        return {
+          id: o.id,
+          customer_name: o.customer_name,
+          items: o.items.map(i => ({
+            name: i.name,
+            price: Number(i.price) || 0,
+            qty: Number(i.qty || i.quantity) || 1,
+            sides: i.sides
+          })),
+          total: Number(o.total),
+          delivery_method: o.delivery_method,
+          payment_method: o.payment_method,
+          address: o.address,
+          status: o.status,
+          date: new Date(o.created_at).toLocaleString('pt-BR')
+        };
+      });
+      renderOrderHistory();
+    }
+  } catch (err) {
+    console.error("Erro ao carregar historico:", err);
+  }
+}
+
+function setupRealtimeOrders() {
+  const savedPhone = localStorage.getItem('cust_phone');
+  if (!savedPhone) return;
+
+  const cleanPhone = savedPhone.replace(/\D/g, '');
+  if (!cleanPhone) return;
+
+  supabaseClient
+    .channel('public:pedidos-realtime-cliente')
+    .on(
+      'postgres_changes',
+      {
+        event: 'UPDATE',
+        schema: 'public',
+        table: 'quintal_pedidos'
+      },
+      (payload) => {
+        const newOrder = payload.new;
+        if (newOrder && typeof newOrder.customer_name === 'string' && newOrder.customer_name.includes(`|||${cleanPhone}`)) {
+          orders = orders.map(o => o.id === newOrder.id ? { ...o, status: newOrder.status } : o);
+          renderOrderHistory();
+
+          const statusLabel = newOrder.status === 'pendente' ? 'Pendente' :
+                              newOrder.status === 'preparando' ? 'em Preparação' :
+                              newOrder.status === 'finalizado' ? 'Finalizado' : newOrder.status;
+          showToast(`Pedido #${newOrder.id.slice(-5).toUpperCase()} está ${statusLabel}!`);
+        }
+      }
+    )
+    .subscribe();
 }
 
 // ===== TOAST =====
