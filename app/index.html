@@ -264,7 +264,29 @@
     box-shadow: 0 4px 15px rgba(242, 146, 33, 0.25) !important;
     transform: translateY(-1px) !important;
   }
-  .category-scroll-btn { display: none !important; }
+  .category-scroll-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: rgba(19, 19, 19, 0.8) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    color: var(--text-muted) !important;
+    border-radius: 50% !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+    flex-shrink: 0;
+  }
+  .category-scroll-btn:hover {
+    background: var(--primary, #F29221) !important;
+    color: #131313 !important;
+    transform: scale(1.05);
+  }
+  .category-scroll-btn:active {
+    transform: scale(0.95);
+  }
 
   @media (max-width: 640px) {
     html, body { overflow-x: hidden !important; width: 100vw !important; position: relative; }
@@ -1656,6 +1678,18 @@ function showToast(msg) {
   setTimeout(() => { t.style.opacity = '0'; }, 2000);
 }
 
+
+// ===== SCROLL CATEGORIAS =====
+function scrollCategories(direction) {
+  const container = document.getElementById('category-tabs');
+  if (container) {
+    const scrollAmount = 200;
+    container.scrollBy({
+      left: direction * scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+}
 
 // ===== INITIAL CALL =====
 window.addEventListener('DOMContentLoaded', initApp);
