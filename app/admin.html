@@ -1059,6 +1059,8 @@
                 <button type="button" onclick="applyPreset('marmita')" class="text-[9px] font-black uppercase tracking-wider bg-surface-container hover:bg-primary hover:text-on-primary border border-outline-variant/20 hover:border-primary px-3 py-1.5 rounded-lg transition-all active:scale-95">🍱 Marmita</button>
                 <button type="button" onclick="applyPreset('pizza')" class="text-[9px] font-black uppercase tracking-wider bg-surface-container hover:bg-primary hover:text-on-primary border border-outline-variant/20 hover:border-primary px-3 py-1.5 rounded-lg transition-all active:scale-95">🍕 Pizza</button>
                 <button type="button" onclick="applyPreset('acai')" class="text-[9px] font-black uppercase tracking-wider bg-surface-container hover:bg-primary hover:text-on-primary border border-outline-variant/20 hover:border-primary px-3 py-1.5 rounded-lg transition-all active:scale-95">🍇 Açaí</button>
+                <button type="button" onclick="applyPreset('hamburguer')" class="text-[9px] font-black uppercase tracking-wider bg-surface-container hover:bg-primary hover:text-on-primary border border-outline-variant/20 hover:border-primary px-3 py-1.5 rounded-lg transition-all active:scale-95">🍔 Hambúrguer</button>
+                <button type="button" onclick="applyPreset('bebida')" class="text-[9px] font-black uppercase tracking-wider bg-surface-container hover:bg-primary hover:text-on-primary border border-outline-variant/20 hover:border-primary px-3 py-1.5 rounded-lg transition-all active:scale-95">🥤 Bebida</button>
               </div>
 
               <!-- Lista de Grupos Dinâmicos -->
@@ -2142,6 +2144,17 @@ function applyPreset(type) {
    } else if (type === 'acai') {
       currentCustomGroups = [
          { id: '1', name: 'Acompanhamentos (Escolha até 3)', max_choices: 3, choices: 'Banana, Morango, Leite Condensado, Leite em Pó, Granola, Nutella', required: false }
+      ];
+   } else if (type === 'hamburguer') {
+      currentCustomGroups = [
+         { id: '1', name: 'Ponto da Carne (Escolha 1)', max_choices: 1, choices: 'Ao Ponto, Bem Passado, Mal Passado', required: true },
+         { id: '2', name: 'Adicionais (Opcional - Adicione até 4)', max_choices: 4, choices: 'Queijo Cheddar (+R$ 3,00), Bacon Crocante (+R$ 4,00), Cebola Caramelizada (+R$ 2,00), Hambúrguer Extra (+R$ 8,00), Ovo Frito (+R$ 2,00)', required: false },
+         { id: '3', name: 'Retirar do Hambúrguer (Opcional)', max_choices: 5, choices: 'Sem Cebola, Sem Tomate, Sem Alface, Sem Picles, Sem Maionese, Sem Molho Especial', required: false }
+      ];
+   } else if (type === 'bebida') {
+      currentCustomGroups = [
+         { id: '1', name: 'Tipo de Embalagem (Escolha 1)', max_choices: 1, choices: 'Lata, Garrafa Plástica (PET), Garrafa de Vidro', required: true },
+         { id: '2', name: 'Medida / Tamanho (Escolha 1)', max_choices: 1, choices: 'Lata 350ml, Garrafa 600ml, Garrafa 1 Litro, Garrafa 2 Litros', required: true }
       ];
    }
    renderCustomGroups();
