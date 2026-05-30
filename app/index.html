@@ -1678,7 +1678,19 @@ function renderOrderHistory() {
         </div>
         <span class="bg-[#F29221]/10 text-[#F29221] text-xs font-bold px-3 py-1 rounded-full">Enviado</span>
       </div>
-      ${o.items.map(item => `<p class="text-sm mb-1 text-on-surface-variant">• ${item.name} x${item.qty} — R$ ${(item.price * item.qty).toFixed(2).replace('.', ',')}</p>`).join('')}
+      ${o.items.map(item => {
+        let itemHtml = `<p class="text-sm mb-1 text-on-surface-variant">• ${item.name} x${item.qty || item.quantity || 1} — R$ ${(item.price * (item.qty || item.quantity || 1)).toFixed(2).replace('.', ',')}</p>`;
+        const match = item.name.match(/(.+?)\s*\((.+?)\)/);
+        if (match) {
+          const prodName = match[1].trim();
+          const sides = match[2].split(',').map(s => s.trim());
+          itemHtml = `<div class="mb-2 text-left">
+            <p class="text-sm mb-0.5 text-on-surface-variant">• ${prodName} x${item.qty || item.quantity || 1} — R$ ${(item.price * (item.qty || item.quantity || 1)).toFixed(2).replace('.', ',')}</p>
+            <p class="text-xs text-on-surface-variant/75 ml-4">- Campo 1 – ${sides.join(', ')}</p>
+          </div>`;
+        }
+        return itemHtml;
+      }).join('')}
       <div class="mt-3 flex flex-wrap gap-2">
         <span class="text-[10px] font-bold uppercase tracking-widest px-2 py-1 bg-surface-container-highest rounded text-on-surface-variant">💳 ${o.payment_method?.toUpperCase() || 'PIX'}</span>
         <span class="text-[10px] font-bold uppercase tracking-widest px-2 py-1 bg-surface-container-highest rounded text-on-surface-variant">📦 ${o.delivery_method === 'retirada' ? 'Retirada' : (o.delivery_method === 'entrega' ? 'Entrega' : 'No Local')}</span>
